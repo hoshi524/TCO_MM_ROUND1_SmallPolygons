@@ -163,14 +163,14 @@ public class SmallPolygonsVis {
 	HashSet<Integer> badEdges = new HashSet<>(); // intersecting edges
 
 	// ---------------------------------------------------
-	void generate(String seed) {
+	void generate(long seed) {
 		try {
 			SecureRandom rnd = SecureRandom.getInstance("SHA1PRNG");
-			rnd.setSeed(Long.parseLong(seed));
+			rnd.setSeed(seed);
 			// generate points by sampling each coordinate uniformly, without duplicates
 			int i, j, k;
 			// number of points
-			if (seed.equals("1"))
+			if (seed == 1)
 				NP = 10;
 			else {
 				int testSize = rnd.nextInt(3);
@@ -220,7 +220,7 @@ public class SmallPolygonsVis {
 			}
 
 			N = rnd.nextInt(19) + 2;
-			if (seed.equals("1"))
+			if (seed == 1)
 				N = 3;
 			System.out.println("N = " + N);
 		} catch (Exception e) {
@@ -308,7 +308,7 @@ public class SmallPolygonsVis {
 	}
 
 	// ---------------------------------------------------
-	public double runTest(String seed) {
+	public double runTest(long seed) {
 		try {
 			int i, j;
 			generate(seed);
@@ -672,7 +672,7 @@ public class SmallPolygonsVis {
 	}
 
 	// ---------------------------------------------------
-	public SmallPolygonsVis(String seed) {
+	public SmallPolygonsVis(long seed) {
 		//interface for runTest
 		if (vis) {
 			jf = new JFrame();
@@ -684,13 +684,13 @@ public class SmallPolygonsVis {
 
 	// ---------------------------------------------------
 	public static void main(String[] args) {
-		String seed = "1";
+		long seed = 1;
 		vis = true;
 		manual = false;
 		strict = true;
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("-seed"))
-				seed = args[++i];
+				seed = Long.parseLong(args[++i]);
 			if (args[i].equals("-exec"))
 				exec = args[++i];
 			if (args[i].equals("-vis"))
@@ -704,7 +704,9 @@ public class SmallPolygonsVis {
 		}
 		if (manual)
 			vis = true;
-		new SmallPolygonsVis(seed);
+		for (seed = 1; seed <= 10; seed++) {
+			new SmallPolygonsVis(seed);
+		}
 	}
 
 	// ---------------------------------------------------
