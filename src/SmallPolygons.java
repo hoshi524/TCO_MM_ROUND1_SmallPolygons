@@ -10,12 +10,13 @@ import java.util.StringJoiner;
 
 public class SmallPolygons {
 
+	static final int max_xy = 700;
 	static final double pai = Math.atan(1) * 4;
 	static final double eps = 1e-10;
-	Random random = new ContestXorShift(0);
+	static final Random random = new ContestXorShift(0);
 	int N, NP, points[];
 	Point ps[];
-	static Map<Integer, Integer> ids;
+	Map<Integer, Integer> ids;
 
 	//	public static final void main(String args[]) {
 	//		new SmallPolygonsVis().run(new int[] { 996, 806, 918, 812, 885, 814, 887, 821, 867, 835, 866, 835, 923, 841, 905, 852, 901, 868,
@@ -151,7 +152,8 @@ public class SmallPolygons {
 						}
 						Edge xe0 = new Edge(x.p, x.t);
 						Edge xe1 = new Edge(x.p, x.u);
-						if (xe0.intersect(newE0) || xe0.intersect(newE1) || xe1.intersect(newE0) || xe1.intersect(newE1)) {
+						if (xe0.intersect(newE0) || xe0.intersect(newE1) || xe1.intersect(newE0)
+								|| xe1.intersect(newE1)) {
 							x.d = Double.MAX_VALUE / 2;
 						}
 						double d;
@@ -199,6 +201,100 @@ public class SmallPolygons {
 			ps[i] = new Point(points[i * 2], points[i * 2 + 1]);
 			ids.put(ps[i].hash(), i);
 		}
+
+		List<Point> split[] = null;
+		int min = Integer.MAX_VALUE / 2;
+		NG: for (int test = 0; test < 0x2fff; test++) {
+			@SuppressWarnings("unchecked")
+			List<Point> tmp[] = new List[N];
+			Point[] x = new Point[N];
+			for (int i = 0; i < N; i++) {
+				tmp[i] = new ArrayList<>();
+				x[i] = Point.random();
+			}
+
+			for (int i = 0; i < NP; i++) {
+				int t = -1;
+				double dist = Double.MAX_VALUE / 2;
+				for (int j = 0; j < N; j++) {
+					double tmpd = G2D.dist(x[j], ps[i]);
+					if (dist > tmpd) {
+						dist = tmpd;
+						t = j;
+					}
+				}
+				tmp[t].add(ps[i]);
+			}
+			int value = 0;
+			for (int i = 0; i < N; i++) {
+				if (tmp[i].size() < 3)
+					continue NG;
+				int minx = Integer.MAX_VALUE, maxx = Integer.MIN_VALUE;
+				int miny = Integer.MAX_VALUE, maxy = Integer.MIN_VALUE;
+				for (Point p : tmp[i]) {
+					minx = Math.min(minx, p.x);
+					maxx = Math.max(maxx, p.x);
+					miny = Math.min(miny, p.y);
+					maxy = Math.max(maxy, p.y);
+				}
+				value += (maxx - minx) * (maxy - miny);
+			}
+			if (min > value) {
+				min = value;
+				split = tmp;
+			}
+		}
+		if (split == null) {
+			System.err.println("badSplit");
+			split = badSplit();
+		}
+
+		Point res[][];
+		res = new Point[N][];
+		for (int i = 0; i < N; i++) {
+			res[i] = polygons(split[i].toArray(new Point[0]));
+			// res[i] = split[i].toArray(new Point[0]);
+		}
+		while (true) {
+			boolean ok = true;
+			join: for (int i = 0; i < N; i++) {
+				Point apoly[] = res[i];
+				for (int j = i + 1; j < N; j++) {
+					Point bpoly[] = res[j];
+					for (int k = 0, is = apoly.length; k < is; k++) {
+						Point a1 = apoly[k];
+						Point a2 = apoly[(k + 1) % is];
+						for (int m = 0, js = bpoly.length; m < js; m++) {
+							Point b1 = bpoly[m];
+							Point b2 = bpoly[(m + 1) % js];
+							if (G2D.intersected(a1, a2, b1, b2)) {
+								ok = false;
+								--N;
+								Point tmp[][] = new Point[N][];
+								for (int x = 0; x < N; x++)
+									tmp[x] = res[x];
+								if (j < N)
+									tmp[j] = res[N];
+								Point joinPolys[] = new Point[is + js];
+								for (int x = 0; x < is; x++)
+									joinPolys[x] = apoly[x];
+								for (int x = 0; x < js; x++)
+									joinPolys[is + x] = bpoly[x];
+								tmp[i] = polygons(joinPolys);
+								res = tmp;
+								break join;
+							}
+						}
+					}
+				}
+			}
+			if (ok)
+				break;
+		}
+		return result(res);
+	}
+
+	List<Point>[] badSplit() {
 		Point best[] = new Point[N];
 		double value = 0;
 		for (int i = 0; i < 0xffff; i++) {
@@ -280,49 +376,7 @@ public class SmallPolygons {
 				used.add(p);
 			}
 		}
-		Point res[][];
-		res = new Point[N][];
-		for (int i = 0; i < N; i++) {
-			res[i] = polygons(split[i].toArray(new Point[0]));
-			// res[i] = split[i].toArray(new Point[0]);
-		}
-		while (true) {
-			boolean ok = true;
-			join: for (int i = 0; i < N; i++) {
-				Point apoly[] = res[i];
-				for (int j = i + 1; j < N; j++) {
-					Point bpoly[] = res[j];
-					for (int k = 0, is = apoly.length; k < is; k++) {
-						Point a1 = apoly[k];
-						Point a2 = apoly[(k + 1) % is];
-						for (int m = 0, js = bpoly.length; m < js; m++) {
-							Point b1 = bpoly[m];
-							Point b2 = bpoly[(m + 1) % js];
-							if (G2D.intersected(a1, a2, b1, b2)) {
-								ok = false;
-								--N;
-								Point tmp[][] = new Point[N][];
-								for (int x = 0; x < N; x++)
-									tmp[x] = res[x];
-								if (j < N)
-									tmp[j] = res[N];
-								Point joinPolys[] = new Point[is + js];
-								for (int x = 0; x < is; x++)
-									joinPolys[x] = apoly[x];
-								for (int x = 0; x < js; x++)
-									joinPolys[is + x] = bpoly[x];
-								tmp[i] = polygons(joinPolys);
-								res = tmp;
-								break join;
-							}
-						}
-					}
-				}
-			}
-			if (ok)
-				break;
-		}
-		return result(res);
+		return split;
 	}
 
 	double dist(Point p[]) {
@@ -358,7 +412,7 @@ public class SmallPolygons {
 		return sj.toString();
 	}
 
-	class ContestXorShift extends Random {
+	static class ContestXorShift extends Random {
 		private static final long serialVersionUID = -8807494513400211599L;
 		private long x, y, z, w;
 
@@ -405,6 +459,10 @@ public class SmallPolygons {
 			this.y = y;
 		}
 
+		static Point random() {
+			return new Point(random.nextInt(max_xy), random.nextInt(max_xy));
+		}
+
 		public boolean equals(Point other) {
 			return (x == other.x && y == other.y);
 		}
@@ -418,7 +476,7 @@ public class SmallPolygons {
 		}
 
 		public String toString() {
-			return "[ " + ids.get(hash()) + " ]";
+			return "[ " + x + ", " + y + " ]";
 		}
 	}
 
