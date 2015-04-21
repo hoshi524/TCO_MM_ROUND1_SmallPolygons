@@ -32,6 +32,10 @@ class Pnt {
 	public boolean equals(Pnt other) {
 		return (x == other.x && y == other.y);
 	}
+
+	public String toString() {
+		return "[ " + x + ", " + y + " ]";
+	}
 }
 
 // ------------- class G2D --------------------------------
@@ -181,7 +185,6 @@ public class SmallPolygonsVis {
 				else
 					NP = rnd.nextInt(1001) + 500;
 			}
-			System.out.println("NP = " + NP);
 			p = new Pnt[NP];
 
 			// generate the points
@@ -222,7 +225,7 @@ public class SmallPolygonsVis {
 			N = rnd.nextInt(19) + 2;
 			if (seed == 1)
 				N = 3;
-			System.out.println("N = " + N);
+			System.out.println(String.format("Seed = %-5d NP = %-5d N = %-5d", seed, NP, N));
 		} catch (Exception e) {
 			addFatalError("An exception occurred while generating test case.");
 			e.printStackTrace();
@@ -274,6 +277,7 @@ public class SmallPolygonsVis {
 		for (int i = 0; i < used.length; ++i)
 			if (used[i] == -2) {
 				addFatalError("Point " + i + " is not used in any polygon.");
+				System.out.println(p[i]);
 				return 0;
 			}
 
@@ -309,19 +313,29 @@ public class SmallPolygonsVis {
 
 	// ---------------------------------------------------
 	public double runTest(long seed) {
+		generate(seed);
+		return run(pointsPar, N);
+	}
+
+	public double run(int[] points, int N) {
+		//init variables
+		NP = points.length / 2;
+		used = new int[NP];
+		Arrays.fill(used, -2);
+		badEdges.clear();
+		p = new Pnt[NP];
+		for (int i = 0; i < NP; i++) {
+			p[i] = new Pnt(points[i * 2], points[i * 2 + 1]);
+		}
+		pointsPar = points;
+		this.N = N;
 		try {
 			int i, j;
-			generate(seed);
-			//init variables
-			used = new int[NP];
-			Arrays.fill(used, -2);
-			badEdges.clear();
-
 			// allow combining two modes - program output and manual correction
 			// get the return and parse it into the polygons
 			String[] ret;
 			try {
-				ret = new SmallPolygons().choosePolygons(pointsPar, N);
+				ret = new SmallPolygons().choosePolygons(points, N);
 			} catch (Exception e) {
 				e.printStackTrace();
 				addFatalError("Failed to get result from choosePolygons.");
@@ -339,8 +353,6 @@ public class SmallPolygonsVis {
 			for (i = 0; i < Npoly; ++i) {
 				// parse the string into the polygon
 				try {
-					if (debug)
-						System.out.println(ret[i]);
 					String[] st = ret[i].split(" ");
 					int nv = st.length; // number of vertices in this polygon
 					// if there will be manual play, add slots for more vertices for each polygon
@@ -358,6 +370,15 @@ public class SmallPolygonsVis {
 						} else
 							used[polys[i][j]] = i;
 					}
+					if (debug) {
+						System.out.println(ret[i]);
+						int pos[] = new int[polys[i].length * 2];
+						for (int k = 0; k < polys[i].length; k++) {
+							pos[k * 2] = p[polys[i][k]].x;
+							pos[k * 2 + 1] = p[polys[i][k]].y;
+						}
+						System.out.println(Arrays.toString(pos));
+					}
 				} catch (Exception e) {
 					addFatalError("Polygon " + i + " parses with errors.");
 					return 0;
@@ -366,6 +387,7 @@ public class SmallPolygonsVis {
 				String valRes = validatePoly(polys[i], polysVert[i]);
 				if (valRes.length() != 0) {
 					addFatalError("Polygon " + i + " is invalid: " + valRes);
+					System.out.println(Arrays.toString(polys[i]));
 					valid[i] = false;
 				} else
 					valid[i] = true;
@@ -401,7 +423,7 @@ public class SmallPolygonsVis {
 
 	// ------------- visualization part ----------------------
 	static String exec;
-	static boolean vis, manual, debug, strict;
+	static boolean vis, manual, debug = false, strict;
 	JFrame jf;
 	Vis v;
 	// problem-specific drawing params
@@ -679,13 +701,25 @@ public class SmallPolygonsVis {
 			v = new Vis();
 			jf.getContentPane().add(v);
 		}
+		long start = System.currentTimeMillis();
 		System.out.println("Score = " + runTest(seed));
+		System.out.println("Time  = " + (System.currentTimeMillis() - start));
+	}
+
+	public SmallPolygonsVis() {
+		//interface for runTest
+		vis = true;
+		if (vis) {
+			jf = new JFrame();
+			v = new Vis();
+			jf.getContentPane().add(v);
+		}
 	}
 
 	// ---------------------------------------------------
 	public static void main(String[] args) {
 		long seed = 1;
-		vis = true;
+		vis = false;
 		manual = false;
 		strict = true;
 		for (int i = 0; i < args.length; i++) {
@@ -704,7 +738,7 @@ public class SmallPolygonsVis {
 		}
 		if (manual)
 			vis = true;
-		for (seed = 1; seed <= 10; seed++) {
+		for (seed = 1; seed <= 100; seed++) {
 			new SmallPolygonsVis(seed);
 		}
 	}
