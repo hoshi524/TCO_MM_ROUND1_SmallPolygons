@@ -156,7 +156,7 @@ class Edge {
 
 // ------------- class SmallPolygon itself --------------
 public class SmallPolygonsVis {
-	final int SZ = 700; // field size
+	final int SZ = 1000; // field size
 	int NP, N, Npoly; // number of points given, max number of polygons and number of polygons selected
 	Pnt[] p; // coordinates of points (fixed)
 	int[] pointsPar; // coordinates of points (as an array parameter)
@@ -247,6 +247,7 @@ public class SmallPolygonsVis {
 				if (e1.intersect(e2)) {
 					badEdges.add(poly[i]);
 					badEdges.add(poly[j]);
+					System.out.println(p[poly[i]] + " " + p[poly[(i + 1) % n]] + " " + p[poly[j]] + " " + p[poly[(j + 1) % n]]);
 					return "edges " + poly[i] + "-" + poly[(i + 1) % n] + " and " + poly[j] + "-" + poly[(j + 1) % n]
 							+ " intersect";
 				}
@@ -423,7 +424,7 @@ public class SmallPolygonsVis {
 
 	// ------------- visualization part ----------------------
 	static String exec;
-	static boolean vis, manual, debug = false, strict;
+	static boolean vis, manual, debug = true, strict;
 	JFrame jf;
 	Vis v;
 	// problem-specific drawing params
@@ -719,7 +720,7 @@ public class SmallPolygonsVis {
 	// ---------------------------------------------------
 	public static void main(String[] args) {
 		long seed = 1;
-		vis = false;
+		vis = true;
 		manual = false;
 		strict = true;
 		for (int i = 0; i < args.length; i++) {
@@ -738,7 +739,7 @@ public class SmallPolygonsVis {
 		}
 		if (manual)
 			vis = true;
-		for (seed = 1; seed <= 100; seed++) {
+		for (seed = 1; seed <= 10; seed++) {
 			new SmallPolygonsVis(seed);
 		}
 	}

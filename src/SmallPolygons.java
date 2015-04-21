@@ -15,11 +15,13 @@ public class SmallPolygons {
 	Random random = new ContestXorShift(0);
 	int N, NP, points[];
 	Point ps[];
-	Map<Integer, Integer> ids;
+	static Map<Integer, Integer> ids;
 
 	//	public static final void main(String args[]) {
-	//		new SmallPolygonsVis().run(new int[] { 646, 554, 642, 594, 631, 601, 634, 633, 660, 624, 660, 628, 644, 659, 648, 672, 635, 662,
-	//				610, 650, 610, 699, 697, 694, 692, 577, 696, 558, 669, 561, 610, 653 }, 1);
+	//		new SmallPolygonsVis().run(new int[] { 996, 806, 918, 812, 885, 814, 887, 821, 867, 835, 866, 835, 923, 841, 905, 852, 901, 868,
+	//				908, 879, 903, 879, 881, 857, 856, 852, 842, 868, 867, 888, 871, 906, 867, 909, 848, 919, 860, 932, 871, 930, 873, 940,
+	//				883, 994, 895, 974, 900, 986, 911, 985, 917, 966, 939, 980, 954, 980, 950, 959, 984, 954, 980, 927, 986, 928, 986, 907,
+	//				999, 906, 919, 910, 940, 902, 951, 895, 924, 913, 937, 915, 955, 853, 963, 840, 981, 839 }, 1);
 	//	}
 
 	static double angle(Point a, Point b, Point c) {
@@ -140,9 +142,13 @@ public class SmallPolygons {
 					Point b = r.p;
 					Point c = r.u;
 					outside.add(i + 1, r.p);
+					// System.out.println("add : " + r.p + " " + r.t + " " + r.u);
 					Edge newE0 = new Edge(r.p, r.t);
 					Edge newE1 = new Edge(r.p, r.u);
 					for (Remain x : remain) {
+						if (r.u == x.u) {
+							x.u = r.p;
+						}
 						Edge xe0 = new Edge(x.p, x.t);
 						Edge xe1 = new Edge(x.p, x.u);
 						if (xe0.intersect(newE0) || xe0.intersect(newE1) || xe1.intersect(newE0) || xe1.intersect(newE1)) {
@@ -161,12 +167,25 @@ public class SmallPolygons {
 							x.t = b;
 							x.u = c;
 						}
+						if (x.d > Double.MAX_VALUE / 4) {
+							func.setRemain(x);
+						}
 					}
 					break;
 				}
 			}
 		}
 		return outside.toArray(new Point[0]);
+	}
+
+	double area(List<Point> poly) {
+		double s = 0;
+		for (int i = 0, n = poly.size(); i < n; i++) {
+			Point p0 = poly.get(i);
+			Point p1 = poly.get((i + 1) % n);
+			s += (p1.y + p0.y) * (p1.x - p0.x);
+		}
+		return Math.abs(s) / 2.0;
 	}
 
 	String[] choosePolygons(int[] points, int N) {
@@ -399,7 +418,7 @@ public class SmallPolygons {
 		}
 
 		public String toString() {
-			return "[ " + x + ", " + y + " ]";
+			return "[ " + ids.get(hash()) + " ]";
 		}
 	}
 
@@ -446,12 +465,9 @@ public class SmallPolygons {
 		}
 	}
 
-	class Edge {
+	static class Edge {
 		public Point p1, p2, vect; //vector p1 -> p2
 		public double norm;
-
-		public Edge() {
-		};
 
 		public Edge(Point p1n, Point p2n) {
 			p1 = p1n;
@@ -465,6 +481,10 @@ public class SmallPolygons {
 			p2 = new Point(x2, y2);
 			vect = G2D.sub(p2, p1);
 			norm = G2D.norm(vect);
+		}
+
+		public String toString() {
+			return p1 + " " + p2;
 		}
 
 		boolean eq(double a, double b) {
