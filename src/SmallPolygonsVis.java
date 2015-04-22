@@ -225,7 +225,7 @@ public class SmallPolygonsVis {
 			N = rnd.nextInt(19) + 2;
 			if (seed == 1)
 				N = 3;
-			System.out.println(String.format("Seed = %-5d NP = %-5d N = %-5d", seed, NP, N));
+			System.out.println(String.format("Seed  = %-5d NP = %-5d N = %d", seed, NP, N));
 		} catch (Exception e) {
 			addFatalError("An exception occurred while generating test case.");
 			e.printStackTrace();
@@ -721,7 +721,7 @@ public class SmallPolygonsVis {
 	// ---------------------------------------------------
 	public static void main(String[] args) {
 		long seed = 1;
-		vis = true;
+		vis = false;
 		manual = false;
 		strict = true;
 		for (int i = 0; i < args.length; i++) {
@@ -740,7 +740,7 @@ public class SmallPolygonsVis {
 		}
 		if (manual)
 			vis = true;
-		for (seed = 1; seed <= 10; seed++) {
+		for (seed = 1; seed <= 100; seed++) {
 			new SmallPolygonsVis(seed);
 		}
 	}
