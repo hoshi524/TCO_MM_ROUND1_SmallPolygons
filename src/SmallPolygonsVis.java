@@ -704,8 +704,18 @@ public class SmallPolygonsVis {
 			jf.getContentPane().add(v);
 		}
 		long start = System.currentTimeMillis();
-		System.out.println("Score = " + runTest(seed));
-		System.out.println("Time  = " + (System.currentTimeMillis() - start));
+		double score = runTest(seed);
+		if (score > 1e-10) {
+			System.out.println("Score = " + score);
+		} else {
+			System.err.println("Score = " + score + " [error]");
+		}
+		long time = (System.currentTimeMillis() - start);
+		if (time < 10000) {
+			System.out.println("Time  = " + time);
+		} else {
+			System.err.println("Time  = " + time + " [error]");
+		}
 	}
 
 	public SmallPolygonsVis() {
@@ -721,7 +731,7 @@ public class SmallPolygonsVis {
 	// ---------------------------------------------------
 	public static void main(String[] args) {
 		long seed = 1;
-		vis = true;
+		vis = false;
 		manual = false;
 		strict = true;
 		for (int i = 0; i < args.length; i++) {
