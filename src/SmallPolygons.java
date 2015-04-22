@@ -10,6 +10,7 @@ import java.util.StringJoiner;
 
 public class SmallPolygons {
 
+	final long startTime = System.currentTimeMillis();
 	static final int max_xy = 700;
 	static final double pai = Math.atan(1) * 4;
 	static final double eps = 1e-10;
@@ -17,13 +18,6 @@ public class SmallPolygons {
 	int N, NP, points[];
 	Point ps[];
 	Map<Integer, Integer> ids;
-
-	//	public static final void main(String args[]) {
-	//		new SmallPolygonsVis().run(new int[] { 996, 806, 918, 812, 885, 814, 887, 821, 867, 835, 866, 835, 923, 841, 905, 852, 901, 868,
-	//				908, 879, 903, 879, 881, 857, 856, 852, 842, 868, 867, 888, 871, 906, 867, 909, 848, 919, 860, 932, 871, 930, 873, 940,
-	//				883, 994, 895, 974, 900, 986, 911, 985, 917, 966, 939, 980, 954, 980, 950, 959, 984, 954, 980, 927, 986, 928, 986, 907,
-	//				999, 906, 919, 910, 940, 902, 951, 895, 924, 913, 937, 915, 955, 853, 963, 840, 981, 839 }, 1);
-	//	}
 
 	static double angle(Point a, Point b, Point c) {
 		Point v1 = G2D.sub(b, a);
@@ -147,7 +141,8 @@ public class SmallPolygons {
 			Remain r = remain.get(0);
 			remain.remove(r);
 			if (r.t == null || r.u == null) {
-				throw new RuntimeException();
+				return null;
+				// throw new RuntimeException();
 			}
 			for (int i = 0, size = outside.size(); i < size; i++) {
 				if (outside.get(i) == r.t) {
@@ -203,10 +198,14 @@ public class SmallPolygons {
 	}
 
 	int area(List<Point> poly) {
+		return area(poly.toArray(new Point[0]));
+	}
+
+	int area(Point[] poly) {
 		int s = 0;
-		for (int i = 0, n = poly.size(); i < n; i++) {
-			Point p0 = poly.get(i);
-			Point p1 = poly.get((i + 1) % n);
+		for (int i = 0, n = poly.length; i < n; i++) {
+			Point p0 = poly[i];
+			Point p1 = poly[(i + 1) % n];
 			s += (p1.y + p0.y) * (p1.x - p0.x);
 		}
 		return Math.abs(s);
@@ -224,56 +223,66 @@ public class SmallPolygons {
 			ids.put(ps[i].hash(), i);
 		}
 
-		List<Point> split[] = null;
-		while (split == null) {
-			Point[] x = new Point[N];
-			List<Point> tmp[] = new List[N];
-			for (int i = 0; i < N; i++)
-				tmp[i] = new ArrayList<>();
-			int min = Integer.MAX_VALUE;
-			NG: for (int test = 0; test < 0xfff; test++) {
-				for (int i = 0; i < N; i++) {
-					tmp[i].clear();
-					x[i] = Point.random();
-				}
-
-				for (int i = 0; i < NP; i++) {
-					int t = -1;
-					double dist = Double.MAX_VALUE / 2;
-					for (int j = 0; j < N; j++) {
-						double tmpd = G2D.dist(x[j], ps[i]);
-						if (dist > tmpd) {
-							dist = tmpd;
-							t = j;
-						}
-					}
-					tmp[t].add(ps[i]);
-				}
-				for (int i = 0; i < N; i++)
-					if (tmp[i].size() < 3)
-						continue NG;
-
-				int value = 0;
-				for (int i = 0; i < N; i++) {
-					value += area(getOutside(tmp[i].toArray(new Point[0])));
-				}
-				if (min > value) {
-					min = value;
-					split = tmp;
-					tmp = new List[N];
-					for (int i = 0; i < N; i++)
-						tmp[i] = new ArrayList<>();
+		int min = Integer.MAX_VALUE;
+		Point res[][] = null;
+		long time = System.currentTimeMillis() - startTime;
+		int count = 0;
+		long maxOneTime = 0;
+		NG: while (true) {
+			++count;
+			if (res == null && count > 50) {
+				count = 0;
+				--N;
+			}
+			{
+				long tmp = System.currentTimeMillis() - startTime;
+				maxOneTime = Math.max(maxOneTime, tmp - time);
+				time = tmp;
+				if (time + maxOneTime * 2 >= 9500) {
+					break;
 				}
 			}
-			if (split == null)
-				--N;
-		}
 
-		Point res[][] = new Point[N][];
-		for (int i = 0; i < N; i++) {
-			res[i] = polygons(split[i].toArray(new Point[0]));
-		}
+			Point[] x = new Point[N];
+			List<Point> tmp[] = new List[N];
+			for (int i = 0; i < N; i++) {
+				tmp[i] = new ArrayList<>();
+				x[i] = Point.random();
+			}
+			for (int i = 0; i < NP; i++) {
+				int t = -1;
+				double dist = Double.MAX_VALUE / 2;
+				for (int j = 0; j < N; j++) {
+					double tmpd = G2D.dist(x[j], ps[i]);
+					if (dist > tmpd) {
+						dist = tmpd;
+						t = j;
+					}
+				}
+				tmp[t].add(ps[i]);
+			}
+			for (int i = 0; i < N; i++)
+				if (tmp[i].size() < 3)
+					continue NG;
 
+			Point restmp[][] = new Point[N][];
+			int value = 0;
+			for (int i = 0; i < N; i++) {
+				Point polys[] = polygons(tmp[i].toArray(new Point[0]));
+				if (polys == null)
+					continue NG;
+				restmp[i] = polys;
+				double a = area(polys);
+				if (a < eps) {
+					continue NG;
+				}
+				value += a;
+			}
+			if (min > value) {
+				min = value;
+				res = restmp;
+			}
+		}
 		return result(res);
 	}
 

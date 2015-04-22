@@ -721,7 +721,7 @@ public class SmallPolygonsVis {
 	// ---------------------------------------------------
 	public static void main(String[] args) {
 		long seed = 1;
-		vis = false;
+		vis = true;
 		manual = false;
 		strict = true;
 		for (int i = 0; i < args.length; i++) {
