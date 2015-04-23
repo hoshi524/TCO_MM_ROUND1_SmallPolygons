@@ -150,7 +150,6 @@ public class SmallPolygons {
 					if (e.intersect(ce))
 						return false;
 				return true;
-				// return !checkEdge.stream().anyMatch(ce -> e.intersect(ce));
 			}
 		}
 		Function func = new Function();
@@ -260,7 +259,7 @@ public class SmallPolygons {
 		NG: while (true) {
 			if (res == null) {
 				++badCount;
-				if (badCount > 50) {
+				if (badCount > 40) {
 					badCount = 0;
 					--N;
 				}

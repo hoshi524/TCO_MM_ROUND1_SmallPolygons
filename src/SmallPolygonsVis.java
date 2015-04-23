@@ -785,7 +785,7 @@ public class SmallPolygonsVis {
 				double max = Math.max(score0, score1);
 				sum0.d += score0 / max;
 				sum1.d += score1 / max;
-				System.out.println(String.format("%6.1f : %6.1f    %d : %d", score0, score1, (end0 - start0),
+				System.out.println(String.format("%8.1f : %8.1f    %5d : %5d", score0, score1, (end0 - start0),
 						(end1 - start1)));
 			});
 		}
