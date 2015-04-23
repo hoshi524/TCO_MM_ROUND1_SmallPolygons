@@ -13,6 +13,9 @@ import java.io.InputStream;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -225,7 +228,8 @@ public class SmallPolygonsVis {
 			N = rnd.nextInt(19) + 2;
 			if (seed == 1)
 				N = 3;
-			System.out.println(String.format("Seed   = %-5d NP = %-5d N = %d", seed, NP, N));
+			if (debug)
+				System.out.println(String.format("Seed   = %-5d NP = %-5d N = %d", seed, NP, N));
 		} catch (Exception e) {
 			addFatalError("An exception occurred while generating test case.");
 			e.printStackTrace();
@@ -317,7 +321,7 @@ public class SmallPolygonsVis {
 	public double runTest(long seed) {
 		generate(seed);
 		setInput(pointsPar, N);
-		String[] ret = new CopyOfSmallPolygons().choosePolygons(pointsPar, N);
+		String[] ret = new SmallPolygons().choosePolygons(pointsPar, N);
 		return setResult(ret);
 	}
 
@@ -754,26 +758,46 @@ public class SmallPolygonsVis {
 	}
 
 	void compare() {
-		double sum0 = 0, sum1 = 0;
-		for (int seed = 1; seed <= 100; seed++) {
-			generate(seed);
-			setInput(pointsPar, N);
-			long start0 = System.currentTimeMillis();
-			String res0[] = new SmallPolygons().choosePolygons(pointsPar, N);
-			long end0 = System.currentTimeMillis();
-			double score0 = setResult(res0);
-			generate(seed);
-			setInput(pointsPar, N);
-			long start1 = System.currentTimeMillis();
-			String res1[] = new CopyOfSmallPolygons().choosePolygons(pointsPar, N);
-			long end1 = System.currentTimeMillis();
-			double score1 = setResult(res1);
-			double max = Math.max(score0, score1);
-			sum0 += score0 / max;
-			sum1 += score1 / max;
-			System.out.println(String.format("%.1f : %.1f    %f : %f   %d : %d", score0, score1, sum0 / seed, sum1 / seed, (end0 - start0),
-					(end1 - start1)));
+		class DoubleClass {
+			double d;
 		}
+		SmallPolygonsVis.debug = false;
+		final int allSeed = 100;
+		final DoubleClass sum0 = new DoubleClass(), sum1 = new DoubleClass();
+		ExecutorService es = Executors.newFixedThreadPool(6);
+
+		for (int seed = 1; seed <= allSeed; seed++) {
+			final int Seed = seed;
+			es.submit(() -> {
+				SmallPolygonsVis vis = new SmallPolygonsVis();
+				vis.generate(Seed);
+				vis.setInput(vis.pointsPar, vis.N);
+				long start0 = System.currentTimeMillis();
+				String res0[] = new SmallPolygonsPrev().choosePolygons(vis.pointsPar, vis.N);
+				long end0 = System.currentTimeMillis();
+				double score0 = vis.setResult(res0);
+				vis.generate(Seed);
+				vis.setInput(vis.pointsPar, vis.N);
+				long start1 = System.currentTimeMillis();
+				String res1[] = new SmallPolygons().choosePolygons(vis.pointsPar, vis.N);
+				long end1 = System.currentTimeMillis();
+				double score1 = vis.setResult(res1);
+				double max = Math.max(score0, score1);
+				sum0.d += score0 / max;
+				sum1.d += score1 / max;
+				System.out.println(String.format("%6.1f : %6.1f    %d : %d", score0, score1, (end0 - start0),
+						(end1 - start1)));
+			});
+		}
+		try {
+			es.shutdown();
+			if (!es.awaitTermination(100000L, TimeUnit.SECONDS))
+				es.shutdownNow();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			es.shutdownNow();
+		}
+		System.out.println(String.format("%f : %f", sum0.d / allSeed, sum1.d / allSeed));
 	}
 
 	// ---------------------------------------------------
