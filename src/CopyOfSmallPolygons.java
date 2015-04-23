@@ -1,48 +1,51 @@
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class SmallPolygons {
+public class CopyOfSmallPolygons {
 
-	final long startTime = System.currentTimeMillis();
+	private final long startTime = System.currentTimeMillis();
+	private static final boolean debug = true;
 	private static final int max_tiem = 5000;
-	static final int max_xy = 700;
-	static final double pai = Math.atan(1) * 4;
-	static final double eps = 1e-10;
-	static final Random random = new ContestXorShift(0);
-	int N, NP, points[];
-	Point ps[];
-	Map<Integer, Integer> ids;
+	private static final int max_xy = 700;
+	private static final double pai2 = Math.atan(1) * 4 * 2;
+	private static final double eps = 1e-9;
+	private SecureRandom random;
+	{
+		try {
+			random = SecureRandom.getInstance("SHA1PRNG");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+	}
+	private int N, NP;
+	private Point ps[];
+	private Map<Integer, Integer> ids;
 
-	static double angle(Point a, Point b, Point c) {
+	private static double angle(Point a, Point b, Point c) {
 		Point v1 = G2D.sub(b, a);
 		Point v2 = G2D.sub(b, c);
 		return Math.atan2(G2D.cross(v1, v2), G2D.dot(v1, v2));
 	}
 
-	static double angle2(Point a, Point b, Point c) {
+	private static double angle2(Point a, Point b, Point c) {
 		double x = angle(a, b, c);
 		if (x < 0) {
-			x = pai * 2 + x;
+			x = pai2 + x;
 		}
 		return x;
 	}
 
-	List<Point> getOutside(Point[] t) {
-		Point init = null;
-		int min = Integer.MAX_VALUE;
-		for (Point p : t) {
-			if (min > p.y) {
-				min = p.y;
-				init = p;
-			}
-		}
+	private List<Point> getOutside(Point[] t) {
+		Point init = Arrays.stream(t).min((p1, p2) -> p1.y - p2.y).get();
 		Point p1 = new Point(init.x, init.y - 1);
 		Point p2 = init;
 		final List<Point> outside = new ArrayList<>();
@@ -70,8 +73,20 @@ public class SmallPolygons {
 		return outside;
 	}
 
-	Point[] polygons(Point[] t) {
-		class Remain implements Comparable<Remain> {
+	// private static long sumt0 = 0;
+	// private static long sumt1 = 0;
+
+	Map<Long, Point[]> memo;
+	long hashTable[];
+
+	private Point[] polygons(Point[] t) {
+		long key = Arrays.stream(t).map(p -> hashTable[ids.get(p.hash())]).reduce(0L, (l1, l2) -> l1 ^ l2);
+		Point[] res = memo.get(key);
+		if (res != null) {
+			return res;
+		}
+
+		class Remain {
 			final Point p;
 			Point t = null, u = null;
 			int v = Integer.MAX_VALUE;
@@ -79,55 +94,64 @@ public class SmallPolygons {
 			Remain(Point p) {
 				this.p = p;
 			}
-
-			@Override
-			public int compareTo(Remain o) {
-				return v - o.v;
-			}
 		}
 
-		final List<Point> outside = getOutside(t);
 		final List<Edge> checkEdge = new ArrayList<>();
 		class Function {
-			void setRemain(Remain r) {
+
+			void setRemain(List<Point> outside, int outsideArea, final Remain r) {
 				r.v = Integer.MAX_VALUE;
 				r.t = null;
 				r.u = null;
-				for (int i = 0, size = outside.size(); i < size; i++) {
-					Point a = outside.get(i);
-					Point b = outside.get((i + 1) % size);
-					int v = area(outside, i, r.p);
-					if (r.v > v && isOK(a, r.p, b)) {
-						r.v = v;
-						r.t = a;
-						r.u = b;
+				class Pair {
+					final int i;
+					final Edge e, re1, re2;
+					final double d;
+					boolean ok = true;
+
+					Pair(int i, Edge e) {
+						this.i = i;
+						this.e = e;
+						this.d = e.dist(r.p);
+						re1 = new Edge(r.p, e.p1);
+						re2 = new Edge(r.p, e.p2);
+					}
+				}
+				int size = outside.size();
+				Pair[] list = new Pair[size];
+				for (int i = 0; i < size; i++) {
+					list[i] = new Pair(i, new Edge(outside.get(i), outside.get((i + 1) % size)));
+				}
+				Arrays.sort(list, (o1, o2) -> Double.compare(o1.d, o2.d));
+
+				for (int i = 0; i < size; i++) {
+					Pair pair = list[i];
+					Edge e = pair.e;
+					if (pair.ok) {
+						int v = area(outside, outsideArea, pair.i, r.p);
+						if (r.v > v && isOK(pair.re1) && isOK(pair.re2)) {
+							r.v = v;
+							r.t = e.p1;
+							r.u = e.p2;
+						}
+					}
+					for (int j = i + 1; j < size; j++) {
+						Pair tmpPair = list[j];
+						if (tmpPair.ok) {
+							tmpPair.ok = !e.intersect(tmpPair.re1) && !e.intersect(tmpPair.re2);
+						}
 					}
 				}
 			}
 
-			boolean isOK(Point a, Point b, Point c) {
-				Edge e1 = new Edge(b, a);
-				Edge e2 = new Edge(b, c);
-				for (Edge e : checkEdge) {
-					if (e.intersect(e1) || e.intersect(e2)) {
-						return false;
-					}
-				}
-				return true;
-			}
-
-			boolean isOK(Point a, Point b) {
-				Edge e1 = new Edge(b, a);
-				for (Edge e : checkEdge) {
-					if (e.intersect(e1)) {
-						return false;
-					}
-				}
-				return true;
+			boolean isOK(Edge e) {
+				return !checkEdge.stream().anyMatch(ce -> e.intersect(ce));
 			}
 		}
 		Function func = new Function();
 
+		List<Point> outside = getOutside(t);
+		int outsideArea = area(outside.toArray(new Point[0]));
 		List<Remain> remain = new ArrayList<>();
 		Set<Point> outsideSet = new HashSet<>(outside);
 		for (Point p : t) {
@@ -135,18 +159,20 @@ public class SmallPolygons {
 				continue;
 			Remain r = new Remain(p);
 			remain.add(r);
-			func.setRemain(r);
+			func.setRemain(outside, outsideArea, r);
 		}
 		while (!remain.isEmpty()) {
-			Collections.sort(remain);
+			Collections.sort(remain, (o1, o2) -> o1.v - o2.v);
 			Remain r = remain.get(0);
 			remain.remove(r);
 			if (r.t == null || r.u == null) {
+				// うまく全ての頂点が使えなかったケース
+				// 0.01%くらいしかなさそう
 				return null;
-				// throw new RuntimeException();
 			}
 			for (int i = 0, size = outside.size(); i < size; i++) {
 				if (outside.get(i) == r.t) {
+					outsideArea = area(outside, outsideArea, i, r.p);
 					outside.add(i + 1, r.p);
 					for (Edge e : checkEdge) {
 						if (e.p1 == r.t && e.p2 == r.u) {
@@ -171,9 +197,10 @@ public class SmallPolygons {
 						} else {
 							Edge te0 = x.t == null ? null : new Edge(x.t, x.p);
 							Edge te1 = x.u == null ? null : new Edge(x.p, x.u);
-							if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0) || e0.intersect(te1)
-									|| e1.intersect(te0) || e1.intersect(te1) || func.isOK(r.p, x.p)) {
-								func.setRemain(x);
+							if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0)
+									|| e0.intersect(te1) || e1.intersect(te0) || e1.intersect(te1)
+									|| func.isOK(new Edge(r.p, x.p))) {
+								func.setRemain(outside, outsideArea, x);
 							}
 						}
 					}
@@ -181,33 +208,27 @@ public class SmallPolygons {
 				}
 			}
 		}
-		return outside.toArray(new Point[0]);
+		res = outside.toArray(new Point[0]);
+		memo.put(key, res);
+		return res;
 	}
 
-	int area(List<Point> poly, int index, Point p) {
-		int s = 0;
-		for (int i = 0, n = poly.size(); i < n; i++) {
-			Point p0 = poly.get(i);
-			Point p1 = poly.get((i + 1) % n);
-			if (index != i) {
-				s += (p1.y + p0.y) * (p1.x - p0.x);
-			} else {
-				s += (p.y + p0.y) * (p.x - p0.x) + (p1.y + p.y) * (p1.x - p.x);
-			}
-		}
-		return Math.abs(s);
+	private static final int areaFunc(Point p0, Point p1) {
+		return (p1.y + p0.y) * (p1.x - p0.x);
 	}
 
-	int area(List<Point> poly) {
-		return area(poly.toArray(new Point[0]));
+	private int area(List<Point> poly,int polyArea, int index, Point p) {
+		int size = poly.size();
+		Point p0 = poly.get(index);
+		Point p1 = poly.get((index + 1) % size);
+		polyArea += -areaFunc(p0, p1) + areaFunc(p0, p) + areaFunc(p, p1);
+		return Math.abs(polyArea);
 	}
 
-	int area(Point[] poly) {
+	private int area(Point[] poly) {
 		int s = 0;
 		for (int i = 0, n = poly.length; i < n; i++) {
-			Point p0 = poly[i];
-			Point p1 = poly[(i + 1) % n];
-			s += (p1.y + p0.y) * (p1.x - p0.x);
+			s += areaFunc(poly[i], poly[(i + 1) % n]);
 		}
 		return Math.abs(s);
 	}
@@ -216,24 +237,28 @@ public class SmallPolygons {
 		this.N = N_;
 		NP = points.length / 2;
 		N = Math.min(N, NP / 3);
-		this.points = points;
 		ps = new Point[NP];
 		ids = new HashMap<>();
+		memo = new HashMap<>();
+		hashTable = new long[NP];
 		for (int i = 0; i < NP; i++) {
 			ps[i] = new Point(points[i * 2], points[i * 2 + 1]);
 			ids.put(ps[i].hash(), i);
+			hashTable[i] = random.nextLong();
 		}
 
 		int min = Integer.MAX_VALUE;
 		Point res[][] = null;
 		long time = System.currentTimeMillis() - startTime;
-		int count = 0;
+		int badCount = 0, valueCount = 0;
 		long maxOneTime = 0;
 		NG: while (true) {
-			++count;
-			if (res == null && count > 50) {
-				count = 0;
-				--N;
+			if (res == null) {
+				++badCount;
+				if (badCount > 50) {
+					badCount = 0;
+					--N;
+				}
 			}
 			{
 				long tmp = System.currentTimeMillis() - startTime;
@@ -248,7 +273,7 @@ public class SmallPolygons {
 			List<Point> tmp[] = new List[N];
 			for (int i = 0; i < N; i++) {
 				tmp[i] = new ArrayList<>();
-				x[i] = Point.random();
+				x[i] = Point.random(random);
 			}
 			for (int i = 0; i < NP; i++) {
 				int t = -1;
@@ -262,104 +287,45 @@ public class SmallPolygons {
 				}
 				tmp[t].add(ps[i]);
 			}
-			for (int i = 0; i < N; i++)
-				if (tmp[i].size() < 3)
-					continue NG;
+			if (Arrays.stream(tmp).anyMatch(list -> list.size() < 3))
+				continue NG;
 
 			Point restmp[][] = new Point[N][];
 			int value = 0;
+			valueCount++;
 			for (int i = 0; i < N; i++) {
 				Point polys[] = polygons(tmp[i].toArray(new Point[0]));
 				if (polys == null)
 					continue NG;
-				restmp[i] = polys;
 				double a = area(polys);
-				if (a < eps) {
+				if (a < eps)
 					continue NG;
-				}
+				restmp[i] = polys;
 				value += a;
+				if (min <= value)
+					continue NG;
 			}
-			if (min > value) {
-				min = value;
-				res = restmp;
-			}
+			min = value;
+			res = restmp;
+		}
+		if (debug) {
+			// System.out.println(sumt0 + "\n" + sumt1);
+			System.out.println("values = " + valueCount);
 		}
 		return result(res);
 	}
 
-	double dist(Point p[]) {
-		if (p.length <= 1)
-			return 1;
-		double res = 0;
-		for (int i = 0; i < p.length; i++) {
-			for (int j = i + 1; j < p.length; j++) {
-				res += G2D.dist(p[i], p[j]);
-			}
-		}
-		return res;
-	}
-
-	String[] result(Point polys[][]) {
+	private String[] result(Point polys[][]) {
 		String res[] = new String[polys.length];
 		for (int i = 0; i < polys.length; i++) {
-			int n = polys[i].length;
-			int list[] = new int[n];
-			for (int j = 0; j < n; j++) {
-				list[j] = ids.get(polys[i][j].hash());
-			}
-			res[i] = toString(list);
+			res[i] = Arrays.stream(polys[i]).sequential().map(point -> ids.get(point.hash()))
+					.collect(() -> new StringJoiner(" "), (joiner, id) -> joiner.add(Integer.toString(id)), (j1, j2) -> j1.merge(j2))
+					.toString();
 		}
 		return res;
 	}
 
-	String toString(int list[]) {
-		StringJoiner sj = new StringJoiner(" ");
-		for (int i : list) {
-			sj.add(Integer.toString(i));
-		}
-		return sj.toString();
-	}
-
-	static class ContestXorShift extends Random {
-		private static final long serialVersionUID = -8807494513400211599L;
-		private long x, y, z, w;
-
-		private void init() {
-			x = 123456789;
-			y = 362436069;
-			z = 521288629;
-			w = 88675123;
-		}
-
-		public ContestXorShift() {
-			super();
-			init();
-			x = System.nanoTime();
-		}
-
-		public ContestXorShift(long seed) {
-			super(seed);
-			init();
-			x = seed;
-		}
-
-		public synchronized void setSeed(long seed) {
-			super.setSeed(seed);
-			init();
-			x = seed;
-		}
-
-		protected int next(int bits) {
-			long t = (x ^ x << 11) & (1L << 32) - 1;
-			x = y;
-			y = z;
-			z = w;
-			w = (w ^ w >>> 19 ^ t ^ t >>> 8) & (1L << 32) - 1;
-			return (int) w >>> 32 - bits;
-		}
-	}
-
-	static class Point {
+	private static class Point {
 		public final int x, y;
 
 		public Point(int x, int y) {
@@ -367,7 +333,7 @@ public class SmallPolygons {
 			this.y = y;
 		}
 
-		static Point random() {
+		static Point random(SecureRandom random) {
 			return new Point(random.nextInt(max_xy), random.nextInt(max_xy));
 		}
 
@@ -380,17 +346,13 @@ public class SmallPolygons {
 		}
 	}
 
-	static class G2D {
+	private static class G2D {
 		public static Point sub(Point p1, Point p2) {
 			return new Point(p1.x - p2.x, p1.y - p2.y);
 		}
 
-		public static double norm(Point p) {
-			return Math.sqrt(p.x * p.x + p.y * p.y);
-		}
-
-		public static int norm2(Point p) {
-			return (p.x * p.x + p.y * p.y);
+		public static double norm(int x, int y) {
+			return Math.sqrt(x * x + y * y);
 		}
 
 		public static int dot(Point p1, Point p2) {
@@ -402,15 +364,11 @@ public class SmallPolygons {
 		}
 
 		public static double dist(Point p1, Point p2) {
-			return norm(sub(p1, p2));
-		}
-
-		public static int dist2(Point p1, Point p2) {
-			return norm2(sub(p1, p2));
+			return norm(p1.x - p2.x, p1.y - p2.y);
 		}
 	}
 
-	static class Edge {
+	private static class Edge {
 		public Point p1, p2, vect; //vector p1 -> p2
 		public double norm;
 
@@ -418,14 +376,7 @@ public class SmallPolygons {
 			p1 = p1n;
 			p2 = p2n;
 			vect = G2D.sub(p2, p1);
-			norm = G2D.norm(vect);
-		}
-
-		public Edge(int x1, int y1, int x2, int y2) {
-			p1 = new Point(x1, y1);
-			p2 = new Point(x2, y2);
-			vect = G2D.sub(p2, p1);
-			norm = G2D.norm(vect);
+			norm = G2D.norm(vect.x, vect.y);
 		}
 
 		public String toString() {
@@ -433,53 +384,50 @@ public class SmallPolygons {
 		}
 
 		boolean eq(double a, double b) {
-			return Math.abs(a - b) < 1e-9;
+			return Math.abs(a - b) < eps;
 		}
 
-		// ---------------------------------------------------
 		public boolean intersect(Edge other) {
 			//do edges "this" and "other" intersect?
-			if (Math.min(p1.x, p2.x) > Math.max(other.p1.x, other.p2.x))
+			if (Math.min(p1.x, p2.x) > Math.max(other.p1.x, other.p2.x)
+					|| Math.max(p1.x, p2.x) < Math.min(other.p1.x, other.p2.x)
+					|| Math.min(p1.y, p2.y) > Math.max(other.p1.y, other.p2.y)
+					|| Math.max(p1.y, p2.y) < Math.min(other.p1.y, other.p2.y)) {
 				return false;
-			if (Math.max(p1.x, p2.x) < Math.min(other.p1.x, other.p2.x))
-				return false;
-			if (Math.min(p1.y, p2.y) > Math.max(other.p1.y, other.p2.y))
-				return false;
-			if (Math.max(p1.y, p2.y) < Math.min(other.p1.y, other.p2.y))
-				return false;
-
-			int den = other.vect.y * vect.x - other.vect.x * vect.y;
-			int num1 = other.vect.x * (p1.y - other.p1.y) - other.vect.y * (p1.x - other.p1.x);
-			int num2 = vect.x * (p1.y - other.p1.y) - vect.y * (p1.x - other.p1.x);
-
-			//parallel edges
-			if (den == 0) {
-				if (Math.min(other.dist2(this), dist2(other)) > 0)
-					return false;
-				//on the same line - "not intersect" only if one of the vertices is common,
-				//and the other doesn't belong to the line
-				if ((this.p1 == other.p1 && eq(G2D.dist(this.p2, other.p2), this.norm + other.norm))
-						|| (this.p1 == other.p2 && eq(G2D.dist(this.p2, other.p1), this.norm + other.norm))
-						|| (this.p2 == other.p1 && eq(G2D.dist(this.p1, other.p2), this.norm + other.norm))
-						|| (this.p2 == other.p2 && eq(G2D.dist(this.p1, other.p1), this.norm + other.norm)))
-					return false;
-				return true;
 			}
 
+			int den = other.vect.y * vect.x - other.vect.x * vect.y;
+			// parallel edges
+			if (den == 0) {
+				if (Math.min(other.dist2(this), dist2(other)) > 0) {
+					return false;
+				}
+				//on the same line - "not intersect" only if one of the vertices is common,
+				//and the other doesn't belong to the line
+				if ((p1 == other.p1 && eq(G2D.dist(p2, other.p2), norm + other.norm))
+						|| (p1 == other.p2 && eq(G2D.dist(p2, other.p1), norm + other.norm))
+						|| (p2 == other.p1 && eq(G2D.dist(p1, other.p2), norm + other.norm))
+						|| (p2 == other.p2 && eq(G2D.dist(p1, other.p1), norm + other.norm))) {
+					return false;
+				}
+				return true;
+			}
 			//common vertices
-			if (this.p1 == other.p1 || this.p1 == other.p2 || this.p2 == other.p1 || this.p2 == other.p2)
+			if (p1 == other.p1 || p1 == other.p2 || p2 == other.p1 || p2 == other.p2) {
 				return false;
+			}
 
-			double u1 = (double) num1 / den;
-			double u2 = (double) num2 / den;
-			if (u1 < 0 || u1 > 1 || u2 < 0 || u2 > 1)
+			int u1 = other.vect.x * (p1.y - other.p1.y) - other.vect.y * (p1.x - other.p1.x);
+			int u2 = vect.x * (p1.y - other.p1.y) - vect.y * (p1.x - other.p1.x);
+			if ((den < 0 && (u1 > 0 || u1 < den || u2 > 0 || u2 < den) || (den > 0 && (u1 < 0 || u1 > den || u2 < 0 || u2 > den)))) {
 				return false;
+			}
 			return true;
 		}
 
 		public boolean intersect(Point p) {
-			return !(this.p1 == p || this.p2 == p || Math.min(p1.x, p2.x) > p.x || Math.max(p1.x, p2.x) < p.x || Math.min(p1.y, p2.y) > p.y
-					|| Math.max(p1.y, p2.y) < p.y || dist(p) > 0);
+			return !(p1 == p || p2 == p || Math.min(p1.x, p2.x) > p.x || Math.max(p1.x, p2.x) < p.x
+					|| Math.min(p1.y, p2.y) > p.y || Math.max(p1.y, p2.y) < p.y || dist(p) > 0);
 		}
 
 		// ---------------------------------------------------

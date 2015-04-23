@@ -225,7 +225,7 @@ public class SmallPolygonsVis {
 			N = rnd.nextInt(19) + 2;
 			if (seed == 1)
 				N = 3;
-			System.out.println(String.format("Seed  = %-5d NP = %-5d N = %d", seed, NP, N));
+			System.out.println(String.format("Seed   = %-5d NP = %-5d N = %d", seed, NP, N));
 		} catch (Exception e) {
 			addFatalError("An exception occurred while generating test case.");
 			e.printStackTrace();
@@ -316,10 +316,12 @@ public class SmallPolygonsVis {
 	// ---------------------------------------------------
 	public double runTest(long seed) {
 		generate(seed);
-		return run(pointsPar, N);
+		setInput(pointsPar, N);
+		String[] ret = new CopyOfSmallPolygons().choosePolygons(pointsPar, N);
+		return setResult(ret);
 	}
 
-	public double run(int[] points, int N) {
+	private void setInput(int[] points, int N) {
 		//init variables
 		NP = points.length / 2;
 		used = new int[NP];
@@ -331,18 +333,11 @@ public class SmallPolygonsVis {
 		}
 		pointsPar = points;
 		this.N = N;
+	}
+
+	private double setResult(String[] ret) {
 		try {
 			int i, j;
-			// allow combining two modes - program output and manual correction
-			// get the return and parse it into the polygons
-			String[] ret;
-			try {
-				ret = new SmallPolygons().choosePolygons(points, N);
-			} catch (Exception e) {
-				e.printStackTrace();
-				addFatalError("Failed to get result from choosePolygons.");
-				return 0;
-			}
 			// each string represents one polygon: number of vertices, indices of the vertices in original array
 			Npoly = ret.length;
 			// if there will be manual play, add slots for more polygons for future
@@ -706,21 +701,20 @@ public class SmallPolygonsVis {
 		long start = System.currentTimeMillis();
 		double score = runTest(seed);
 		if (score > 1e-10) {
-			System.out.println("Score = " + score);
+			System.out.println("Score  = " + score);
 		} else {
-			System.err.println("Score = " + score + " [error]");
+			System.err.println("Score  = " + score + " [error]");
 		}
 		long time = (System.currentTimeMillis() - start);
 		if (time < 10000) {
-			System.out.println("Time  = " + time);
+			System.out.println("Time   = " + time);
 		} else {
-			System.err.println("Time  = " + time + " [error]");
+			System.err.println("Time   = " + time + " [error]");
 		}
 	}
 
 	public SmallPolygonsVis() {
 		//interface for runTest
-		vis = true;
 		if (vis) {
 			jf = new JFrame();
 			v = new Vis();
@@ -750,8 +744,35 @@ public class SmallPolygonsVis {
 		}
 		if (manual)
 			vis = true;
-		for (seed = 1; seed <= 100; seed++) {
-			new SmallPolygonsVis(seed);
+		if (false) {
+			for (seed = 1; seed <= 100; seed++) {
+				new SmallPolygonsVis(seed);
+			}
+		} else {
+			new SmallPolygonsVis().compare();
+		}
+	}
+
+	void compare() {
+		double sum0 = 0, sum1 = 0;
+		for (int seed = 1; seed <= 100; seed++) {
+			generate(seed);
+			setInput(pointsPar, N);
+			long start0 = System.currentTimeMillis();
+			String res0[] = new SmallPolygons().choosePolygons(pointsPar, N);
+			long end0 = System.currentTimeMillis();
+			double score0 = setResult(res0);
+			generate(seed);
+			setInput(pointsPar, N);
+			long start1 = System.currentTimeMillis();
+			String res1[] = new CopyOfSmallPolygons().choosePolygons(pointsPar, N);
+			long end1 = System.currentTimeMillis();
+			double score1 = setResult(res1);
+			double max = Math.max(score0, score1);
+			sum0 += score0 / max;
+			sum1 += score1 / max;
+			System.out.println(String.format("%.1f : %.1f    %f : %f   %d : %d", score0, score1, sum0 / seed, sum1 / seed, (end0 - start0),
+					(end1 - start1)));
 		}
 	}
 
