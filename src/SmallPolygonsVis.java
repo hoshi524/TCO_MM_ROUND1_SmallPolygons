@@ -321,7 +321,7 @@ public class SmallPolygonsVis {
 	public double runTest(long seed) {
 		generate(seed);
 		setInput(pointsPar, N);
-		String[] ret = new SmallPolygons().choosePolygons(pointsPar, N);
+		String[] ret = new CopyOfSmallPolygons().choosePolygons(pointsPar, N);
 		return setResult(ret);
 	}
 
@@ -749,7 +749,7 @@ public class SmallPolygonsVis {
 		if (manual)
 			vis = true;
 		if (false) {
-			for (seed = 1; seed <= 100; seed++) {
+			for (seed = 1; seed <= 10; seed++) {
 				new SmallPolygonsVis(seed);
 			}
 		} else {
@@ -774,7 +774,7 @@ public class SmallPolygonsVis {
 					vis.generate(Seed);
 					vis.setInput(vis.pointsPar, vis.N);
 					long start0 = System.currentTimeMillis();
-					String res0[] = new SmallPolygonsPrev().choosePolygons(vis.pointsPar, vis.N);
+					String res0[] = new CopyOfSmallPolygons().choosePolygons(vis.pointsPar, vis.N);
 					long end0 = System.currentTimeMillis();
 					double score0 = vis.setResult(res0);
 					vis.generate(Seed);
