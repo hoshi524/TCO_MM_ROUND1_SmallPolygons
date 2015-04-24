@@ -14,7 +14,7 @@ public class SmallPolygons {
 
 	private final long startTime = System.currentTimeMillis();
 	private static final boolean debug = false;
-	private static final int max_tiem = 9000;
+	private static final int max_tiem = 5000;
 	private static final int max_xy = 700;
 	private static final double pai2 = Math.atan(1) * 4 * 2;
 	private static final double eps = 1e-9;
@@ -90,7 +90,7 @@ public class SmallPolygons {
 		class Remain {
 			final Point p;
 			Point t = null, u = null;
-			int v = Integer.MAX_VALUE;
+			int v = Integer.MAX_VALUE / 2;
 
 			Remain(Point p) {
 				this.p = p;
@@ -99,48 +99,15 @@ public class SmallPolygons {
 
 		final List<Edge> checkEdge = new ArrayList<>();
 		class Function {
-
-			void setRemain(List<Point> outside, int outsideArea, final Remain r) {
-				r.v = Integer.MAX_VALUE;
-				r.t = null;
-				r.u = null;
-				class Pair {
-					final int i;
-					final Edge e, re1, re2;
-					final double d;
-					boolean ok = true;
-
-					Pair(int i, Edge e) {
-						this.i = i;
-						this.e = e;
-						this.d = e.dist(r.p);
-						re1 = new Edge(r.p, e.p1);
-						re2 = new Edge(r.p, e.p2);
-					}
-				}
-				int size = outside.size();
-				Pair[] list = new Pair[size];
-				for (int i = 0; i < size; i++) {
-					list[i] = new Pair(i, new Edge(outside.get(i), outside.get((i + 1) % size)));
-				}
-				Arrays.sort(list, (o1, o2) -> Double.compare(o1.d, o2.d));
-
-				for (int i = 0; i < size; i++) {
-					Pair pair = list[i];
-					Edge e = pair.e;
-					if (pair.ok) {
-						int v = area(outside, outsideArea, pair.i, r.p);
-						if (r.v > v && isOK(pair.re1) && isOK(pair.re2)) {
-							r.v = v;
-							r.t = e.p1;
-							r.u = e.p2;
-						}
-					}
-					for (int j = i + 1; j < size; j++) {
-						Pair tmpPair = list[j];
-						if (tmpPair.ok) {
-							tmpPair.ok = !e.intersect(tmpPair.re1) && !e.intersect(tmpPair.re2);
-						}
+			void setRemain(List<Point> outside, final Remain r) {
+				for (int i = 0, size = outside.size(); i < size; i++) {
+					Point a = outside.get(i);
+					Point b = outside.get((i + 1) % size);
+					int v = areaDiff(a, b, r.p);
+					if (r.v > v && isOK(new Edge(r.p, a)) && isOK(new Edge(r.p, b))) {
+						r.v = v;
+						r.t = a;
+						r.u = b;
 					}
 				}
 			}
@@ -163,7 +130,7 @@ public class SmallPolygons {
 				continue;
 			Remain r = new Remain(p);
 			remain.add(r);
-			func.setRemain(outside, outsideArea, r);
+			func.setRemain(outside, r);
 		}
 		while (!remain.isEmpty()) {
 			Collections.sort(remain, (o1, o2) -> o1.v - o2.v);
@@ -176,7 +143,7 @@ public class SmallPolygons {
 			}
 			for (int i = 0, size = outside.size(); i < size; i++) {
 				if (outside.get(i) == r.t) {
-					outsideArea = area(outside, outsideArea, i, r.p);
+					outsideArea = outsideArea + areaDiff(outside.get(i), outside.get((i + 1) % size), r.p);
 					outside.add(i + 1, r.p);
 					for (Edge e : checkEdge) {
 						if (e.p1 == r.t && e.p2 == r.u) {
@@ -191,20 +158,34 @@ public class SmallPolygons {
 					for (Remain x : remain) {
 						// 線分上の点はそのまま使うしか無い
 						if (e0.intersect(x.p)) {
-							x.v = 0;
+							x.v = Integer.MIN_VALUE / 2;
 							x.t = r.t;
 							x.u = r.p;
 						} else if (e1.intersect(x.p)) {
-							x.v = 0;
+							x.v = Integer.MIN_VALUE / 2;
 							x.t = r.p;
 							x.u = r.u;
 						} else {
 							Edge te0 = x.t == null ? null : new Edge(x.t, x.p);
 							Edge te1 = x.u == null ? null : new Edge(x.p, x.u);
-							if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0)
-									|| e0.intersect(te1) || e1.intersect(te0) || e1.intersect(te1)
-									|| func.isOK(new Edge(r.p, x.p))) {
-								func.setRemain(outside, outsideArea, x);
+							if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0) || e0.intersect(te1)
+									|| e1.intersect(te0) || e1.intersect(te1)) {
+								x.v = Integer.MAX_VALUE / 2;
+								x.t = null;
+								x.u = null;
+								func.setRemain(outside, x);
+							} else if (func.isOK(new Edge(r.p, x.p))) {
+								for (int j = i; j < i + 2; j++) {
+									int k = j % outside.size();
+									Point a = outside.get(k);
+									Point b = outside.get((k + 1) % outside.size());
+									int v = areaDiff(a, b, x.p);
+									if (x.v > v && func.isOK(new Edge(x.p, a)) && func.isOK(new Edge(x.p, b))) {
+										x.v = v;
+										x.t = a;
+										x.u = b;
+									}
+								}
 							}
 						}
 					}
@@ -221,12 +202,8 @@ public class SmallPolygons {
 		return (p1.y + p0.y) * (p1.x - p0.x);
 	}
 
-	private int area(List<Point> poly, int polyArea, int index, Point p) {
-		int size = poly.size();
-		Point p0 = poly.get(index);
-		Point p1 = poly.get((index + 1) % size);
-		polyArea += -areaFunc(p0, p1) + areaFunc(p0, p) + areaFunc(p, p1);
-		return Math.abs(polyArea);
+	private int areaDiff(Point p0, Point p1, Point p) {
+		return -areaFunc(p0, p1) + areaFunc(p0, p) + areaFunc(p, p1);
 	}
 
 	private int area(Point[] poly) {
@@ -268,7 +245,7 @@ public class SmallPolygons {
 				long tmp = System.currentTimeMillis() - startTime;
 				maxOneTime = Math.max(maxOneTime, tmp - time);
 				time = tmp;
-				if (time + maxOneTime * 2 >= max_tiem) {
+				if (time + maxOneTime >= max_tiem) {
 					break;
 				}
 			}
