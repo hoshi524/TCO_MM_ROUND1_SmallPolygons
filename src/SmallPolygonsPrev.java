@@ -11,7 +11,7 @@ import java.util.StringJoiner;
 public class SmallPolygonsPrev {
 
 	final long startTime = System.currentTimeMillis();
-	private static final int max_tiem = 5000;
+	private static final int max_tiem = 9500;
 	static final int max_xy = 700;
 	static final double pai = Math.atan(1) * 4;
 	static final double eps = 1e-10;

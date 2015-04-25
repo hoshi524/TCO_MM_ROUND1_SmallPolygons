@@ -749,7 +749,7 @@ public class SmallPolygonsVis {
 		if (manual)
 			vis = true;
 		if (false) {
-			for (seed = 1; seed <= 10; seed++) {
+			for (seed = 6; seed <= 10; seed++) {
 				new SmallPolygonsVis(seed);
 			}
 		} else {
@@ -762,11 +762,10 @@ public class SmallPolygonsVis {
 			volatile double d;
 		}
 		SmallPolygonsVis.debug = false;
-		final int allSeed = 100;
 		final DoubleClass sum0 = new DoubleClass(), sum1 = new DoubleClass();
-		ExecutorService es = Executors.newFixedThreadPool(3);
+		ExecutorService es = Executors.newFixedThreadPool(6);
 
-		for (int seed = 1; seed <= allSeed; seed++) {
+		for (int seed = 1, size = seed + 1000; seed < size; seed++) {
 			final int Seed = seed;
 			es.submit(() -> {
 				try {
@@ -774,20 +773,20 @@ public class SmallPolygonsVis {
 					vis.generate(Seed);
 					vis.setInput(vis.pointsPar, vis.N);
 					long start0 = System.currentTimeMillis();
-					String res0[] = new CopyOfSmallPolygons().choosePolygons(vis.pointsPar, vis.N);
+					String res0[] = new SmallPolygons().choosePolygons(vis.pointsPar, vis.N);
 					long end0 = System.currentTimeMillis();
 					double score0 = vis.setResult(res0);
 					vis.generate(Seed);
 					vis.setInput(vis.pointsPar, vis.N);
 					long start1 = System.currentTimeMillis();
-					String res1[] = new SmallPolygons().choosePolygons(vis.pointsPar, vis.N);
+					String res1[] = new CopyOfSmallPolygons().choosePolygons(vis.pointsPar, vis.N);
 					long end1 = System.currentTimeMillis();
 					double score1 = vis.setResult(res1);
 					double max = Math.max(score0, score1);
 					sum0.d += score0 / max;
 					sum1.d += score1 / max;
-					System.out.println(String.format("%8.1f : %8.1f    %5d : %5d    %.1f : %.1f", score0, score1, (end0 - start0),
-							(end1 - start1), sum0.d, sum1.d));
+					System.out.println(String.format("%8.1f : %8.1f    %5d : %5d    %.1f : %.1f", score0, score1,
+							(end0 - start0), (end1 - start1), sum0.d, sum1.d));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -801,7 +800,6 @@ public class SmallPolygonsVis {
 			e.printStackTrace();
 			es.shutdownNow();
 		}
-		System.out.println(String.format("%f : %f", sum0.d / allSeed, sum1.d / allSeed));
 	}
 
 	// ---------------------------------------------------
