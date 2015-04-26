@@ -16,16 +16,13 @@
 
 現状は、良くてscore85くらい
 
-ビームサーチできるようにしよう
-状態は
-List<Point> outside
-可変だからListなのは仕方ない・・・？
-List<Remain> remain
-RemainまでdeepCopyしないとダメかな・・・
-List<Edge> checkedge
-可変だからListなのは仕方ない・・・？
-int outsidearea
-outsideから計算可能
 
-次へ遷移
-繋げるremainだけ必要
+remain高速化
+前の成否を保持する
+前は成功だった
+→増えた２つのエッジと交差しなければok
+前は失敗だった
+→消えた１つのエッジと交差していればokになる可能性がある
+
+エッジとしてダメなケースと、面積的に意味ないからダメなケースがあった
+うーん、どうしよう
