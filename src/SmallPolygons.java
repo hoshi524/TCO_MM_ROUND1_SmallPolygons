@@ -167,10 +167,20 @@ public class SmallPolygons {
 									x.u = null;
 									func.setRemain(outside, checkEdge, x);
 								} else if (func.isOK(checkEdge, new Edge(r.p, x.p))) {
-									for (int q = i; q < i + 2; ++q) {
-										int w = q % outside.length;
-										Point a = outside[w];
-										Point b = outside[(w + 1) % outside.length];
+									{
+										Point a = r.t;
+										Point b = r.p;
+										int v = areaDiff(a, b, x.p);
+										if (x.value > v && func.isOK(checkEdge, new Edge(x.p, a))
+												&& func.isOK(checkEdge, new Edge(x.p, b))) {
+											x.value = v;
+											x.t = a;
+											x.u = b;
+										}
+									}
+									{
+										Point a = r.p;
+										Point b = r.u;
 										int v = areaDiff(a, b, x.p);
 										if (x.value > v && func.isOK(checkEdge, new Edge(x.p, a))
 												&& func.isOK(checkEdge, new Edge(x.p, b))) {
@@ -191,6 +201,10 @@ public class SmallPolygons {
 		}
 
 		Point[] outside = getOutside(t).toArray(new Point[0]);
+		if (outside.length == t.length) {
+			memo.put(key, outside);
+			return outside;
+		}
 		Edge[] checkEdge = new Edge[0];
 		int outsideArea = area(outside);
 		ArrayList<Remain> remain = new ArrayList<>();

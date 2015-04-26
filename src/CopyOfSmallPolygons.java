@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,18 +8,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class SmallPolygonsPrev {
+public class CopyOfSmallPolygons {
 
 	private final long startTime = System.currentTimeMillis();
 	private static final boolean DEBUG = false;
 	private static final boolean MEASURE_TIME = true;
 	private static final int MAX_TIME = 9500;
 	private static final int MAX_XY = 700;
-	private static final int BEAM_WIDTH = 2;
+	private static final int BEAM_WIDTH = 20;
 	private static final double pai2 = Math.atan(1) * 4 * 2;
 	private static final double eps = 1e-9;
 	private final XorShift random = new XorShift();
-	private final XorShift random2 = new XorShift();
 	private final Timer timer = new Timer();
 	private int N, NP;
 	private Point ps[];
@@ -34,6 +34,19 @@ public class SmallPolygonsPrev {
 		public int compareTo(IntComparable o) {
 			return value - o.value;
 		}
+	}
+
+	private static final <T> T[] add(T[] src, int index, T t) {
+		src = Arrays.copyOf(src, src.length + 1);
+		System.arraycopy(src, index, src, index + 1, src.length - index - 1);
+		src[index] = t;
+		return src;
+	}
+
+	private static final <T> T[] remove(T[] src, int i) {
+		src[i] = src[src.length - 1];
+		src = Arrays.copyOf(src, src.length - 1);
+		return src;
 	}
 
 	private Point[] polygons(Point[] t) {
@@ -62,10 +75,10 @@ public class SmallPolygonsPrev {
 		}
 
 		class Function {
-			void setRemain(List<Point> outside, List<Edge> checkEdge, final Remain r) {
-				for (int i = 0, size = outside.size(); i < size; ++i) {
-					Point a = outside.get(i);
-					Point b = outside.get((i + 1) % size);
+			void setRemain(Point[] outside, Edge[] checkEdge, final Remain r) {
+				for (int i = 0, size = outside.length; i < size; ++i) {
+					Point a = outside[i];
+					Point b = outside[(i + 1) % size];
 					int v = areaDiff(a, b, r.p);
 					if (r.value > v && isOK(checkEdge, new Edge(r.p, a)) && isOK(checkEdge, new Edge(r.p, b))) {
 						r.value = v;
@@ -75,142 +88,142 @@ public class SmallPolygonsPrev {
 				}
 			}
 
-			boolean isOK(List<Edge> checkEdge, Edge e) {
-				for (int i = 0, size = checkEdge.size(); i < size; ++i)
-					if (e.intersect(checkEdge.get(i)))
+			boolean isOK(Edge[] checkEdge, Edge e) {
+				for (int i = 0, size = checkEdge.length; i < size; ++i)
+					if (e.intersect(checkEdge[i]))
 						return false;
 				return true;
-			}
-
-			<T extends IntComparable> void partition(List<T> list, int lim) {
-				int r = list.size();
-				int l = 0;
-				if (lim >= r)
-					return;
-				while (true) {
-					if (lim == 0 || lim == r - l)
-						break;
-					int pp = random2.nextInt(r - l) + l;
-					T pivot = list.get(pp);
-					list.set(pp, list.get(l));
-					list.set(l, pivot);
-					int right = r;
-					int left = l + 1;
-					while (left < right) {
-						boolean move = pivot.compareTo(list.get(left)) <= 0;
-						if (move) {
-							--right;
-							T tmp = list.get(right);
-							list.set(right, list.get(left));
-							list.set(left, tmp);
-						} else {
-							++left;
-						}
-					}
-					int large = right - l;
-					if (large == lim)
-						break;
-					if (large > lim) {
-						r = right;
-					} else {
-						l = right;
-						lim -= large;
-					}
-				}
 			}
 		}
 		Function func = new Function();
 
 		class Polygon extends IntComparable {
-			final List<Point> outside;
-			final List<Remain> remain;
-			final List<Edge> checkEdge;
-			int outsideArea;
+			Point[] outside;
+			Remain[] remain;
+			Edge[] checkEdge;
+			int remainIndex = -1;
 
-			Polygon(List<Point> outside, List<Remain> remain, List<Edge> checkEdge, int outsideArea) {
+			Polygon(Point[] outside, Remain[] remain, Edge[] checkEdge, int outsideArea) {
 				this.outside = outside;
 				this.remain = remain;
 				this.checkEdge = checkEdge;
-				this.outsideArea = outsideArea;
+				this.value = outsideArea;
 			}
 
 			Polygon(Polygon p) {
-				outside = new ArrayList<>(p.outside);
-				remain = new ArrayList<>(p.remain.size());
-				for (int i = 0, size = p.remain.size(); i < size; ++i)
-					remain.add(new Remain(p.remain.get(i)));
-				checkEdge = new ArrayList<>(p.checkEdge);
-				outsideArea = p.outsideArea;
+				outside = p.outside;
+				remain = new Remain[p.remain.length];
+				for (int i = 0, size = remain.length; i < size; ++i)
+					remain[i] = new Remain(p.remain[i]);
+				checkEdge = p.checkEdge;
 				value = p.value;
 			}
 
-			void next(int index) {
-				Remain r = remain.remove(index);
-				int minReaminValue = Integer.MAX_VALUE / 2;
-				for (int i = 0, size = outside.size(); i < size; ++i) {
-					if (outside.get(i) == r.t) {
-						outsideArea += areaDiff(outside.get(i), outside.get((i + 1) % size), r.p);
-						outside.add(i + 1, r.p);
-						for (int j = 0, j_size = checkEdge.size(); j < j_size; ++j) {
-							Edge e = checkEdge.get(j);
-							if (e.p1 == r.t && e.p2 == r.u) {
-								checkEdge.remove(e);
-								break;
+			void next(List<Polygon> nextPolygons, Set<Long> used) {
+				Remain r = remain[remainIndex];
+				remain = remove(remain, remainIndex);
+				Edge e0 = new Edge(r.t, r.p);
+				Edge e1 = new Edge(r.p, r.u);
+				{
+					int edgeSize = checkEdge.length;
+					for (int j = 0; j < edgeSize; ++j) {
+						Edge e = checkEdge[j];
+						if (e.p1 == r.t && e.p2 == r.u) {
+							--edgeSize;
+							checkEdge[j] = checkEdge[edgeSize];
+							checkEdge[edgeSize] = e;
+							break;
+						}
+					}
+					checkEdge = Arrays.copyOf(checkEdge, edgeSize + 2);
+					checkEdge[edgeSize] = e0;
+					checkEdge[edgeSize + 1] = e1;
+				}
+				Arrays.sort(checkEdge);
+				for (int j = 0, j_size = remain.length; j < j_size; ++j) {
+					Remain x = remain[j];
+					Edge te0 = x.t == null ? null : new Edge(x.t, x.p);
+					Edge te1 = x.u == null ? null : new Edge(x.p, x.u);
+					if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0)
+							|| e0.intersect(te1) || e1.intersect(te0) || e1.intersect(te1)) {
+						x.value = Integer.MAX_VALUE / 2;
+						x.t = null;
+						x.u = null;
+						func.setRemain(outside, checkEdge, x);
+					} else if (func.isOK(checkEdge, new Edge(r.p, x.p))) {
+						{
+							Point a = r.t;
+							Point b = r.p;
+							int v = areaDiff(a, b, x.p);
+							if (x.value > v && func.isOK(checkEdge, new Edge(x.p, a))
+									&& func.isOK(checkEdge, new Edge(x.p, b))) {
+								x.value = v;
+								x.t = a;
+								x.u = b;
 							}
 						}
-						Edge e0 = new Edge(r.t, r.p);
-						Edge e1 = new Edge(r.p, r.u);
-						checkEdge.add(e0);
-						checkEdge.add(e1);
-						Collections.sort(checkEdge);
-						for (int j = 0, j_size = remain.size(); j < j_size; ++j) {
-							Remain x = remain.get(j);
-							if (e0.intersect(x.p)) {
-								x.value = 0;
-								x.t = r.t;
-								x.u = r.p;
-							} else if (e1.intersect(x.p)) {
-								x.value = 0;
-								x.t = r.p;
-								x.u = r.u;
-							} else {
-								Edge te0 = x.t == null ? null : new Edge(x.t, x.p);
-								Edge te1 = x.u == null ? null : new Edge(x.p, x.u);
-								if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0)
-										|| e0.intersect(te1) || e1.intersect(te0) || e1.intersect(te1)) {
-									x.value = Integer.MAX_VALUE / 2;
-									x.t = null;
-									x.u = null;
-									func.setRemain(outside, checkEdge, x);
-								} else if (func.isOK(checkEdge, new Edge(r.p, x.p))) {
-									for (int q = i; q < i + 2; ++q) {
-										int w = q % outside.size();
-										Point a = outside.get(w);
-										Point b = outside.get((w + 1) % outside.size());
-										int v = areaDiff(a, b, x.p);
-										if (x.value > v && func.isOK(checkEdge, new Edge(x.p, a))
-												&& func.isOK(checkEdge, new Edge(x.p, b))) {
-											x.value = v;
-											x.t = a;
-											x.u = b;
-										}
-									}
-								}
+						{
+							Point a = r.p;
+							Point b = r.u;
+							int v = areaDiff(a, b, x.p);
+							if (x.value > v && func.isOK(checkEdge, new Edge(x.p, a))
+									&& func.isOK(checkEdge, new Edge(x.p, b))) {
+								x.value = v;
+								x.t = a;
+								x.u = b;
 							}
-							minReaminValue = Math.min(minReaminValue, x.value);
 						}
-						break;
 					}
 				}
-				value = outsideArea + minReaminValue;
+				for (int j = 0, j_size = remain.length; j < j_size; ++j) {
+					Remain x = remain[j];
+					if (x.t != null) {
+						Polygon nextPolygon = new Polygon(this);
+						nextPolygon.step(j);
+						long key = 0;
+						for (int k = 0, k_size = nextPolygon.outside.length; k < k_size; ++k) {
+							int w = k % 64;
+							long hash = hashTable[ids.get(nextPolygon.outside[k].hash())];
+							key ^= (hash << w) | (hash >> (64 - w));
+						}
+						if (!used.contains(key))
+							nextPolygons.add(nextPolygon);
+						used.add(key);
+					}
+				}
+			}
+
+			void nextInit(List<Polygon> nextPolygons) {
+				for (int j = 0, j_size = remain.length; j < j_size; ++j) {
+					if (remain[j].t != null) {
+						Polygon nextPolygon = new Polygon(this);
+						nextPolygon.step(j);
+						nextPolygons.add(nextPolygon);
+					}
+				}
+			}
+
+			void step(int index) {
+				remainIndex = index;
+				Remain r = remain[index];
+				for (int i = 0, size = outside.length; i < size; ++i) {
+					if (outside[i] == r.t) {
+						value += areaDiff(outside[i], outside[(i + 1) % size], r.p);
+						outside = add(outside, i + 1, r.p);
+						return;
+					}
+				}
 			}
 		}
 
-		List<Point> outside = getOutside(t);
-		List<Edge> checkEdge = new ArrayList<>();
-		int outsideArea = area(outside.toArray(new Point[0]));
-		List<Remain> remain = new ArrayList<>();
-		Set<Point> outsideSet = new HashSet<>(outside);
+		Point[] outside = getOutside(t).toArray(new Point[0]);
+		if (outside.length == t.length) {
+			return outside;
+		}
+		Edge[] checkEdge = new Edge[0];
+		int outsideArea = area(outside);
+		ArrayList<Remain> remain = new ArrayList<>();
+		Set<Point> outsideSet = new HashSet<>(Arrays.asList(outside));
 		for (int i = 0, size = t.length; i < size; ++i) {
 			Point p = t[i];
 			if (outsideSet.contains(p))
@@ -220,31 +233,21 @@ public class SmallPolygonsPrev {
 			func.setRemain(outside, checkEdge, r);
 		}
 		List<Polygon> polys = new ArrayList<>();
-		polys.add(new Polygon(outside, remain, checkEdge, outsideArea));
-		for (int i = 0, size = remain.size(); i < size; ++i) {
+		new Polygon(outside, remain.toArray(new Remain[0]), checkEdge, outsideArea).nextInit(polys);
+		for (int i = 0, size = remain.size() - 1; i < size; ++i) {
+			Collections.sort(polys);
 			List<Polygon> next = new ArrayList<>();
+			Set<Long> used = new HashSet<>();
 			for (int j = 0, j_size = Math.min(BEAM_WIDTH, polys.size()); j < j_size; ++j) {
-				Polygon now_p = polys.get(j);
-				Collections.sort(now_p.remain);
-				// partition(now_p.remain, 10);
-				for (int k = 0, k_size = Math.min(5, now_p.remain.size()); k < k_size; ++k) {
-					Remain check = now_p.remain.get(k);
-					if (check.t == null || check.u == null) {
-						continue;
-					}
-					Polygon p = new Polygon(now_p);
-					p.next(k);
-					next.add(p);
-				}
+				polys.get(j).next(next, used);
 			}
-			polys = next;
-			if (polys.isEmpty()) {
+			if (next.isEmpty()) {
 				return null;
 			}
-			Collections.sort(polys);
-			// partition(polys, BEAM_WIDTH);
+			polys = next;
 		}
-		res = polys.get(0).outside.toArray(new Point[0]);
+		Collections.sort(polys);
+		res = polys.get(0).outside;
 		memo.put(key, res);
 		return res;
 	}
