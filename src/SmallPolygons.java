@@ -15,8 +15,8 @@ public class SmallPolygons {
 	private static final int MAX_TIME = 9500;
 	private static final int MAX_XY = 700;
 	private static final int K = 50;
-	private static final int BEAM_WIDTH_LIST[] = new int[] { 70, 62, 25, 12, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-			4, 4, 4, 4, 4 };
+	private static final int BEAM_WIDTH_LIST[] = new int[] { 70, 62, 25, 12, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+			4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 };
 	private static final double pai2 = Math.atan(1) * 4 * 2;
 	private static final double eps = 1e-9;
 	private final XorShift random = new XorShift();
@@ -143,8 +143,8 @@ public class SmallPolygons {
 					Remain x = remain[j];
 					Edge te0 = x.t == null ? null : new Edge(x.t, x.p);
 					Edge te1 = x.u == null ? null : new Edge(x.p, x.u);
-					if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0) || e0.intersect(te1)
-							|| e1.intersect(te0) || e1.intersect(te1)) {
+					if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0)
+							|| e0.intersect(te1) || e1.intersect(te0) || e1.intersect(te1)) {
 						x.value = Integer.MAX_VALUE / 2;
 						x.t = null;
 						x.u = null;
@@ -154,7 +154,8 @@ public class SmallPolygons {
 							Point a = r.t;
 							Point b = r.p;
 							int v = areaDiff(a, b, x.p);
-							if (x.value > v && func.isOK(checkEdge, new Edge(x.p, a)) && func.isOK(checkEdge, new Edge(x.p, b))) {
+							if (x.value > v && func.isOK(checkEdge, new Edge(x.p, a))
+									&& func.isOK(checkEdge, new Edge(x.p, b))) {
 								x.value = v;
 								x.t = a;
 								x.u = b;
@@ -164,7 +165,8 @@ public class SmallPolygons {
 							Point a = r.p;
 							Point b = r.u;
 							int v = areaDiff(a, b, x.p);
-							if (x.value > v && func.isOK(checkEdge, new Edge(x.p, a)) && func.isOK(checkEdge, new Edge(x.p, b))) {
+							if (x.value > v && func.isOK(checkEdge, new Edge(x.p, a))
+									&& func.isOK(checkEdge, new Edge(x.p, b))) {
 								x.value = v;
 								x.t = a;
 								x.u = b;

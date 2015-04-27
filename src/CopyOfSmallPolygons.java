@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class SmallPolygonsPrev {
+public class CopyOfSmallPolygons {
 
 	private final long startTime = System.currentTimeMillis();
 	private static final boolean DEBUG = false;
@@ -22,8 +22,7 @@ public class SmallPolygonsPrev {
 	private final XorShift random = new XorShift();
 	private int N, NP;
 	private Point ps[];
-	private Map<Integer, Integer> ids;
-	private Map<Integer, Long> hashTable;
+	private long[] hashTable;
 	private Map<Long, Point[]> memo;
 
 	private abstract class IntComparable implements Comparable<IntComparable> {
@@ -43,15 +42,17 @@ public class SmallPolygonsPrev {
 	}
 
 	private static final <T> T[] remove(T[] src, int i) {
-		src[i] = src[src.length - 1];
-		src = Arrays.copyOf(src, src.length - 1);
-		return src;
+		T[] res = Arrays.copyOf(src, src.length - 1);
+		if (i == src.length - 1)
+			return res;
+		res[i] = src[src.length - 1];
+		return res;
 	}
 
 	private final Point[] polygons(Point[] t) {
 		long key = 0;
 		for (int i = 0, size = t.length; i < size; ++i)
-			key ^= hashTable.get(t[i].hash());
+			key ^= hashTable[t[i].id];
 		Point[] res = memo.get(key);
 		if (res != null) {
 			return res;
@@ -88,8 +89,8 @@ public class SmallPolygonsPrev {
 			}
 
 			boolean isOK(Edge[] checkEdge, Edge e) {
-				for (int i = 0, size = checkEdge.length; i < size; ++i)
-					if (e.intersect(checkEdge[i]))
+				for (Edge ce : checkEdge)
+					if (e.intersect(ce))
 						return false;
 				return true;
 			}
@@ -111,9 +112,7 @@ public class SmallPolygonsPrev {
 
 			Polygon(Polygon p) {
 				outside = p.outside;
-				remain = new Remain[p.remain.length];
-				for (int i = 0, size = remain.length; i < size; ++i)
-					remain[i] = new Remain(p.remain[i]);
+				remain = p.remain;
 				checkEdge = p.checkEdge;
 				value = p.value;
 			}
@@ -139,17 +138,19 @@ public class SmallPolygonsPrev {
 					checkEdge[edgeSize + 1] = e1;
 				}
 				Arrays.sort(checkEdge);
-				for (int j = 0, j_size = remain.length; j < j_size; ++j) {
-					Remain x = remain[j];
+				for (int i = 0, size = remain.length; i < size; ++i) {
+					Remain x = remain[i];
 					Edge te0 = x.t == null ? null : new Edge(x.t, x.p);
 					Edge te1 = x.u == null ? null : new Edge(x.p, x.u);
 					if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0)
 							|| e0.intersect(te1) || e1.intersect(te0) || e1.intersect(te1)) {
+						x = remain[i] = new Remain(x);
 						x.value = Integer.MAX_VALUE / 2;
 						x.t = null;
 						x.u = null;
 						func.setRemain(outside, checkEdge, x);
 					} else if (func.isOK(checkEdge, new Edge(r.p, x.p))) {
+						x = remain[i] = new Remain(x);
 						{
 							Point a = r.t;
 							Point b = r.p;
@@ -208,7 +209,7 @@ public class SmallPolygonsPrev {
 				long key = 0;
 				for (int i = 0, size = outside.length; i < size; ++i) {
 					int w = i % 64;
-					long hash = hashTable.get(outside[i].hash());
+					long hash = hashTable[outside[i].id];
 					key ^= (hash << w) | (hash >>> (64 - w));
 					if (outside[i] == r.t) {
 						outside = add(outside, i + 1, r.p);
@@ -218,7 +219,7 @@ public class SmallPolygonsPrev {
 			}
 		}
 
-		Point[] outside = getOutside(t).toArray(new Point[0]);
+		Point[] outside = getOutside(t);
 		if (outside.length == t.length) {
 			return outside;
 		}
@@ -226,8 +227,7 @@ public class SmallPolygonsPrev {
 		ArrayList<Remain> remain = new ArrayList<>();
 		{
 			Set<Point> outsideSet = new HashSet<>(Arrays.asList(outside));
-			for (int i = 0, size = t.length; i < size; ++i) {
-				Point p = t[i];
+			for (Point p : t) {
 				if (outsideSet.contains(p))
 					continue;
 				Remain r = new Remain(p);
@@ -286,13 +286,11 @@ public class SmallPolygonsPrev {
 		NP = points.length / 2;
 		N = Math.min(N, NP / 3);
 		ps = new Point[NP];
-		ids = new HashMap<>();
 		memo = new HashMap<>();
-		hashTable = new HashMap<>();
+		hashTable = new long[NP];
 		for (int i = 0; i < NP; ++i) {
-			ps[i] = new Point(points[i * 2], points[i * 2 + 1]);
-			ids.put(ps[i].hash(), i);
-			hashTable.put(ps[i].hash(), random.nextLong());
+			ps[i] = new Point(i, points[i * 2], points[i * 2 + 1]);
+			hashTable[i] = random.nextLong();
 		}
 
 		int min = Integer.MAX_VALUE;
@@ -335,8 +333,8 @@ public class SmallPolygonsPrev {
 				}
 				tmp[t].add(ps[i]);
 			}
-			for (int i = 0, size = tmp.length; i < size; ++i)
-				if (tmp[i].size() < 3)
+			for (List<Point> list : tmp)
+				if (list.size() < 3)
 					continue NG;
 
 			Point restmp[][] = new Point[N][];
@@ -378,26 +376,23 @@ public class SmallPolygonsPrev {
 		for (int i = 0; i < polys.length; ++i) {
 			StringJoiner joiner = new StringJoiner(" ");
 			for (int j = 0, j_size = polys[i].length; j < j_size; ++j)
-				joiner.add(Integer.toString(ids.get(polys[i][j].hash())));
+				joiner.add(Integer.toString(polys[i][j].id));
 			res[i] = joiner.toString();
 		}
 		return res;
 	}
 
 	private static final class Point {
-		final int x, y;
+		final int id, x, y;
 
-		Point(int x, int y) {
+		Point(int id, int x, int y) {
+			this.id = id;
 			this.x = x;
 			this.y = y;
 		}
 
 		static Point random(XorShift random) {
-			return new Point(random.nextInt(MAX_XY), random.nextInt(MAX_XY));
-		}
-
-		int hash() {
-			return (x << 16) | y;
+			return new Point(-1, random.nextInt(MAX_XY), random.nextInt(MAX_XY));
 		}
 
 		public String toString() {
@@ -407,7 +402,7 @@ public class SmallPolygonsPrev {
 
 	private static final class G2D {
 		static Point sub(Point p1, Point p2) {
-			return new Point(p1.x - p2.x, p1.y - p2.y);
+			return new Point(-1, p1.x - p2.x, p1.y - p2.y);
 		}
 
 		static double norm(int x, int y) {
@@ -510,20 +505,19 @@ public class SmallPolygonsPrev {
 		return x;
 	}
 
-	private final List<Point> getOutside(Point[] t) {
+	private final Point[] getOutside(Point[] t) {
 		Point init = t[0];
 		for (int i = 1, size = t.length; i < size; ++i)
 			if (init.y > t[i].y)
 				init = t[i];
-		Point p1 = new Point(init.x, init.y - 1);
+		Point p1 = new Point(-1, init.x, init.y - 1);
 		Point p2 = init;
 		final List<Point> outside = new ArrayList<>();
 		outside.add(init);
 		while (true) {
 			Point p3 = null;
 			double max = -1;
-			for (int i = 0, size = t.length; i < size; ++i) {
-				Point p = t[i];
+			for (Point p : t) {
 				if (p1 == p || p2 == p)
 					continue;
 				double a = angle2(p1, p2, p);
@@ -540,7 +534,7 @@ public class SmallPolygonsPrev {
 				p2 = p3;
 			}
 		}
-		return outside;
+		return outside.toArray(new Point[0]);
 	}
 
 	private static final class XorShift {
