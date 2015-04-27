@@ -1,4 +1,4 @@
-JAVA PROFILE 1.0.1, created Sun Apr 26 16:35:00 2015
+JAVA PROFILE 1.0.1, created Mon Apr 27 15:23:54 2015
 
 Copyright (c) 2003, 2005, Oracle and/or its affiliates. All rights reserved.
 
@@ -94,1036 +94,984 @@ THREAD START (obj=5000018a, id = 200001, name="main", group="main")
 THREAD END (id = 200001)
 THREAD START (obj=5000018a, id = 200005, name="DestroyJavaVM", group="main")
 THREAD END (id = 200005)
-TRACE 302607:
-	SmallPolygons$1Function.isOK(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302606:
-	SmallPolygons$Edge.intersect(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.isOK(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302368:
-	SmallPolygons$G2D.dist(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
+TRACE 302929:
+	CopyOfSmallPolygons$1Function.isOK(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.setRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302928:
+	CopyOfSmallPolygons$Edge.intersect(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.isOK(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.setRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302941:
+	CopyOfSmallPolygons$1Function.isOK(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302921:
+	CopyOfSmallPolygons.areaDiff(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.access$0(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.setRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302586:
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302940:
+	CopyOfSmallPolygons$Edge.intersect(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.isOK(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302930:
+	CopyOfSmallPolygons$1Function.setRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302925:
+	CopyOfSmallPolygons$Edge.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.setRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302504:
+	CopyOfSmallPolygons.areaFunc(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.areaDiff(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.access$0(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.setRemain(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302578:
+	java.util.HashMap.get(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302922:
+	CopyOfSmallPolygons.access$0(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.setRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302923:
+	CopyOfSmallPolygons$G2D.sub(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.setRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302896:
+	CopyOfSmallPolygons$Edge.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302931:
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
+TRACE 302574:
+	java.lang.Integer.hashCode(<Unknown Source>:Unknown line)
+	java.util.HashMap.hash(<Unknown Source>:Unknown line)
+	java.util.HashMap.get(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302576:
+	java.lang.Integer.equals(<Unknown Source>:Unknown line)
+	java.util.HashMap.getNode(<Unknown Source>:Unknown line)
+	java.util.HashMap.get(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302573:
+	java.lang.Integer.valueOf(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302575:
+	java.util.HashMap.hash(<Unknown Source>:Unknown line)
+	java.util.HashMap.get(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302572:
+	java.lang.Integer.<init>(<Unknown Source>:Unknown line)
+	java.lang.Integer.valueOf(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302577:
+	java.util.HashMap.getNode(<Unknown Source>:Unknown line)
+	java.util.HashMap.get(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302392:
+	CopyOfSmallPolygons$G2D.dist(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
-TRACE 302599:
-	SmallPolygons.areaDiff(SmallPolygons.java:Unknown line)
-	SmallPolygons.access$0(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302684:
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
+TRACE 302567:
+	CopyOfSmallPolygons$1Remain.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302566:
+	CopyOfSmallPolygons$IntComparable.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Remain.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302894:
+	CopyOfSmallPolygons$G2D.sub(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302880:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.countRunAndMakeAscending(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+TRACE 302682:
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.main(SmallPolygonsVis.java:Unknown line)
-TRACE 302621:
-	SmallPolygons$1Function.isOK(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302608:
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302603:
-	SmallPolygons$Edge.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302476:
-	SmallPolygons.areaFunc(SmallPolygons.java:Unknown line)
-	SmallPolygons.areaDiff(SmallPolygons.java:Unknown line)
-	SmallPolygons.access$0(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-TRACE 302561:
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
+TRACE 302507:
+	CopyOfSmallPolygons$Point.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$G2D.sub(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.setRemain(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302924:
+	CopyOfSmallPolygons$G2D.norm(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.setRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302568:
+	CopyOfSmallPolygons$1Polygon.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302570:
+	CopyOfSmallPolygons$Point.hash(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302936:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.binarySort(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+TRACE 302579:
+	java.lang.Integer.intValue(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302409:
+	java.lang.Integer.intValue(<Unknown Source>:Unknown line)
+	java.lang.Integer.equals(<Unknown Source>:Unknown line)
+	java.util.HashMap.getNode(<Unknown Source>:Unknown line)
+	java.util.HashMap.get(<Unknown Source>:Unknown line)
+TRACE 302569:
+	CopyOfSmallPolygons.access$2(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302571:
+	java.lang.Number.<init>(<Unknown Source>:Unknown line)
+	java.lang.Integer.<init>(<Unknown Source>:Unknown line)
+	java.lang.Integer.valueOf(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302406:
+	java.lang.Integer.hashCode(<Unknown Source>:Unknown line)
+	java.lang.Integer.hashCode(<Unknown Source>:Unknown line)
+	java.util.HashMap.hash(<Unknown Source>:Unknown line)
+	java.util.HashMap.get(<Unknown Source>:Unknown line)
+TRACE 302391:
+	CopyOfSmallPolygons$G2D.norm(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$G2D.dist(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302367:
-	SmallPolygons$G2D.norm(SmallPolygons.java:Unknown line)
-	SmallPolygons$G2D.dist(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302620:
-	SmallPolygons$Edge.intersect(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.isOK(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302538:
-	SmallPolygons$Edge.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302600:
-	SmallPolygons.access$0(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302601:
-	SmallPolygons$G2D.sub(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302536:
-	SmallPolygons$G2D.sub(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302479:
-	SmallPolygons$Point.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$G2D.sub(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-TRACE 302750:
+TRACE 302748:
 	Edge.<init>(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.calcScore(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302617:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.binarySort(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-TRACE 302372:
-	java.util.ArrayList.add(ArrayList.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
-TRACE 302602:
-	SmallPolygons$G2D.norm(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302616:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.binarySort(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-TRACE 302371:
-	java.util.ArrayList.ensureCapacityInternal(ArrayList.java:Unknown line)
-	java.util.ArrayList.add(ArrayList.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302537:
-	SmallPolygons$G2D.norm(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302598:
-	SmallPolygons$Edge.intersect(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302535:
-	SmallPolygons$Point.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$G2D.sub(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302527:
-	SmallPolygons.areaDiff(SmallPolygons.java:Unknown line)
-	SmallPolygons.access$0(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302748:
+TRACE 302881:
+	java.util.ComparableTimSort.countRunAndMakeAscending(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+TRACE 302920:
+	CopyOfSmallPolygons$Edge.intersect(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302565:
+	CopyOfSmallPolygons$IntComparable.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$IntComparable.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Remain.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.<init>(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302876:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.countRunAndMakeAscending(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+TRACE 302893:
+	CopyOfSmallPolygons$Point.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$G2D.sub(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302895:
+	CopyOfSmallPolygons$G2D.norm(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302879:
+	java.util.ComparableTimSort.binarySort(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302912:
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.countRunAndMakeAscending(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+TRACE 302913:
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.countRunAndMakeAscending(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+TRACE 302746:
 	G2D.substr(SmallPolygonsVis.java:Unknown line)
 	Edge.<init>(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.calcScore(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
-TRACE 302558:
-	java.util.ComparableTimSort.binarySort(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302755:
+TRACE 302943:
+	CopyOfSmallPolygons.areaDiff(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.access$0(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302949:
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.binarySort(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+TRACE 302753:
 	SmallPolygonsVis.calcScore(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
-TRACE 302518:
-	SmallPolygons$1Remain.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302517:
-	SmallPolygons$IntComparable.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Remain.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302366:
-	SmallPolygons$Point.random(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
+TRACE 302935:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.binarySort(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+TRACE 302948:
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.binarySort(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+TRACE 302395:
+	java.util.ArrayList.ensureCapacityInternal(<Unknown Source>:Unknown line)
+	java.util.ArrayList.add(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
+TRACE 302914:
+	java.util.ComparableTimSort.countRunAndMakeAscending(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302942:
+	CopyOfSmallPolygons.areaFunc(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.areaDiff(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.access$0(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302396:
+	java.util.ArrayList.add(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
-TRACE 302370:
-	java.util.ArrayList.ensureExplicitCapacity(ArrayList.java:Unknown line)
-	java.util.ArrayList.ensureCapacityInternal(ArrayList.java:Unknown line)
-	java.util.ArrayList.add(ArrayList.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302526:
-	SmallPolygons.areaFunc(SmallPolygons.java:Unknown line)
-	SmallPolygons.areaDiff(SmallPolygons.java:Unknown line)
-	SmallPolygons.access$0(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302615:
-	java.lang.Double.compare(Double.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.binarySort(ComparableTimSort.java:Unknown line)
-TRACE 302589:
-	SmallPolygons$Edge.intersect(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302519:
-	SmallPolygons$1Polygon.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
+TRACE 302911:
+	java.lang.Double.compare(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.countRunAndMakeAscending(<Unknown Source>:Unknown line)
+TRACE 302605:
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302554:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.countRunAndMakeAscending(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-TRACE 302595:
-	SmallPolygons$Edge.dist(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.intersect(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302528:
-	SmallPolygons.access$0(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302749:
+TRACE 302747:
 	G2D.norm(SmallPolygonsVis.java:Unknown line)
 	Edge.<init>(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.calcScore(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
-TRACE 302555:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.countRunAndMakeAscending(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-TRACE 302578:
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
+TRACE 302877:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.countRunAndMakeAscending(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+TRACE 302915:
+	java.util.ComparableTimSort.binarySort(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302739:
+	Edge.<init>(SmallPolygonsVis.java:Unknown line)
+	SmallPolygonsVis.validatePoly(SmallPolygonsVis.java:Unknown line)
+	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
-TRACE 302747:
+TRACE 302944:
+	CopyOfSmallPolygons.access$0(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302745:
 	Pnt.<init>(SmallPolygonsVis.java:Unknown line)
 	G2D.substr(SmallPolygonsVis.java:Unknown line)
 	Edge.<init>(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.calcScore(SmallPolygonsVis.java:Unknown line)
-TRACE 300729:
-	java.util.ArrayList.grow(ArrayList.java:Unknown line)
-	java.util.ArrayList.ensureExplicitCapacity(ArrayList.java:Unknown line)
-	java.util.ArrayList.ensureCapacityInternal(ArrayList.java:Unknown line)
-	java.util.ArrayList.add(ArrayList.java:Unknown line)
-TRACE 302418:
-	SmallPolygons.angle(SmallPolygons.java:Unknown line)
-	SmallPolygons.angle2(SmallPolygons.java:Unknown line)
-	SmallPolygons.getOutside(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302274:
+TRACE 302298:
 	SmallPolygonsVis.generate(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.main(SmallPolygonsVis.java:Unknown line)
-TRACE 302516:
-	SmallPolygons$IntComparable.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$IntComparable.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Remain.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.<init>(SmallPolygons.java:Unknown line)
-TRACE 302362:
-	java.util.AbstractList.<init>(AbstractList.java:Unknown line)
-	java.util.ArrayList.<init>(ArrayList.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
+TRACE 302947:
+	java.lang.Double.compare(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.binarySort(<Unknown Source>:Unknown line)
+TRACE 302878:
+	java.util.ComparableTimSort.countRunAndMakeAscending(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302737:
+	G2D.substr(SmallPolygonsVis.java:Unknown line)
+	Edge.<init>(SmallPolygonsVis.java:Unknown line)
+	SmallPolygonsVis.validatePoly(SmallPolygonsVis.java:Unknown line)
+	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
+TRACE 302390:
+	CopyOfSmallPolygons$Point.random(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302273:
+	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
+TRACE 302394:
+	java.util.ArrayList.ensureExplicitCapacity(<Unknown Source>:Unknown line)
+	java.util.ArrayList.ensureCapacityInternal(<Unknown Source>:Unknown line)
+	java.util.ArrayList.add(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302589:
+	java.lang.Long.valueOf(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302955:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeForceCollapse(<Unknown Source>:Unknown line)
+TRACE 302297:
 	Pnt.equals(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.generate(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
-TRACE 302557:
-	java.util.ComparableTimSort.countRunAndMakeAscending(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302753:
+TRACE 302594:
+	java.util.HashMap.containsKey(<Unknown Source>:Unknown line)
+	java.util.HashSet.contains(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302743:
+	SmallPolygonsVis.validatePoly(SmallPolygonsVis.java:Unknown line)
+	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
+	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
+	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
+TRACE 302956:
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeForceCollapse(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+TRACE 302588:
+	java.lang.Long.<init>(<Unknown Source>:Unknown line)
+	java.lang.Long.valueOf(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302962:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.mergeHi(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeForceCollapse(<Unknown Source>:Unknown line)
+TRACE 302966:
+	java.util.ComparableTimSort.mergeHi(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeForceCollapse(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+TRACE 302751:
 	Edge.intersect(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.calcScore(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302363:
-	java.util.ArrayList.<init>(ArrayList.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
-TRACE 302586:
-	SmallPolygons$IntComparable.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.binarySort(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-TRACE 302414:
-	SmallPolygons$G2D.sub(SmallPolygons.java:Unknown line)
-	SmallPolygons.angle(SmallPolygons.java:Unknown line)
-	SmallPolygons.angle2(SmallPolygons.java:Unknown line)
-	SmallPolygons.getOutside(SmallPolygons.java:Unknown line)
-TRACE 302553:
-	java.lang.Double.compare(Double.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.countRunAndMakeAscending(ComparableTimSort.java:Unknown line)
-TRACE 302592:
-	SmallPolygons$G2D.sub(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.dist(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.intersect(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302364:
-	SmallPolygons$XorShift.nextInt(SmallPolygons.java:Unknown line)
-	SmallPolygons$Point.random(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302587:
-	java.util.ComparableTimSort.binarySort(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302741:
-	Edge.<init>(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.validatePoly(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302591:
-	SmallPolygons$Point.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$G2D.sub(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.dist(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.intersect(SmallPolygons.java:Unknown line)
-TRACE 302484:
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302475:
-	java.util.ArrayList.add(ArrayList.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302361:
-	java.util.AbstractCollection.<init>(AbstractCollection.java:Unknown line)
-	java.util.AbstractList.<init>(AbstractList.java:Unknown line)
-	java.util.ArrayList.<init>(ArrayList.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302477:
-	SmallPolygons.areaDiff(SmallPolygons.java:Unknown line)
-	SmallPolygons.access$0(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 300728:
-	java.util.Arrays.copyOf(Arrays.java:Unknown line)
-	java.util.ArrayList.grow(ArrayList.java:Unknown line)
-	java.util.ArrayList.ensureExplicitCapacity(ArrayList.java:Unknown line)
-	java.util.ArrayList.ensureCapacityInternal(ArrayList.java:Unknown line)
-TRACE 302740:
-	G2D.norm(SmallPolygonsVis.java:Unknown line)
-	Edge.<init>(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.validatePoly(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
-TRACE 302593:
-	SmallPolygons$G2D.dot(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.dist(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.intersect(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302478:
-	SmallPolygons.access$0(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302365:
-	SmallPolygons$Point.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$Point.random(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302533:
-	SmallPolygons.add(SmallPolygons.java:Unknown line)
-	SmallPolygons.access$2(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302482:
-	SmallPolygons$Edge.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302534:
-	SmallPolygons.access$2(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302745:
-	SmallPolygonsVis.validatePoly(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
-TRACE 302420:
-	SmallPolygons.getOutside(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302739:
-	G2D.substr(SmallPolygonsVis.java:Unknown line)
-	Edge.<init>(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.validatePoly(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
-TRACE 302613:
-	SmallPolygons$IntComparable.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.binarySort(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-TRACE 302473:
-	java.util.ArrayList.ensureExplicitCapacity(ArrayList.java:Unknown line)
-	java.util.ArrayList.ensureCapacityInternal(ArrayList.java:Unknown line)
-	java.util.ArrayList.add(ArrayList.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302585:
-	SmallPolygons$IntComparable.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$IntComparable.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.binarySort(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-TRACE 302996:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.mergeLo(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-TRACE 302419:
-	SmallPolygons.angle2(SmallPolygons.java:Unknown line)
-	SmallPolygons.getOutside(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302388:
-	java.util.HashMap.get(HashMap.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302416:
-	SmallPolygons$G2D.dot(SmallPolygons.java:Unknown line)
-	SmallPolygons.angle(SmallPolygons.java:Unknown line)
-	SmallPolygons.angle2(SmallPolygons.java:Unknown line)
-	SmallPolygons.getOutside(SmallPolygons.java:Unknown line)
-TRACE 302384:
-	java.util.HashMap.hash(HashMap.java:Unknown line)
-	java.util.HashMap.get(HashMap.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
+TRACE 302442:
+	CopyOfSmallPolygons.angle(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.angle2(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.getOutside(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
 TRACE 302560:
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302990:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.gallopRight(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-TRACE 303000:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.mergeHi(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-TRACE 303003:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.gallopRight(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeHi(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-TRACE 302952:
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeForceCollapse(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-TRACE 302464:
-	java.util.HashSet.contains(HashSet.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302524:
-	SmallPolygons.remove(SmallPolygons.java:Unknown line)
-	SmallPolygons.access$1(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302417:
-	java.lang.Math.atan2(Math.java:Unknown line)
-	SmallPolygons.angle(SmallPolygons.java:Unknown line)
-	SmallPolygons.angle2(SmallPolygons.java:Unknown line)
-	SmallPolygons.getOutside(SmallPolygons.java:Unknown line)
-TRACE 302386:
-	java.lang.Integer.equals(Integer.java:Unknown line)
-	java.util.HashMap.getNode(HashMap.java:Unknown line)
-	java.util.HashMap.get(HashMap.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302957:
-	java.util.ComparableTimSort.gallopLeft(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeCollapse(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-TRACE 302413:
-	SmallPolygons$Point.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$G2D.sub(SmallPolygons.java:Unknown line)
-	SmallPolygons.angle(SmallPolygons.java:Unknown line)
-	SmallPolygons.angle2(SmallPolygons.java:Unknown line)
-TRACE 302581:
-	SmallPolygons.area(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302916:
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302553:
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	java.util.ArrayList.sort(<Unknown Source>:Unknown line)
+TRACE 302591:
+	java.lang.Long.hashCode(<Unknown Source>:Unknown line)
+	java.util.HashMap.hash(<Unknown Source>:Unknown line)
+	java.util.HashMap.containsKey(<Unknown Source>:Unknown line)
+	java.util.HashSet.contains(<Unknown Source>:Unknown line)
+TRACE 302387:
+	java.util.ArrayList.<init>(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
-TRACE 302989:
-	java.lang.Double.compare(Double.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.gallopRight(ComparableTimSort.java:Unknown line)
-TRACE 302559:
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302738:
+TRACE 302592:
+	java.util.HashMap.hash(<Unknown Source>:Unknown line)
+	java.util.HashMap.containsKey(<Unknown Source>:Unknown line)
+	java.util.HashSet.contains(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302584:
+	CopyOfSmallPolygons.add(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.access$3(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302564:
+	CopyOfSmallPolygons$IntComparable.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302978:
+	java.util.ArrayList.get(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 300729:
+	java.util.ArrayList.grow(<Unknown Source>:Unknown line)
+	java.util.ArrayList.ensureExplicitCapacity(<Unknown Source>:Unknown line)
+	java.util.ArrayList.ensureCapacityInternal(<Unknown Source>:Unknown line)
+	java.util.ArrayList.add(<Unknown Source>:Unknown line)
+TRACE 303062:
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+TRACE 302964:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeHi(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+TRACE 302386:
+	java.util.AbstractList.<init>(<Unknown Source>:Unknown line)
+	java.util.ArrayList.<init>(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
+TRACE 302388:
+	CopyOfSmallPolygons$XorShift.nextInt(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Point.random(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
+TRACE 302603:
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	java.util.HashSet.add(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 303038:
+	java.util.ComparableTimSort.mergeLo(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeCollapse(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+TRACE 302970:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.mergeLo(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+TRACE 303037:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.mergeLo(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeCollapse(<Unknown Source>:Unknown line)
+TRACE 302449:
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
+	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
+TRACE 303032:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeCollapse(<Unknown Source>:Unknown line)
+TRACE 302954:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+TRACE 303033:
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeCollapse(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+TRACE 302736:
 	Pnt.<init>(SmallPolygonsVis.java:Unknown line)
 	G2D.substr(SmallPolygonsVis.java:Unknown line)
 	Edge.<init>(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.validatePoly(SmallPolygonsVis.java:Unknown line)
-TRACE 302387:
-	java.util.HashMap.getNode(HashMap.java:Unknown line)
-	java.util.HashMap.get(HashMap.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
+TRACE 302738:
+	G2D.norm(SmallPolygonsVis.java:Unknown line)
+	Edge.<init>(SmallPolygonsVis.java:Unknown line)
+	SmallPolygonsVis.validatePoly(SmallPolygonsVis.java:Unknown line)
+	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
 TRACE 302385:
-	java.lang.Integer.intValue(Integer.java:Unknown line)
-	java.lang.Integer.equals(Integer.java:Unknown line)
-	java.util.HashMap.getNode(HashMap.java:Unknown line)
-	java.util.HashMap.get(HashMap.java:Unknown line)
-TRACE 302982:
-	java.util.ComparableTimSort.mergeHi(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeForceCollapse(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-TRACE 302993:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.gallopLeft(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-TRACE 302380:
-	java.lang.Integer.<init>(Integer.java:Unknown line)
-	java.lang.Integer.valueOf(Integer.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302991:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.gallopRight(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeForceCollapse(ComparableTimSort.java:Unknown line)
-TRACE 302515:
-	SmallPolygons$IntComparable.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302474:
-	java.util.ArrayList.ensureCapacityInternal(ArrayList.java:Unknown line)
-	java.util.ArrayList.add(ArrayList.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302614:
-	java.util.ComparableTimSort.binarySort(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-TRACE 302542:
-	java.util.Arrays.copyOf(Arrays.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302379:
-	java.lang.Number.<init>(Number.java:Unknown line)
-	java.lang.Integer.<init>(Integer.java:Unknown line)
-	java.lang.Integer.valueOf(Integer.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302543:
-	java.util.Arrays$LegacyMergeSort.access$000(Arrays.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302744:
+	java.util.AbstractCollection.<init>(<Unknown Source>:Unknown line)
+	java.util.AbstractList.<init>(<Unknown Source>:Unknown line)
+	java.util.ArrayList.<init>(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302602:
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	java.util.HashSet.add(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302585:
+	CopyOfSmallPolygons.access$3(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302972:
+	java.util.ComparableTimSort.mergeLo(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeForceCollapse(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+TRACE 302554:
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	java.util.ArrayList.sort(<Unknown Source>:Unknown line)
+	java.util.Collections.sort(<Unknown Source>:Unknown line)
+TRACE 303076:
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeHi(<Unknown Source>:Unknown line)
+TRACE 303061:
+	java.lang.Double.compare(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+TRACE 302587:
+	java.lang.Number.<init>(<Unknown Source>:Unknown line)
+	java.lang.Long.<init>(<Unknown Source>:Unknown line)
+	java.lang.Long.valueOf(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302961:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.mergeHi(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+TRACE 302597:
+	java.util.ArrayList.ensureCapacityInternal(<Unknown Source>:Unknown line)
+	java.util.ArrayList.add(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302965:
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeHi(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeForceCollapse(<Unknown Source>:Unknown line)
+TRACE 302595:
+	java.util.HashSet.contains(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 303077:
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeHi(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+TRACE 303063:
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeForceCollapse(<Unknown Source>:Unknown line)
+TRACE 302971:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.mergeLo(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeForceCollapse(<Unknown Source>:Unknown line)
+TRACE 302438:
+	CopyOfSmallPolygons$G2D.sub(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.angle(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.angle2(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.getOutside(CopyOfSmallPolygons.java:Unknown line)
+TRACE 300728:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.util.ArrayList.grow(<Unknown Source>:Unknown line)
+	java.util.ArrayList.ensureExplicitCapacity(<Unknown Source>:Unknown line)
+	java.util.ArrayList.ensureCapacityInternal(<Unknown Source>:Unknown line)
+TRACE 303075:
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.mergeHi(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeForceCollapse(<Unknown Source>:Unknown line)
+TRACE 302389:
+	CopyOfSmallPolygons$Point.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Point.random(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
+TRACE 302976:
+	java.util.ArrayList.rangeCheck(<Unknown Source>:Unknown line)
+	java.util.ArrayList.get(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302742:
 	Edge.intersect(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.validatePoly(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302525:
-	SmallPolygons.access$1(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 301963:
-	java.lang.Character.toUpperCaseEx(Character.java:Unknown line)
-	java.lang.String.toUpperCase(String.java:Unknown line)
-	java.security.Provider$ServiceKey.<init>(Provider.java:Unknown line)
-	java.security.Provider$ServiceKey.<init>(Provider.java:Unknown line)
-TRACE 302410:
-	java.util.ArrayList.ensureExplicitCapacity(ArrayList.java:Unknown line)
-	java.util.ArrayList.ensureCapacityInternal(ArrayList.java:Unknown line)
-	java.util.ArrayList.add(ArrayList.java:Unknown line)
-	SmallPolygons.getOutside(SmallPolygons.java:Unknown line)
-TRACE 302966:
-	java.util.ComparableTimSort.mergeLo(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeCollapse(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-TRACE 302490:
-	java.util.ArrayList.rangeCheck(ArrayList.java:Unknown line)
-	java.util.ArrayList.get(ArrayList.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302582:
-	SmallPolygons$IntComparable.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$IntComparable.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.countRunAndMakeAscending(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-TRACE 303006:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.gallopRight(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeCollapse(ComparableTimSort.java:Unknown line)
-TRACE 302411:
-	java.util.ArrayList.ensureCapacityInternal(ArrayList.java:Unknown line)
-	java.util.ArrayList.add(ArrayList.java:Unknown line)
-	SmallPolygons.getOutside(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302594:
-	java.lang.Math.abs(Math.java:Unknown line)
-	SmallPolygons$Edge.dist(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.intersect(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302987:
-	java.util.ComparableTimSort.pushRun(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302612:
-	java.util.ComparableTimSort.countRunAndMakeAscending(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-TRACE 302470:
-	SmallPolygons$IntComparable.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Remain.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302514:
-	SmallPolygons$IntComparable.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$IntComparable.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 303001:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.mergeHi(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeForceCollapse(ComparableTimSort.java:Unknown line)
-TRACE 302415:
-	SmallPolygons$G2D.cross(SmallPolygons.java:Unknown line)
-	SmallPolygons.angle(SmallPolygons.java:Unknown line)
-	SmallPolygons.angle2(SmallPolygons.java:Unknown line)
-	SmallPolygons.getOutside(SmallPolygons.java:Unknown line)
-TRACE 302383:
-	java.lang.Integer.hashCode(Integer.java:Unknown line)
-	java.util.HashMap.hash(HashMap.java:Unknown line)
-	java.util.HashMap.get(HashMap.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 303005:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.gallopLeft(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeHi(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-TRACE 302696:
-	java.util.ArrayList.ensureCapacityInternal(ArrayList.java:Unknown line)
-	java.util.ArrayList.add(ArrayList.java:Unknown line)
-	java.lang.String.split(String.java:Unknown line)
-	java.lang.String.split(String.java:Unknown line)
-TRACE 303004:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.gallopLeft(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeHi(ComparableTimSort.java:Unknown line)
-TRACE 300606:
-	java.lang.CharacterDataLatin1.digit(CharacterDataLatin1.java:Unknown line)
-	java.lang.Character.digit(Character.java:Unknown line)
-	java.lang.Character.digit(Character.java:Unknown line)
-	java.lang.Integer.parseInt(Integer.java:Unknown line)
-TRACE 302951:
-	java.util.ComparableTimSort.mergeLo(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeForceCollapse(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-TRACE 302381:
-	java.lang.Integer.valueOf(Integer.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
+TRACE 303074:
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.mergeHi(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
 TRACE 302604:
-	java.lang.Math.min(Math.java:Unknown line)
-	SmallPolygons$Edge.intersect(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.isOK(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-TRACE 302588:
-	java.lang.Math.min(Math.java:Unknown line)
-	SmallPolygons$Edge.intersect(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302577:
-	java.util.HashMap.put(HashMap.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 300749:
-	sun.misc.MetaIndex.mayContain(MetaIndex.java:Unknown line)
-	sun.misc.URLClassPath$JarLoader.getResource(URLClassPath.java:Unknown line)
-	sun.misc.URLClassPath.getResource(URLClassPath.java:Unknown line)
-	java.net.URLClassLoader$1.run(URLClassLoader.java:Unknown line)
-TRACE 302722:
-	java.lang.String.split(String.java:Unknown line)
-	java.lang.String.split(String.java:Unknown line)
-	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 303013:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.mergeHi(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeCollapse(ComparableTimSort.java:Unknown line)
-TRACE 302486:
-	SmallPolygons$IntComparable.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302655:
-	java.util.HashMap.get(HashMap.java:Unknown line)
-	SmallPolygons.result(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 301824:
-	sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:Unknown line)
-	java.lang.ClassLoader.loadClass(ClassLoader.java:Unknown line)
-	sun.security.jca.ProviderConfig$2.run(ProviderConfig.java:Unknown line)
-	sun.security.jca.ProviderConfig$2.run(ProviderConfig.java:Unknown line)
-TRACE 301928:
-	java.util.HashMap.hash(HashMap.java:Unknown line)
-	java.util.HashMap.put(HashMap.java:Unknown line)
-	java.security.Provider.implPut(Provider.java:Unknown line)
-	java.security.Provider.put(Provider.java:Unknown line)
-TRACE 300915:
-	java.io.File.exists(File.java:Unknown line)
-	sun.misc.URLClassPath$FileLoader.getResource(URLClassPath.java:Unknown line)
-	sun.misc.URLClassPath.getResource(URLClassPath.java:Unknown line)
-	java.net.URLClassLoader$1.run(URLClassLoader.java:Unknown line)
-TRACE 302532:
-	java.util.Arrays.copyOf(Arrays.java:Unknown line)
-	SmallPolygons.add(SmallPolygons.java:Unknown line)
-	SmallPolygons.access$2(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302583:
-	SmallPolygons$IntComparable.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.countRunAndMakeAscending(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-TRACE 302873:
-	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.main(SmallPolygonsVis.java:Unknown line)
-TRACE 302480:
-	SmallPolygons$G2D.sub(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.<init>(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Function.setRemain(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 301991:
-	java.lang.Character.toLowerCase(Character.java:Unknown line)
-	java.lang.String.toLowerCase(String.java:Unknown line)
-	java.security.Provider.parseLegacyPut(Provider.java:Unknown line)
-	java.security.Provider.ensureLegacyParsed(Provider.java:Unknown line)
-TRACE 302512:
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302373:
-	java.util.ArrayList.size(ArrayList.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-	SmallPolygonsVis.<init>(SmallPolygonsVis.java:Unknown line)
-TRACE 302513:
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302456:
-	java.util.HashMap.putVal(HashMap.java:Unknown line)
-	java.util.HashMap.put(HashMap.java:Unknown line)
-	java.util.HashSet.add(HashSet.java:Unknown line)
-	java.util.AbstractCollection.addAll(AbstractCollection.java:Unknown line)
-TRACE 302992:
-	java.lang.Double.compare(Double.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.gallopLeft(ComparableTimSort.java:Unknown line)
-TRACE 302584:
-	java.util.ComparableTimSort.countRunAndMakeAscending(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-	java.util.Arrays.sort(Arrays.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302457:
-	java.util.HashMap.put(HashMap.java:Unknown line)
-	java.util.HashSet.add(HashSet.java:Unknown line)
-	java.util.AbstractCollection.addAll(AbstractCollection.java:Unknown line)
-	java.util.HashSet.<init>(HashSet.java:Unknown line)
-TRACE 302389:
-	java.lang.Integer.intValue(Integer.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302579:
-	SmallPolygons.areaFunc(SmallPolygons.java:Unknown line)
-	SmallPolygons.area(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302459:
-	java.util.AbstractCollection.addAll(AbstractCollection.java:Unknown line)
-	java.util.HashSet.<init>(HashSet.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302727:
-	java.lang.Character.digit(Character.java:Unknown line)
-	java.lang.Integer.parseInt(Integer.java:Unknown line)
-	java.lang.Integer.parseInt(Integer.java:Unknown line)
-	SmallPolygonsVis.setResult(SmallPolygonsVis.java:Unknown line)
-TRACE 302454:
-	java.util.AbstractList$Itr.next(AbstractList.java:Unknown line)
-	java.util.AbstractCollection.addAll(AbstractCollection.java:Unknown line)
-	java.util.HashSet.<init>(HashSet.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-TRACE 302463:
-	java.util.HashMap.containsKey(HashMap.java:Unknown line)
-	java.util.HashSet.contains(HashSet.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302523:
-	java.util.Arrays.copyOf(Arrays.java:Unknown line)
-	SmallPolygons.remove(SmallPolygons.java:Unknown line)
-	SmallPolygons.access$1(SmallPolygons.java:Unknown line)
-	SmallPolygons$1Polygon.next(SmallPolygons.java:Unknown line)
-TRACE 302427:
-	SmallPolygons.area(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
-TRACE 302382:
-	java.lang.Integer.hashCode(Integer.java:Unknown line)
-	java.lang.Integer.hashCode(Integer.java:Unknown line)
-	java.util.HashMap.hash(HashMap.java:Unknown line)
-	java.util.HashMap.get(HashMap.java:Unknown line)
-TRACE 302944:
-	java.util.ComparableTimSort.gallopRight(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeForceCollapse(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.sort(ComparableTimSort.java:Unknown line)
-TRACE 302994:
-	SmallPolygons$Edge.compareTo(SmallPolygons.java:Unknown line)
-	java.util.ComparableTimSort.gallopLeft(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:Unknown line)
-	java.util.ComparableTimSort.mergeForceCollapse(ComparableTimSort.java:Unknown line)
-TRACE 302412:
-	java.util.ArrayList.add(ArrayList.java:Unknown line)
-	SmallPolygons.getOutside(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
-TRACE 302378:
-	SmallPolygons$Point.hash(SmallPolygons.java:Unknown line)
-	SmallPolygons.polygons(SmallPolygons.java:Unknown line)
-	SmallPolygons.choosePolygons(SmallPolygons.java:Unknown line)
+	java.util.HashSet.add(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302612:
+	java.util.ArrayList.get(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
 	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
 TRACE 301328:
-	java.util.HashMap.newNode(HashMap.java:Unknown line)
-	java.util.HashMap.putVal(HashMap.java:Unknown line)
-	java.util.HashMap.put(HashMap.java:Unknown line)
-	java.util.HashSet.add(HashSet.java:Unknown line)
-CPU TIME (ms) BEGIN (total = 79088) Sun Apr 26 16:36:19 2015
+	java.util.HashMap.newNode(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	java.util.HashSet.add(<Unknown Source>:Unknown line)
+TRACE 302590:
+	java.lang.Long.hashCode(<Unknown Source>:Unknown line)
+	java.lang.Long.hashCode(<Unknown Source>:Unknown line)
+	java.util.HashMap.hash(<Unknown Source>:Unknown line)
+	java.util.HashMap.containsKey(<Unknown Source>:Unknown line)
+TRACE 303045:
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeForceCollapse(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+TRACE 302601:
+	java.util.HashMap.hash(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	java.util.HashSet.add(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302583:
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons.add(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.access$3(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.step(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302593:
+	java.util.HashMap.getNode(<Unknown Source>:Unknown line)
+	java.util.HashMap.containsKey(<Unknown Source>:Unknown line)
+	java.util.HashSet.contains(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302891:
+	CopyOfSmallPolygons.remove(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.access$1(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302946:
+	java.lang.Long.equals(<Unknown Source>:Unknown line)
+	java.util.HashMap.getNode(<Unknown Source>:Unknown line)
+	java.util.HashMap.containsKey(<Unknown Source>:Unknown line)
+	java.util.HashSet.contains(<Unknown Source>:Unknown line)
+TRACE 302557:
+	java.util.Collections.sort(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302558:
+	java.util.ArrayList.size(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 303039:
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeCollapse(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+TRACE 303064:
+	java.lang.Double.compare(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.gallopLeft(<Unknown Source>:Unknown line)
+TRACE 302561:
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302599:
+	java.lang.Long.hashCode(<Unknown Source>:Unknown line)
+	java.lang.Long.hashCode(<Unknown Source>:Unknown line)
+	java.util.HashMap.hash(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+TRACE 302563:
+	CopyOfSmallPolygons$IntComparable.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$IntComparable.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 301329:
+	java.util.HashMap.afterNodeInsertion(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	java.util.HashSet.add(<Unknown Source>:Unknown line)
+TRACE 302600:
+	java.lang.Long.hashCode(<Unknown Source>:Unknown line)
+	java.util.HashMap.hash(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+	java.util.HashSet.add(<Unknown Source>:Unknown line)
+TRACE 303071:
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.mergeLo(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+TRACE 302983:
+	CopyOfSmallPolygons$Edge.dist(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.dist2(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$Edge.intersect(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.isOK(CopyOfSmallPolygons.java:Unknown line)
+TRACE 303035:
+	java.util.ComparableTimSort.gallopLeft(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeCollapse(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+TRACE 302975:
+	java.util.ComparableTimSort.gallopLeft(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeHi(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeForceCollapse(<Unknown Source>:Unknown line)
+TRACE 302917:
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302512:
+	CopyOfSmallPolygons$1Function.setRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+	SmallPolygonsVis.runTest(SmallPolygonsVis.java:Unknown line)
+TRACE 302556:
+	java.util.ArrayList.sort(<Unknown Source>:Unknown line)
+	java.util.Collections.sort(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302555:
+	java.util.Arrays.sort(<Unknown Source>:Unknown line)
+	java.util.ArrayList.sort(<Unknown Source>:Unknown line)
+	java.util.Collections.sort(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 303068:
+	CopyOfSmallPolygons$Edge.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.gallopRight(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeCollapse(<Unknown Source>:Unknown line)
+TRACE 302958:
+	CopyOfSmallPolygons$IntComparable.compareTo(CopyOfSmallPolygons.java:Unknown line)
+	java.util.ComparableTimSort.gallopLeft(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeForceCollapse(<Unknown Source>:Unknown line)
+TRACE 302437:
+	CopyOfSmallPolygons$Point.<init>(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$G2D.sub(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.angle(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.angle2(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302505:
+	CopyOfSmallPolygons.areaDiff(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.access$0(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Function.setRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302892:
+	CopyOfSmallPolygons.access$1(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons$1Polygon.nextRemain(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.polygons(CopyOfSmallPolygons.java:Unknown line)
+	CopyOfSmallPolygons.choosePolygons(CopyOfSmallPolygons.java:Unknown line)
+TRACE 302596:
+	java.util.ArrayList.ensureExplicitCapacity(<Unknown Source>:Unknown line)
+	java.util.ArrayList.ensureCapacityInternal(<Unknown Source>:Unknown line)
+	java.util.ArrayList.add(<Unknown Source>:Unknown line)
+	CopyOfSmallPolygons$1Polygon.next(CopyOfSmallPolygons.java:Unknown line)
+TRACE 300736:
+	java.util.HashMap$Node.<init>(<Unknown Source>:Unknown line)
+	java.util.HashMap.newNode(<Unknown Source>:Unknown line)
+	java.util.HashMap.putVal(<Unknown Source>:Unknown line)
+	java.util.HashMap.put(<Unknown Source>:Unknown line)
+TRACE 303044:
+	java.util.ComparableTimSort.mergeHi(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeAt(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.mergeCollapse(<Unknown Source>:Unknown line)
+	java.util.ComparableTimSort.sort(<Unknown Source>:Unknown line)
+CPU TIME (ms) BEGIN (total = 1012501) Mon Apr 27 15:40:46 2015
 rank   self  accum   count trace method
-   1 12.92% 12.92% 1190934 302607 SmallPolygons$1Function.isOK
-   2  8.76% 21.69% 9839054 302606 SmallPolygons$Edge.intersect
-   3  7.88% 29.57% 3568010 302368 SmallPolygons$G2D.dist
-   4  5.62% 35.18% 1267587 302599 SmallPolygons.areaDiff
-   5  5.35% 40.54%       5 302684 SmallPolygons.choosePolygons
-   6  4.89% 45.43%  283314 302621 SmallPolygons$1Function.isOK
-   7  4.64% 50.06%   61814 302608 SmallPolygons$1Function.setRemain
-   8  3.97% 54.03% 1190934 302603 SmallPolygons$Edge.<init>
-   9  3.48% 57.51% 3852396 302476 SmallPolygons.areaFunc
-  10  3.23% 60.75%   18011 302561 SmallPolygons$1Polygon.next
-  11  2.97% 63.72% 3568010 302367 SmallPolygons$G2D.norm
-  12  2.86% 66.58% 3418412 302620 SmallPolygons$Edge.intersect
-  13  2.80% 69.38%  819550 302538 SmallPolygons$Edge.<init>
-  14  2.64% 72.02% 1267587 302600 SmallPolygons.access$0
-  15  2.35% 74.37% 1190934 302601 SmallPolygons$G2D.sub
-  16  1.62% 75.98%  819550 302536 SmallPolygons$G2D.sub
-  17  1.24% 77.22% 1203482 302479 SmallPolygons$Point.<init>
-  18  1.10% 78.32%  312896 302750 Edge.<init>
-  19  1.04% 79.36%  438858 302617 SmallPolygons$Edge.compareTo
-  20  0.92% 80.28%  416067 302372 java.util.ArrayList.add
-  21  0.92% 81.21% 1190934 302602 SmallPolygons$G2D.norm
-  22  0.86% 82.07%  438858 302616 SmallPolygons$Edge.compareTo
-  23  0.74% 82.81%  416067 302371 java.util.ArrayList.ensureCapacityInternal
-  24  0.71% 83.52%  819550 302537 SmallPolygons$G2D.norm
-  25  0.67% 84.19%  777993 302598 SmallPolygons$Edge.intersect
-  26  0.66% 84.85%  819550 302535 SmallPolygons$Point.<init>
-  27  0.65% 85.50%  152991 302527 SmallPolygons.areaDiff
-  28  0.60% 86.10%  312896 302748 G2D.substr
-  29  0.58% 86.68%   20085 302558 java.util.ComparableTimSort.binarySort
-  30  0.57% 87.25%       5 302755 SmallPolygonsVis.calcScore
-  31  0.57% 87.81%  268137 302518 SmallPolygons$1Remain.<init>
-  32  0.53% 88.34%  268137 302517 SmallPolygons$IntComparable.<init>
-  33  0.51% 88.86%   84934 302366 SmallPolygons$Point.random
-  34  0.50% 89.35%  416067 302370 java.util.ArrayList.ensureExplicitCapacity
-  35  0.44% 89.79%  458973 302526 SmallPolygons.areaFunc
-  36  0.44% 90.23%  438858 302615 java.lang.Double.compare
-  37  0.40% 90.64%  500237 302589 SmallPolygons$Edge.intersect
-  38  0.36% 91.00%   18011 302519 SmallPolygons$1Polygon.<init>
-  39  0.36% 91.36%  144063 302554 SmallPolygons$Edge.compareTo
-  40  0.31% 91.67%   37010 302595 SmallPolygons$Edge.dist
-  41  0.29% 91.96%  152991 302528 SmallPolygons.access$0
-  42  0.29% 92.25%  312896 302749 G2D.norm
-  43  0.28% 92.53%  144063 302555 SmallPolygons$Edge.compareTo
-  44  0.27% 92.81%    2957 302578 SmallPolygons.polygons
-  45  0.27% 93.08%  312896 302747 Pnt.<init>
-  46  0.27% 93.34%   94391 300729 java.util.ArrayList.grow
-  47  0.23% 93.58%   33975 302418 SmallPolygons.angle
-  48  0.22% 93.79%       5 302274 SmallPolygonsVis.generate
-  49  0.22% 94.01%  268137 302516 SmallPolygons$IntComparable.<init>
-  50  0.20% 94.21%   84934 302362 java.util.AbstractList.<init>
-  51  0.18% 94.39%  175172 302273 Pnt.equals
-  52  0.17% 94.56%   21224 302557 java.util.ComparableTimSort.countRunAndMakeAscending
-  53  0.17% 94.73%  156448 302753 Edge.intersect
-  54  0.15% 94.88%   84934 302363 java.util.ArrayList.<init>
-  55  0.14% 95.01%   64466 302586 SmallPolygons$IntComparable.compareTo
-  56  0.13% 95.14%   67950 302414 SmallPolygons$G2D.sub
-  57  0.12% 95.26%  144063 302553 java.lang.Double.compare
-  58  0.12% 95.38%   74020 302592 SmallPolygons$G2D.sub
-  59  0.12% 95.50%  169868 302364 SmallPolygons$XorShift.nextInt
-  60  0.11% 95.61%    3260 302587 java.util.ComparableTimSort.binarySort
-  61  0.11% 95.72%   37448 302741 Edge.<init>
-  62  0.08% 95.80%   74020 302591 SmallPolygons$Point.<init>
-  63  0.08% 95.89%    2576 302484 SmallPolygons$1Function.setRemain
-  64  0.08% 95.96%   21811 302475 java.util.ArrayList.add
-  65  0.08% 96.04%   84934 302361 java.util.AbstractCollection.<init>
-  66  0.07% 96.11%   16545 302477 SmallPolygons.areaDiff
-  67  0.07% 96.19%   94391 300728 java.util.Arrays.copyOf
-  68  0.07% 96.25%   37448 302740 G2D.norm
-  69  0.07% 96.32%   74020 302593 SmallPolygons$G2D.dot
-  70  0.07% 96.39%   16545 302478 SmallPolygons.access$0
-  71  0.07% 96.46%   84934 302365 SmallPolygons$Point.<init>
-  72  0.06% 96.52%   18011 302533 SmallPolygons.add
-  73  0.06% 96.59%   12548 302482 SmallPolygons$Edge.<init>
-  74  0.06% 96.65%   18011 302534 SmallPolygons.access$2
-  75  0.06% 96.71%      61 302745 SmallPolygonsVis.validatePoly
-  76  0.06% 96.77%    1224 302420 SmallPolygons.getOutside
-  77  0.06% 96.83%   37448 302739 G2D.substr
-  78  0.06% 96.89%   33089 302613 SmallPolygons$IntComparable.compareTo
-  79  0.06% 96.95%   21811 302473 java.util.ArrayList.ensureExplicitCapacity
-  80  0.05% 97.00%   97555 302585 SmallPolygons$IntComparable.compareTo
-  81  0.05% 97.06%   13367 302996 SmallPolygons$Edge.compareTo
-  82  0.05% 97.11%   33975 302419 SmallPolygons.angle2
-  83  0.05% 97.17%   18835 302388 java.util.HashMap.get
-  84  0.05% 97.22%   33975 302416 SmallPolygons$G2D.dot
-  85  0.05% 97.27%   18835 302384 java.util.HashMap.hash
-  86  0.05% 97.32%   18011 302560 java.util.Arrays.sort
-  87  0.05% 97.37%   23294 302990 SmallPolygons$Edge.compareTo
-  88  0.05% 97.42%   10177 303000 SmallPolygons$Edge.compareTo
-  89  0.05% 97.46%    4033 303003 SmallPolygons$Edge.compareTo
-  90  0.04% 97.51%    2177 302952 java.util.ComparableTimSort.mergeAt
-  91  0.04% 97.55%    8098 302464 java.util.HashSet.contains
-  92  0.04% 97.59%   18011 302524 SmallPolygons.remove
-  93  0.04% 97.64%   33975 302417 java.lang.Math.atan2
-  94  0.04% 97.68%   15878 302386 java.lang.Integer.equals
-  95  0.04% 97.72%    1325 302957 java.util.ComparableTimSort.gallopLeft
-  96  0.04% 97.76%   67950 302413 SmallPolygons$Point.<init>
-  97  0.04% 97.80%    2957 302581 SmallPolygons.area
-  98  0.04% 97.84%   31239 302989 java.lang.Double.compare
-  99  0.04% 97.87%   18011 302559 java.util.ComparableTimSort.sort
- 100  0.04% 97.91%   37448 302738 Pnt.<init>
- 101  0.04% 97.94%   18835 302387 java.util.HashMap.getNode
- 102  0.03% 97.98%   16920 302385 java.lang.Integer.intValue
- 103  0.03% 98.01%     947 302982 java.util.ComparableTimSort.mergeHi
- 104  0.03% 98.04%   11486 302993 SmallPolygons$Edge.compareTo
- 105  0.03% 98.07%   15878 302380 java.lang.Integer.<init>
- 106  0.03% 98.11%   15160 302991 SmallPolygons$Edge.compareTo
- 107  0.03% 98.14%   18011 302515 SmallPolygons$IntComparable.<init>
- 108  0.03% 98.17%   21811 302474 java.util.ArrayList.ensureCapacityInternal
- 109  0.03% 98.19%    2250 302614 java.util.ComparableTimSort.binarySort
- 110  0.03% 98.22%   18011 302542 java.util.Arrays.copyOf
- 111  0.03% 98.25%   15878 302379 java.lang.Number.<init>
- 112  0.03% 98.28%   18011 302543 java.util.Arrays$LegacyMergeSort.access$000
- 113  0.03% 98.31%   18724 302744 Edge.intersect
- 114  0.03% 98.34%   18011 302525 SmallPolygons.access$1
- 115  0.03% 98.36%    1407 301963 java.lang.Character.toUpperCaseEx
- 116  0.03% 98.39%    5522 302410 java.util.ArrayList.ensureExplicitCapacity
- 117  0.03% 98.42%    1114 302966 java.util.ComparableTimSort.mergeLo
- 118  0.03% 98.45%    5559 302490 java.util.ArrayList.rangeCheck
- 119  0.03% 98.47%   15947 302582 SmallPolygons$IntComparable.compareTo
- 120  0.03% 98.50%    8134 303006 SmallPolygons$Edge.compareTo
- 121  0.03% 98.52%    5522 302411 java.util.ArrayList.ensureCapacityInternal
- 122  0.03% 98.55%   37010 302594 java.lang.Math.abs
- 123  0.02% 98.57%    5921 302987 java.util.ComparableTimSort.pushRun
- 124  0.02% 98.60%    2250 302612 java.util.ComparableTimSort.countRunAndMakeAscending
- 125  0.02% 98.62%    2576 302470 SmallPolygons$IntComparable.<init>
- 126  0.02% 98.64%   18011 302514 SmallPolygons$IntComparable.<init>
- 127  0.02% 98.67%    8093 303001 SmallPolygons$Edge.compareTo
- 128  0.02% 98.69%   33975 302415 SmallPolygons$G2D.cross
- 129  0.02% 98.72%   15878 302383 java.lang.Integer.hashCode
- 130  0.02% 98.74%    1651 303005 SmallPolygons$Edge.compareTo
- 131  0.02% 98.76%    1042 302696 java.util.ArrayList.ensureCapacityInternal
- 132  0.02% 98.78%    1651 303004 SmallPolygons$Edge.compareTo
- 133  0.02% 98.81%    2707 300606 java.lang.CharacterDataLatin1.digit
- 134  0.02% 98.83%    1221 302951 java.util.ComparableTimSort.mergeLo
- 135  0.02% 98.85%   15878 302381 java.lang.Integer.valueOf
- 136  0.02% 98.87%   15137 302604 java.lang.Math.min
- 137  0.02% 98.89%    7866 302588 java.lang.Math.min
- 138  0.02% 98.91%    1224 302577 java.util.HashMap.put
- 139  0.02% 98.93%     180 300749 sun.misc.MetaIndex.mayContain
- 140  0.02% 98.95%      61 302722 java.lang.String.split
- 141  0.02% 98.97%    2084 303013 SmallPolygons$Edge.compareTo
- 142  0.02% 98.99%    1224 302486 SmallPolygons$IntComparable.<init>
- 143  0.02% 99.02%    1042 302655 java.util.HashMap.get
- 144  0.02% 99.04%       1 301824 sun.misc.Launcher$AppClassLoader.loadClass
- 145  0.02% 99.05%      93 301928 java.util.HashMap.hash
- 146  0.02% 99.07%      15 300915 java.io.File.exists
- 147  0.02% 99.09%   18011 302532 java.util.Arrays.copyOf
- 148  0.02% 99.11%    9698 302583 SmallPolygons$IntComparable.compareTo
- 149  0.02% 99.13%       5 302873 SmallPolygonsVis.<init>
- 150  0.02% 99.14%   12548 302480 SmallPolygons$G2D.sub
- 151  0.02% 99.16%    3035 301991 java.lang.Character.toLowerCase
- 152  0.02% 99.17%    4335 302512 java.util.ComparableTimSort.sort
- 153  0.02% 99.19%   34822 302373 java.util.ArrayList.size
- 154  0.01% 99.20%    4335 302513 java.util.Arrays.sort
- 155  0.01% 99.21%    5522 302456 java.util.HashMap.putVal
- 156  0.01% 99.23%   16118 302992 java.lang.Double.compare
- 157  0.01% 99.24%    3324 302584 java.util.ComparableTimSort.countRunAndMakeAscending
- 158  0.01% 99.25%    5522 302457 java.util.HashMap.put
- 159  0.01% 99.26%   15878 302389 java.lang.Integer.intValue
- 160  0.01% 99.28%   15878 302579 SmallPolygons.areaFunc
- 161  0.01% 99.29%    1224 302459 java.util.AbstractCollection.addAll
- 162  0.01% 99.30%    2683 302727 java.lang.Character.digit
- 163  0.01% 99.31%    5522 302454 java.util.AbstractList$Itr.next
- 164  0.01% 99.32%    8098 302463 java.util.HashMap.containsKey
- 165  0.01% 99.33%   18011 302523 java.util.Arrays.copyOf
- 166  0.01% 99.34%    1224 302427 SmallPolygons.area
- 167  0.01% 99.35%   16920 302382 java.lang.Integer.hashCode
- 168  0.01% 99.36%    2177 302944 java.util.ComparableTimSort.gallopRight
- 169  0.01% 99.37%    6578 302994 SmallPolygons$Edge.compareTo
- 170  0.01% 99.38%    5522 302412 java.util.ArrayList.add
- 171  0.01% 99.39%   15878 302378 SmallPolygons$Point.hash
- 172  0.01% 99.40%    5523 301328 java.util.HashMap.newNode
+   1 17.09% 17.09% 10076134 302929 CopyOfSmallPolygons$1Function.isOK
+   2 12.37% 29.46% 153413261 302928 CopyOfSmallPolygons$Edge.intersect
+   3  4.85% 34.31% 2131468 302941 CopyOfSmallPolygons$1Function.isOK
+   4  4.67% 38.99% 11799116 302921 CopyOfSmallPolygons.areaDiff
+   5  4.15% 43.13%  212418 302586 CopyOfSmallPolygons$1Polygon.step
+   6  3.60% 46.73% 45171716 302940 CopyOfSmallPolygons$Edge.intersect
+   7  3.23% 49.96%  249531 302930 CopyOfSmallPolygons$1Function.setRemain
+   8  3.00% 52.96% 10076134 302925 CopyOfSmallPolygons$Edge.<init>
+   9  2.88% 55.84% 35505480 302504 CopyOfSmallPolygons.areaFunc
+  10  2.26% 58.10% 7861243 302578 java.util.HashMap.get
+  11  2.15% 60.25% 11799116 302922 CopyOfSmallPolygons.access$0
+  12  1.83% 62.08% 10076134 302923 CopyOfSmallPolygons$G2D.sub
+  13  1.79% 63.87% 5990526 302896 CopyOfSmallPolygons$Edge.<init>
+  14  1.69% 65.56%   61498 302931 CopyOfSmallPolygons$1Polygon.nextRemain
+  15  1.51% 67.07% 7861243 302574 java.lang.Integer.hashCode
+  16  1.46% 68.53% 7813879 302576 java.lang.Integer.equals
+  17  1.45% 69.98% 7861243 302573 java.lang.Integer.valueOf
+  18  1.45% 71.43% 7861243 302575 java.util.HashMap.hash
+  19  1.44% 72.87% 7813879 302572 java.lang.Integer.<init>
+  20  1.41% 74.28% 7861243 302577 java.util.HashMap.getNode
+  21  1.27% 75.55% 6633543 302392 CopyOfSmallPolygons$G2D.dist
+  22  1.25% 76.80% 6561537 302567 CopyOfSmallPolygons$1Remain.<init>
+  23  1.15% 77.95% 6561537 302566 CopyOfSmallPolygons$IntComparable.<init>
+  24  1.12% 79.08% 5990526 302894 CopyOfSmallPolygons$G2D.sub
+  25  0.94% 80.01% 5118403 302880 CopyOfSmallPolygons$IntComparable.compareTo
+  26  0.89% 80.90%      10 302682 CopyOfSmallPolygons.choosePolygons
+  27  0.82% 81.72% 10093876 302507 CopyOfSmallPolygons$Point.<init>
+  28  0.78% 82.50% 10076134 302924 CopyOfSmallPolygons$G2D.norm
+  29  0.74% 83.24%  212418 302568 CopyOfSmallPolygons$1Polygon.<init>
+  30  0.63% 83.87% 7861243 302570 CopyOfSmallPolygons$Point.hash
+  31  0.63% 84.50% 3464212 302936 CopyOfSmallPolygons$IntComparable.compareTo
+  32  0.62% 85.12% 7861243 302579 java.lang.Integer.intValue
+  33  0.61% 85.73% 7841409 302409 java.lang.Integer.intValue
+  34  0.59% 86.32% 7861243 302569 CopyOfSmallPolygons.access$2
+  35  0.58% 86.90% 7813879 302571 java.lang.Number.<init>
+  36  0.57% 87.47% 7888796 302406 java.lang.Integer.hashCode
+  37  0.56% 88.03% 6633543 302391 CopyOfSmallPolygons$G2D.norm
+  38  0.54% 88.57% 1807766 302748 Edge.<init>
+  39  0.53% 89.10%   83901 302881 java.util.ComparableTimSort.countRunAndMakeAscending
+  40  0.51% 89.61% 6552117 302920 CopyOfSmallPolygons$Edge.intersect
+  41  0.49% 90.10% 6561537 302565 CopyOfSmallPolygons$IntComparable.<init>
+  42  0.48% 90.58% 5956648 302876 CopyOfSmallPolygons$IntComparable.compareTo
+  43  0.46% 91.04% 5990526 302893 CopyOfSmallPolygons$Point.<init>
+  44  0.44% 91.48% 5990526 302895 CopyOfSmallPolygons$G2D.norm
+  45  0.39% 91.87%   81186 302879 java.util.ComparableTimSort.binarySort
+  46  0.33% 92.20% 1747444 302912 CopyOfSmallPolygons$Edge.compareTo
+  47  0.33% 92.52% 1747444 302913 CopyOfSmallPolygons$Edge.compareTo
+  48  0.32% 92.84% 1807766 302746 G2D.substr
+  49  0.31% 93.15%  774456 302943 CopyOfSmallPolygons.areaDiff
+  50  0.27% 93.42% 1502913 302949 CopyOfSmallPolygons$Edge.compareTo
+  51  0.27% 93.70%      10 302753 SmallPolygonsVis.calcScore
+  52  0.26% 93.96% 3537374 302935 CopyOfSmallPolygons$IntComparable.compareTo
+  53  0.23% 94.19% 1502913 302948 CopyOfSmallPolygons$Edge.compareTo
+  54  0.20% 94.39% 1062734 302395 java.util.ArrayList.ensureCapacityInternal
+  55  0.20% 94.59%   89819 302914 java.util.ComparableTimSort.countRunAndMakeAscending
+  56  0.18% 94.78% 2323368 302942 CopyOfSmallPolygons.areaFunc
+  57  0.18% 94.95% 1062734 302396 java.util.ArrayList.add
+  58  0.17% 95.12% 1747444 302911 java.lang.Double.compare
+  59  0.16% 95.28%   62283 302605 CopyOfSmallPolygons$1Polygon.next
+  60  0.16% 95.44% 1807766 302747 G2D.norm
+  61  0.16% 95.60%  838245 302877 CopyOfSmallPolygons$IntComparable.compareTo
+  62  0.15% 95.75%   70409 302915 java.util.ComparableTimSort.binarySort
+  63  0.14% 95.89%  448586 302739 Edge.<init>
+  64  0.14% 96.03%  774456 302944 CopyOfSmallPolygons.access$0
+  65  0.14% 96.16% 1807766 302745 Pnt.<init>
+  66  0.13% 96.30%      10 302298 SmallPolygonsVis.generate
+  67  0.11% 96.40% 1502913 302947 java.lang.Double.compare
+  68  0.10% 96.50%   88691 302878 java.util.ComparableTimSort.countRunAndMakeAscending
+  69  0.10% 96.60%  448586 302737 G2D.substr
+  70  0.09% 96.69%  271315 302390 CopyOfSmallPolygons$Point.random
+  71  0.09% 96.78% 1062734 302394 java.util.ArrayList.ensureExplicitCapacity
+  72  0.08% 96.86%  331543 302589 java.lang.Long.valueOf
+  73  0.08% 96.94%  308091 302955 CopyOfSmallPolygons$IntComparable.compareTo
+  74  0.08% 97.01% 1128272 302297 Pnt.equals
+  75  0.07% 97.08%  212418 302594 java.util.HashMap.containsKey
+  76  0.07% 97.15%     107 302743 SmallPolygonsVis.validatePoly
+  77  0.06% 97.21%   54285 302956 java.util.ComparableTimSort.gallopRight
+  78  0.06% 97.27%  331543 302588 java.lang.Long.<init>
+  79  0.06% 97.33%  261401 302962 CopyOfSmallPolygons$IntComparable.compareTo
+  80  0.06% 97.38%   37650 302966 java.util.ComparableTimSort.mergeHi
+  81  0.05% 97.44%  903883 302751 Edge.intersect
+  82  0.05% 97.49%   74618 302442 CopyOfSmallPolygons.angle
+  83  0.05% 97.54%   62283 302560 java.util.ComparableTimSort.sort
+  84  0.05% 97.59%   61498 302916 java.util.ComparableTimSort.sort
+  85  0.05% 97.63%   65804 302553 java.util.ComparableTimSort.sort
+  86  0.05% 97.68%  212418 302591 java.lang.Long.hashCode
+  87  0.05% 97.72%  271315 302387 java.util.ArrayList.<init>
+  88  0.04% 97.77%  212418 302592 java.util.HashMap.hash
+  89  0.04% 97.81%  212418 302584 CopyOfSmallPolygons.add
+  90  0.04% 97.85%  212418 302564 CopyOfSmallPolygons$IntComparable.<init>
+  91  0.04% 97.89%  150767 302978 java.util.ArrayList.get
+  92  0.04% 97.93%  250132 300729 java.util.ArrayList.grow
+  93  0.04% 97.97%  226974 303062 CopyOfSmallPolygons$Edge.compareTo
+  94  0.04% 98.01%  208390 302964 CopyOfSmallPolygons$IntComparable.compareTo
+  95  0.04% 98.05%  271315 302386 java.util.AbstractList.<init>
+  96  0.04% 98.09%  542630 302388 CopyOfSmallPolygons$XorShift.nextInt
+  97  0.04% 98.12%  119125 302603 java.util.HashMap.put
+  98  0.03% 98.16%   23862 303038 java.util.ComparableTimSort.mergeLo
+  99  0.03% 98.19%  364166 302970 CopyOfSmallPolygons$IntComparable.compareTo
+ 100  0.03% 98.22%  214113 303037 CopyOfSmallPolygons$IntComparable.compareTo
+ 101  0.03% 98.26%    5474 302449 CopyOfSmallPolygons.polygons
+ 102  0.03% 98.29%  144786 303032 CopyOfSmallPolygons$IntComparable.compareTo
+ 103  0.03% 98.32%  452877 302954 CopyOfSmallPolygons$IntComparable.compareTo
+ 104  0.03% 98.35%   28397 303033 java.util.ComparableTimSort.gallopRight
+ 105  0.03% 98.38%  448586 302736 Pnt.<init>
+ 106  0.03% 98.41%  448586 302738 G2D.norm
+ 107  0.03% 98.44%  271315 302385 java.util.AbstractCollection.<init>
+ 108  0.03% 98.47%  119125 302602 java.util.HashMap.putVal
+ 109  0.03% 98.50%  212418 302585 CopyOfSmallPolygons.access$3
+ 110  0.03% 98.52%   16140 302972 java.util.ComparableTimSort.mergeLo
+ 111  0.03% 98.55%   65804 302554 java.util.Arrays.sort
+ 112  0.03% 98.57%   84777 303076 CopyOfSmallPolygons$Edge.compareTo
+ 113  0.03% 98.60%  341659 303061 java.lang.Double.compare
+ 114  0.03% 98.63%  331543 302587 java.lang.Number.<init>
+ 115  0.03% 98.65%  323609 302961 CopyOfSmallPolygons$IntComparable.compareTo
+ 116  0.03% 98.68%  119125 302597 java.util.ArrayList.ensureCapacityInternal
+ 117  0.02% 98.70%   40889 302965 java.util.ComparableTimSort.gallopRight
+ 118  0.02% 98.73%  212418 302595 java.util.HashSet.contains
+ 119  0.02% 98.75%   84777 303077 CopyOfSmallPolygons$Edge.compareTo
+ 120  0.02% 98.77%  167398 303063 CopyOfSmallPolygons$Edge.compareTo
+ 121  0.02% 98.80%  150053 302971 CopyOfSmallPolygons$IntComparable.compareTo
+ 122  0.02% 98.82%  149236 302438 CopyOfSmallPolygons$G2D.sub
+ 123  0.02% 98.84%  250132 300728 java.util.Arrays.copyOf
+ 124  0.02% 98.86%  103669 303075 CopyOfSmallPolygons$Edge.compareTo
+ 125  0.02% 98.88%  271315 302389 CopyOfSmallPolygons$Point.<init>
+ 126  0.02% 98.90%  150767 302976 java.util.ArrayList.rangeCheck
+ 127  0.02% 98.92%  224293 302742 Edge.intersect
+ 128  0.02% 98.94%  108957 303074 CopyOfSmallPolygons$Edge.compareTo
+ 129  0.02% 98.96%  119125 302604 java.util.HashSet.add
+ 130  0.02% 98.98%   62283 302612 java.util.ArrayList.get
+ 131  0.02% 99.00%  122893 301328 java.util.HashMap.newNode
+ 132  0.02% 99.02%  212418 302590 java.lang.Long.hashCode
+ 133  0.02% 99.04%   31741 303045 java.util.ComparableTimSort.mergeAt
+ 134  0.02% 99.06%  119125 302601 java.util.HashMap.hash
+ 135  0.02% 99.07%  212418 302583 java.util.Arrays.copyOf
+ 136  0.02% 99.09%  212418 302593 java.util.HashMap.getNode
+ 137  0.02% 99.11%   61498 302891 CopyOfSmallPolygons.remove
+ 138  0.02% 99.13%   93293 302946 java.lang.Long.equals
+ 139  0.02% 99.14%   62283 302557 java.util.Collections.sort
+ 140  0.02% 99.16%  181408 302558 java.util.ArrayList.size
+ 141  0.01% 99.17%   28293 303039 java.util.ComparableTimSort.mergeAt
+ 142  0.01% 99.19%   88265 303064 java.lang.Double.compare
+ 143  0.01% 99.20%   62283 302561 java.util.Arrays.sort
+ 144  0.01% 99.21%  119910 302599 java.lang.Long.hashCode
+ 145  0.01% 99.23%  212418 302563 CopyOfSmallPolygons$IntComparable.<init>
+ 146  0.01% 99.24%  122893 301329 java.util.HashMap.afterNodeInsertion
+ 147  0.01% 99.25%  119125 302600 java.lang.Long.hashCode
+ 148  0.01% 99.27%   52422 303071 CopyOfSmallPolygons$Edge.compareTo
+ 149  0.01% 99.28%   22332 302983 CopyOfSmallPolygons$Edge.dist
+ 150  0.01% 99.29%   27832 303035 java.util.ComparableTimSort.gallopLeft
+ 151  0.01% 99.30%   21865 302975 java.util.ComparableTimSort.gallopLeft
+ 152  0.01% 99.32%   61498 302917 java.util.Arrays.sort
+ 153  0.01% 99.33%    3521 302512 CopyOfSmallPolygons$1Function.setRemain
+ 154  0.01% 99.34%   62283 302556 java.util.ArrayList.sort
+ 155  0.01% 99.35%   62283 302555 java.util.Arrays.sort
+ 156  0.01% 99.36%   59576 303068 CopyOfSmallPolygons$Edge.compareTo
+ 157  0.01% 99.37%   58910 302958 CopyOfSmallPolygons$IntComparable.compareTo
+ 158  0.01% 99.39%  149236 302437 CopyOfSmallPolygons$Point.<init>
+ 159  0.01% 99.40%   36044 302505 CopyOfSmallPolygons.areaDiff
+ 160  0.01% 99.41%   61498 302892 CopyOfSmallPolygons.access$1
+ 161  0.01% 99.42%  119125 302596 java.util.ArrayList.ensureExplicitCapacity
+ 162  0.01% 99.43%  126481 300736 java.util.HashMap$Node.<init>
+ 163  0.01% 99.44%    3970 303044 java.util.ComparableTimSort.mergeHi
 CPU TIME (ms) END
