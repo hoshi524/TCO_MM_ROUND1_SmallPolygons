@@ -773,13 +773,13 @@ public class SmallPolygonsVis {
 					vis.generate(Seed);
 					vis.setInput(vis.pointsPar, vis.N);
 					long start0 = System.currentTimeMillis();
-					String res0[] = new CopyOfSmallPolygons().choosePolygons(vis.pointsPar, vis.N);
+					String res0[] = new SmallPolygons().choosePolygons(vis.pointsPar, vis.N);
 					long end0 = System.currentTimeMillis();
 					double score0 = vis.setResult(res0);
 					vis.generate(Seed);
 					vis.setInput(vis.pointsPar, vis.N);
 					long start1 = System.currentTimeMillis();
-					String res1[] = new SmallPolygons().choosePolygons(vis.pointsPar, vis.N);
+					String res1[] = new SmallPolygonsPrev().choosePolygons(vis.pointsPar, vis.N);
 					long end1 = System.currentTimeMillis();
 					double score1 = vis.setResult(res1);
 					double max = Math.max(score0, score1);
