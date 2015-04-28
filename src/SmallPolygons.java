@@ -11,7 +11,7 @@ import java.util.StringJoiner;
 
 public class SmallPolygons {
 
-	private static final int MAX_TIME = 9600;
+	private static final int MAX_TIME = 9700;
 	private final long endTime = System.currentTimeMillis() + MAX_TIME;
 	private static final int INT_MAX = Integer.MAX_VALUE / 2;
 	private static final int MAX_XY = 700;
@@ -284,7 +284,7 @@ public class SmallPolygons {
 
 	Point[][] calcPolygon(Point[] ps, int N, int min) {
 		long endTime = Math.min(this.endTime, System.currentTimeMillis() + 1000);
-		int NP = ps.length;
+		long prevtime = System.currentTimeMillis(), onetime = 0;
 		NG: while (true) {
 			Point[] x = new Point[N];
 			List<Point> tmp[] = new List[N];
@@ -292,24 +292,28 @@ public class SmallPolygons {
 				tmp[i] = new ArrayList<>();
 				x[i] = Point.random(random);
 			}
-			for (int i = 0; i < NP; ++i) {
+			for (Point point : ps) {
 				int t = -1;
 				double dist = Double.MAX_VALUE / 2;
 				for (int j = 0; j < N; ++j) {
-					double tmpd = G2D.dist(x[j], ps[i]);
+					double tmpd = G2D.dist(x[j], point);
 					if (dist > tmpd) {
 						dist = tmpd;
 						t = j;
 					}
 				}
-				tmp[t].add(ps[i]);
+				tmp[t].add(point);
 			}
 			for (List<Point> list : tmp)
 				if (list.size() < 3)
 					continue NG;
-
-			if (System.currentTimeMillis() >= endTime) {
-				return null;
+			{
+				long now = System.currentTimeMillis();
+				onetime = Math.max(onetime, now - prevtime);
+				if (now + onetime >= endTime) {
+					return null;
+				}
+				prevtime = now;
 			}
 
 			Point res[][] = new Point[N][];
@@ -319,12 +323,10 @@ public class SmallPolygons {
 				if (polys == null)
 					continue NG;
 				int a = area(polys);
-				if (a == 0)
+				value += a;
+				if (a == 0 || min <= value)
 					continue NG;
 				res[i] = polys;
-				value += a;
-				if (min <= value)
-					continue NG;
 			}
 			return res;
 		}
@@ -361,17 +363,17 @@ public class SmallPolygons {
 					tmp[i] = new ArrayList<>();
 					x[i] = Point.random(random);
 				}
-				for (int i = 0; i < NP; ++i) {
+				for (Point point : ps) {
 					int t = -1;
 					double dist = Double.MAX_VALUE / 2;
 					for (int j = 0; j < N; ++j) {
-						double tmpd = G2D.dist(x[j], ps[i]);
+						double tmpd = G2D.dist(x[j], point);
 						if (dist > tmpd) {
 							dist = tmpd;
 							t = j;
 						}
 					}
-					tmp[t].add(ps[i]);
+					tmp[t].add(point);
 				}
 				for (List<Point> list : tmp)
 					if (list.size() < 3)
@@ -393,12 +395,10 @@ public class SmallPolygons {
 					if (polys == null)
 						continue NG;
 					int a = area(polys);
-					if (a == 0)
+					value += a;
+					if (a == 0 || min <= value)
 						continue NG;
 					restmp[i] = polys;
-					value += a;
-					if (min <= value)
-						continue NG;
 				}
 				min = value;
 				res = restmp;
