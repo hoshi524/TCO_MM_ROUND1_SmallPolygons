@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,24 +11,23 @@ import java.util.StringJoiner;
 
 public class SmallPolygons {
 
-	private final long startTime = System.currentTimeMillis();
-	private static final boolean DEBUG = false;
 	private static final int MAX_TIME = 9500;
+	private final long endTime = System.currentTimeMillis() + MAX_TIME;
+	private static final int INT_MAX = Integer.MAX_VALUE / 2;
 	private static final int MAX_XY = 700;
 	private static final int K = 50;
-	private static final int BEAM_WIDTH_LIST[] = new int[] { 70, 62, 25, 12, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-			4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 };
+	private static final byte BEAM_WIDTH_LIST[] = new byte[] { 60, 45, 18, 9, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
 	private static final double pai2 = Math.atan(1) * 4 * 2;
 	private static final double eps = 1e-9;
 	private final XorShift random = new XorShift();
 	private int N, NP;
 	private Point ps[];
-	private Map<Integer, Integer> ids;
-	private Map<Integer, Long> hashTable;
+	private long[] hashTable;
 	private Map<Long, Point[]> memo;
 
 	private abstract class IntComparable implements Comparable<IntComparable> {
-		int value = Integer.MAX_VALUE / 2;
+		int value = INT_MAX;
 
 		@Override
 		public int compareTo(IntComparable o) {
@@ -43,15 +43,17 @@ public class SmallPolygons {
 	}
 
 	private static final <T> T[] remove(T[] src, int i) {
-		src[i] = src[src.length - 1];
-		src = Arrays.copyOf(src, src.length - 1);
-		return src;
+		T[] res = Arrays.copyOf(src, src.length - 1);
+		if (i == src.length - 1)
+			return res;
+		res[i] = src[src.length - 1];
+		return res;
 	}
 
 	private final Point[] polygons(Point[] t) {
 		long key = 0;
-		for (int i = 0, size = t.length; i < size; ++i)
-			key ^= hashTable.get(t[i].hash());
+		for (Point p : t)
+			key ^= hashTable[p.id];
 		Point[] res = memo.get(key);
 		if (res != null) {
 			return res;
@@ -88,8 +90,8 @@ public class SmallPolygons {
 			}
 
 			boolean isOK(Edge[] checkEdge, Edge e) {
-				for (int i = 0, size = checkEdge.length; i < size; ++i)
-					if (e.intersect(checkEdge[i]))
+				for (Edge ce : checkEdge)
+					if (e.intersect(ce))
 						return false;
 				return true;
 			}
@@ -111,9 +113,7 @@ public class SmallPolygons {
 
 			Polygon(Polygon p) {
 				outside = p.outside;
-				remain = new Remain[p.remain.length];
-				for (int i = 0, size = remain.length; i < size; ++i)
-					remain[i] = new Remain(p.remain[i]);
+				remain = p.remain;
 				checkEdge = p.checkEdge;
 				value = p.value;
 			}
@@ -139,17 +139,19 @@ public class SmallPolygons {
 					checkEdge[edgeSize + 1] = e1;
 				}
 				Arrays.sort(checkEdge);
-				for (int j = 0, j_size = remain.length; j < j_size; ++j) {
-					Remain x = remain[j];
+				for (int i = 0, size = remain.length; i < size; ++i) {
+					Remain x = remain[i];
 					Edge te0 = x.t == null ? null : new Edge(x.t, x.p);
 					Edge te1 = x.u == null ? null : new Edge(x.p, x.u);
 					if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0)
 							|| e0.intersect(te1) || e1.intersect(te0) || e1.intersect(te1)) {
-						x.value = Integer.MAX_VALUE / 2;
+						x = remain[i] = new Remain(x);
+						x.value = INT_MAX;
 						x.t = null;
 						x.u = null;
 						func.setRemain(outside, checkEdge, x);
 					} else if (func.isOK(checkEdge, new Edge(r.p, x.p))) {
+						x = remain[i] = new Remain(x);
 						{
 							Point a = r.t;
 							Point b = r.p;
@@ -179,7 +181,7 @@ public class SmallPolygons {
 			void next(int width, List<Polygon> nextPolygons, Set<Long> used) {
 				Collections.sort(nextPolygons);
 				int pos = width - 1;
-				int limit = nextPolygons.size() >= width ? nextPolygons.get(pos--).value : Integer.MAX_VALUE / 2;
+				int limit = nextPolygons.size() >= width ? nextPolygons.get(pos--).value : INT_MAX;
 				Arrays.sort(remain);
 				for (int j = 0, j_size = Math.min(width, remain.length); j < j_size; ++j) {
 					Remain x = remain[j];
@@ -206,9 +208,9 @@ public class SmallPolygons {
 				Remain r = remain[index];
 				value += r.value;
 				long key = 0;
-				for (int i = 0, size = outside.length; i < size; ++i) {
+				for (int i = 0, size = outside.length; i <= size; ++i) {
 					int w = i % 64;
-					long hash = hashTable.get(outside[i].hash());
+					long hash = hashTable[outside[i].id];
 					key ^= (hash << w) | (hash >>> (64 - w));
 					if (outside[i] == r.t) {
 						outside = add(outside, i + 1, r.p);
@@ -218,7 +220,7 @@ public class SmallPolygons {
 			}
 		}
 
-		Point[] outside = getOutside(t).toArray(new Point[0]);
+		Point[] outside = getOutside(t);
 		if (outside.length == t.length) {
 			return outside;
 		}
@@ -226,8 +228,7 @@ public class SmallPolygons {
 		ArrayList<Remain> remain = new ArrayList<>();
 		{
 			Set<Point> outsideSet = new HashSet<>(Arrays.asList(outside));
-			for (int i = 0, size = t.length; i < size; ++i) {
-				Point p = t[i];
+			for (Point p : t) {
 				if (outsideSet.contains(p))
 					continue;
 				Remain r = new Remain(p);
@@ -281,42 +282,10 @@ public class SmallPolygons {
 		return Math.abs(s);
 	}
 
-	String[] choosePolygons(int[] points, int N_) {
-		this.N = N_;
-		NP = points.length / 2;
-		N = Math.min(N, NP / 3);
-		ps = new Point[NP];
-		ids = new HashMap<>();
-		memo = new HashMap<>();
-		hashTable = new HashMap<>();
-		for (int i = 0; i < NP; ++i) {
-			ps[i] = new Point(points[i * 2], points[i * 2 + 1]);
-			ids.put(ps[i].hash(), i);
-			hashTable.put(ps[i].hash(), random.nextLong());
-		}
-
-		int min = Integer.MAX_VALUE;
-		Point res[][] = null;
-		long time = System.currentTimeMillis() - startTime;
-		int badCount = 0, valueCount = 0;
-		long maxOneTime = 0;
+	Point[][] testCalc(Point[] ps, int N, int min) {
+		long endTime = Math.min(this.endTime, System.currentTimeMillis() + 1500);
+		int NP = ps.length;
 		NG: while (true) {
-			if (res == null) {
-				++badCount;
-				if (badCount > 40) {
-					badCount = 0;
-					--N;
-				}
-			}
-			{
-				long tmp = System.currentTimeMillis() - startTime;
-				maxOneTime = Math.max(maxOneTime, tmp - time);
-				time = tmp;
-				if (time + maxOneTime >= MAX_TIME) {
-					break;
-				}
-			}
-
 			Point[] x = new Point[N];
 			List<Point> tmp[] = new List[N];
 			for (int i = 0; i < N; ++i) {
@@ -335,28 +304,89 @@ public class SmallPolygons {
 				}
 				tmp[t].add(ps[i]);
 			}
-			for (int i = 0, size = tmp.length; i < size; ++i)
-				if (tmp[i].size() < 3)
+			for (List<Point> list : tmp)
+				if (list.size() < 3)
 					continue NG;
+
+			if (System.currentTimeMillis() >= endTime) {
+				return null;
+			}
+
+			Point res[][] = new Point[N][];
+			int value = 0;
+			for (int i = 0; i < N; ++i) {
+				Point polys[] = polygons(tmp[i].toArray(new Point[0]));
+				if (polys == null)
+					continue NG;
+				int a = area(polys);
+				if (a == 0)
+					continue NG;
+				res[i] = polys;
+				value += a;
+				if (min <= value)
+					continue NG;
+			}
+			return res;
+		}
+	}
+
+	String[] choosePolygons(int[] points, int N_) {
+		this.N = N_;
+		NP = points.length / 2;
+		N = Math.min(N, NP / 3);
+		ps = new Point[NP];
+		memo = new HashMap<>();
+		hashTable = new long[NP];
+		for (int i = 0; i < NP; ++i) {
+			ps[i] = new Point(i, points[i * 2], points[i * 2 + 1]);
+			hashTable[i] = random.nextLong();
+		}
+
+		int min = INT_MAX;
+		Point res[][] = null;
+		int badCount = 0;
+		NG: while (true) {
+			if (res == null) {
+				++badCount;
+				if (badCount > 40) {
+					badCount = 0;
+					--N;
+				}
+			}
+			Point[] x = new Point[N];
+			List<Point> tmp[] = new List[N];
+			for (int i = 0; i < N; ++i) {
+				tmp[i] = new ArrayList<>();
+				x[i] = Point.random(random);
+			}
+			for (int i = 0; i < NP; ++i) {
+				int t = -1;
+				double dist = Double.MAX_VALUE / 2;
+				for (int j = 0; j < N; ++j) {
+					double tmpd = G2D.dist(x[j], ps[i]);
+					if (dist > tmpd) {
+						dist = tmpd;
+						t = j;
+					}
+				}
+				tmp[t].add(ps[i]);
+			}
+			for (List<Point> list : tmp)
+				if (list.size() < 3)
+					continue NG;
+
+			if (System.currentTimeMillis() >= endTime) {
+				break;
+			}
 
 			Point restmp[][] = new Point[N][];
 			int value = 0;
-			valueCount++;
 			for (int i = 0; i < N; ++i) {
-				//				long start = System.currentTimeMillis();
 				Point polys[] = polygons(tmp[i].toArray(new Point[0]));
-				//				if (System.currentTimeMillis() - start >= 500) {
-				//					int index = tmp[i].size() / K;
-				//					--BEAM_WIDTH_LIST[index];
-				//					for (int j = index; j < BEAM_WIDTH_LIST.length; ++j) {
-				//						BEAM_WIDTH_LIST[j] = Math.min(BEAM_WIDTH_LIST[j], BEAM_WIDTH_LIST[index]);
-				//						BEAM_WIDTH_LIST[j] = Math.max(BEAM_WIDTH_LIST[j], 5);
-				//					}
-				//				}
 				if (polys == null)
 					continue NG;
-				double a = area(polys);
-				if (a < eps)
+				int a = area(polys);
+				if (a == 0)
 					continue NG;
 				restmp[i] = polys;
 				value += a;
@@ -365,11 +395,121 @@ public class SmallPolygons {
 			}
 			min = value;
 			res = restmp;
+			if (N > 3)
+				break;
 		}
-		if (DEBUG) {
-			System.out.println("values = " + valueCount);
+		if (N <= 3)
+			return result(res);
+		class Piar {
+			double value;
+			Point p[];
+
+			Piar(Point p[]) {
+				update(p);
+			}
+
+			void update(Point p[]) {
+				this.p = p;
+				value = (double) area(p) / p.length;
+			}
 		}
-		//		System.out.println(Arrays.toString(BEAM_WIDTH_LIST));
+		Piar pl[] = new Piar[res.length];
+		for (int i = 0, size = res.length; i < size; ++i) {
+			pl[i] = new Piar(res[i]);
+		}
+		int worst = 0, notWorst = 0;
+		end: while (true) {
+			Arrays.sort(pl, new Comparator<Piar>() {
+				@Override
+				public int compare(Piar o1, Piar o2) {
+					return Double.compare(o2.value, o1.value);
+				}
+			});
+			retry: for (int pi = 0; pi < pl.length; ++pi) {
+				if (System.currentTimeMillis() >= endTime) {
+					break end;
+				}
+				Set<Piar> use = new HashSet<>();
+				use.add(pl[pi]);
+				final int A = 3;
+				for (int i = 0; i < A - 1; i++) {
+					int sumx = 0, sumy = 0, sump = 0;
+					for (Piar piar : use) {
+						sump += piar.p.length;
+						for (Point point : piar.p) {
+							sumx += point.x;
+							sumy += point.y;
+						}
+					}
+					Point center = new Point(-1, Math.round((float) sumx / sump), Math.round((float) sumy / sump));
+					Piar t = null;
+					double minDist = Double.MAX_VALUE;
+					for (Piar piar : pl)
+						if (!use.contains(piar)) {
+							double tmpDist = Double.MAX_VALUE;
+							for (Point point : piar.p)
+								tmpDist = Math.min(tmpDist, G2D.dist(center, point));
+							if (minDist > tmpDist) {
+								minDist = tmpDist;
+								t = piar;
+							}
+						}
+					use.add(t);
+				}
+				Piar[] t = use.toArray(new Piar[0]);
+				int nowArea = 0;
+				int pointNum = 0;
+				for (Piar piar : t) {
+					nowArea += area(piar.p);
+					pointNum += piar.p.length;
+				}
+				Point tp[] = new Point[pointNum];
+				{
+					int numTp = 0;
+					for (Piar piar : t) {
+						for (Point point : piar.p) {
+							tp[numTp++] = point;
+						}
+					}
+				}
+				Point[][] update = testCalc(tp, A, nowArea);
+				if (update == null)
+					continue retry;
+				Point[][] tmpPoints = new Point[t.length][];
+				for (int i = 0; i < t.length; ++i) {
+					tmpPoints[i] = t[i].p;
+					t[i].p = update[i];
+				}
+				++notWorst;
+				for (Piar p : pl) {
+					if (use.contains(p))
+						continue;
+					Point[] poly1 = p.p;
+					for (Piar up : t) {
+						Point[] poly2 = up.p;
+						for (int i = 0; i < poly1.length; ++i) {
+							Edge edge = new Edge(poly1[i], poly1[(i + 1) % poly1.length]);
+							for (int j = 0; j < poly2.length; ++j) {
+								if (edge.intersect(new Edge(poly2[j], poly2[(j + 1) % poly2.length]))) {
+									for (int k = 0; k < t.length; ++k)
+										t[k].p = tmpPoints[k];
+									++worst;
+									continue retry;
+								}
+							}
+						}
+					}
+				}
+				for (int i = 0; i < t.length; ++i) {
+					t[i].update(update[i]);
+				}
+				break;
+			}
+		}
+		for (int i = 0; i < pl.length; ++i) {
+			res[i] = pl[i].p;
+		}
+		System.out.println(this.getClass().getName() + " worst : " + worst + " / " + notWorst);
 		return result(res);
 	}
 
@@ -377,27 +517,24 @@ public class SmallPolygons {
 		String res[] = new String[polys.length];
 		for (int i = 0; i < polys.length; ++i) {
 			StringJoiner joiner = new StringJoiner(" ");
-			for (int j = 0, j_size = polys[i].length; j < j_size; ++j)
-				joiner.add(Integer.toString(ids.get(polys[i][j].hash())));
+			for (Point p : polys[i])
+				joiner.add(Integer.toString(p.id));
 			res[i] = joiner.toString();
 		}
 		return res;
 	}
 
 	private static final class Point {
-		final int x, y;
+		final int id, x, y;
 
-		Point(int x, int y) {
+		Point(int id, int x, int y) {
+			this.id = id;
 			this.x = x;
 			this.y = y;
 		}
 
 		static Point random(XorShift random) {
-			return new Point(random.nextInt(MAX_XY), random.nextInt(MAX_XY));
-		}
-
-		int hash() {
-			return (x << 16) | y;
+			return new Point(-1, random.nextInt(MAX_XY), random.nextInt(MAX_XY));
 		}
 
 		public String toString() {
@@ -407,7 +544,7 @@ public class SmallPolygons {
 
 	private static final class G2D {
 		static Point sub(Point p1, Point p2) {
-			return new Point(p1.x - p2.x, p1.y - p2.y);
+			return new Point(-1, p1.x - p2.x, p1.y - p2.y);
 		}
 
 		static double norm(int x, int y) {
@@ -510,20 +647,19 @@ public class SmallPolygons {
 		return x;
 	}
 
-	private final List<Point> getOutside(Point[] t) {
+	private final Point[] getOutside(Point[] t) {
 		Point init = t[0];
 		for (int i = 1, size = t.length; i < size; ++i)
 			if (init.y > t[i].y)
 				init = t[i];
-		Point p1 = new Point(init.x, init.y - 1);
+		Point p1 = new Point(-1, init.x, init.y - 1);
 		Point p2 = init;
 		final List<Point> outside = new ArrayList<>();
 		outside.add(init);
 		while (true) {
 			Point p3 = null;
 			double max = -1;
-			for (int i = 0, size = t.length; i < size; ++i) {
-				Point p = t[i];
+			for (Point p : t) {
 				if (p1 == p || p2 == p)
 					continue;
 				double a = angle2(p1, p2, p);
@@ -540,7 +676,7 @@ public class SmallPolygons {
 				p2 = p3;
 			}
 		}
-		return outside;
+		return outside.toArray(new Point[0]);
 	}
 
 	private static final class XorShift {
