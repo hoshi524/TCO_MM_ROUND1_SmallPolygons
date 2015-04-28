@@ -16,8 +16,8 @@ public class SmallPolygons {
 	private static final int INT_MAX = Integer.MAX_VALUE / 2;
 	private static final int MAX_XY = 700;
 	private static final int K = 50;
-	private static final byte BEAM_WIDTH_LIST[] = new byte[] { 60, 45, 18, 9, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-			2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
+	private static final int BEAM_WIDTH_LIST[] = new int[] { 70, 62, 25, 12, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+			4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 };
 	private static final double pai2 = Math.atan(1) * 4 * 2;
 	private static final double eps = 1e-9;
 	private final XorShift random = new XorShift();
@@ -283,7 +283,7 @@ public class SmallPolygons {
 	}
 
 	Point[][] testCalc(Point[] ps, int N, int min) {
-		long endTime = Math.min(this.endTime, System.currentTimeMillis() + 1500);
+		long endTime = Math.min(this.endTime, System.currentTimeMillis() + 1000);
 		int NP = ps.length;
 		NG: while (true) {
 			Point[] x = new Point[N];
@@ -417,7 +417,7 @@ public class SmallPolygons {
 		for (int i = 0, size = res.length; i < size; ++i) {
 			pl[i] = new Piar(res[i]);
 		}
-		int worst = 0, notWorst = 0;
+		int worst = 0, notWorst = 0, timeup = 0;
 		end: while (true) {
 			Arrays.sort(pl, new Comparator<Piar>() {
 				@Override
@@ -473,8 +473,10 @@ public class SmallPolygons {
 					}
 				}
 				Point[][] update = testCalc(tp, A, nowArea);
-				if (update == null)
+				if (update == null) {
+					timeup++;
 					continue retry;
+				}
 				Point[][] tmpPoints = new Point[t.length][];
 				for (int i = 0; i < t.length; ++i) {
 					tmpPoints[i] = t[i].p;
@@ -509,7 +511,8 @@ public class SmallPolygons {
 		for (int i = 0; i < pl.length; ++i) {
 			res[i] = pl[i].p;
 		}
-		System.out.println(this.getClass().getName() + " worst : " + worst + " / " + notWorst);
+		System.out.println(this.getClass().getName() + " worst : " + worst + " / " + notWorst + "   timeup? : "
+				+ timeup);
 		return result(res);
 	}
 
