@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class SmallPolygons {
+public class CopyOfSmallPolygons {
 
 	private static final int MAX_TIME = 9700;
 	private final long endTime = System.currentTimeMillis() + MAX_TIME;
