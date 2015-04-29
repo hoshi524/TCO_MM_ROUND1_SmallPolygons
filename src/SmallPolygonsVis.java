@@ -321,7 +321,7 @@ public class SmallPolygonsVis {
 	public double runTest(long seed) {
 		generate(seed);
 		setInput(pointsPar, N);
-		String[] ret = new SmallPolygons().choosePolygons(pointsPar, N);
+		String[] ret = new CopyOfSmallPolygons().choosePolygons(pointsPar, N);
 		return setResult(ret);
 	}
 
@@ -749,7 +749,8 @@ public class SmallPolygonsVis {
 			vis = true;
 		if (false) {
 			vis = true;
-			for (seed = 1; seed <= 10; seed++) {
+			int N = 100;
+			for (seed = 1; seed <= N; seed++) {
 				new SmallPolygonsVis(seed);
 			}
 		} else {
@@ -758,12 +759,13 @@ public class SmallPolygonsVis {
 	}
 
 	void compare() {
-		class DoubleClass {
+		class ParameterClass {
 			volatile double d;
+			volatile int timeover;
 		}
 		SmallPolygonsVis.debug = false;
-		final DoubleClass sum0 = new DoubleClass(), sum1 = new DoubleClass();
-		ExecutorService es = Executors.newFixedThreadPool(4);
+		final ParameterClass sum0 = new ParameterClass(), sum1 = new ParameterClass();
+		ExecutorService es = Executors.newFixedThreadPool(5);
 
 		for (int seed = 1, size = seed + 1000; seed < size; seed++) {
 			final int Seed = seed;
@@ -787,8 +789,12 @@ public class SmallPolygonsVis {
 						sum0.d += score0 / max;
 						sum1.d += score1 / max;
 					}
-					System.out.println(String.format("%8.1f : %8.1f    %5d : %5d    %.1f : %.1f", score0, score1,
-							(end0 - start0), (end1 - start1), sum0.d, sum1.d));
+					if ((end0 - start0) >= 10000)
+						sum0.timeover++;
+					if ((end1 - start1) >= 10000)
+						sum1.timeover++;
+					System.out.println(String.format("%8.1f : %8.1f    %5d : %5d    %.1f : %.1f   %d : %d", score0,
+							score1, (end0 - start0), (end1 - start1), sum0.d, sum1.d, sum0.timeover, sum1.timeover));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

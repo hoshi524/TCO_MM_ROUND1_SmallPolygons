@@ -11,7 +11,7 @@ import java.util.StringJoiner;
 
 public class SmallPolygons {
 
-	private static final int MAX_TIME = 9700;
+	private static final int MAX_TIME = 9500;
 	private final long endTime = System.currentTimeMillis() + MAX_TIME;
 	private static final int INT_MAX = Integer.MAX_VALUE / 2;
 	private static final int MAX_XY = 700;
@@ -472,8 +472,7 @@ public class SmallPolygons {
 		for (int i = 0; i < pl.length; ++i) {
 			res[i] = pl[i].p;
 		}
-		System.out.println(this.getClass().getName() + " worst : " + worst + " / " + numWorst + "   timeup? : "
-				+ timeup);
+		System.out.println(getClass().getName() + " worst : " + worst + " / " + numWorst + "   timeup? : " + timeup);
 		return result(res);
 	}
 
