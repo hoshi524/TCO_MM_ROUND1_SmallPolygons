@@ -1,3 +1,4 @@
+package dame;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class SmallPolygons {
+public class SmallPolygonsDame {
 
 	private static final int MAX_TIME = 9500;
 	private final long endTime = System.currentTimeMillis() + MAX_TIME;
@@ -29,9 +30,11 @@ public class SmallPolygons {
 	private final class Remain extends IntComparable {
 		final Point p;
 		Point t = null, u = null;
+		byte badEdges[];
 
-		Remain(Point p) {
+		Remain(Point p, int n) {
 			this.p = p;
+			badEdges = new byte[n];
 		}
 
 		Remain(Remain r) {
@@ -39,17 +42,22 @@ public class SmallPolygons {
 			t = r.t;
 			u = r.u;
 			value = r.value;
+			badEdges = Arrays.copyOf(r.badEdges, r.badEdges.length + 1);
 		}
 
-		void set(Point[] outside, Edge[] checkEdge) {
-			for (int i = 0, size = outside.length; i < size; ++i) {
-				Point a = outside[i];
-				Point b = outside[(i + 1) % size];
-				int v = areaDiff(a, b, p);
-				if (value > v && new Edge(p, a).isOK(checkEdge) && new Edge(p, b).isOK(checkEdge)) {
-					value = v;
-					t = a;
-					u = b;
+		void set(Edge[] edges) {
+			value = INT_MAX;
+			t = null;
+			u = null;
+			for (int i = 0, size = edges.length; i < size; ++i) {
+				if (badEdges[i] == 0) {
+					Edge e = edges[i];
+					int v = areaDiff(e.p1, e.p2, p);
+					if (value > v) {
+						value = v;
+						t = e.p1;
+						u = e.p2;
+					}
 				}
 			}
 		}
@@ -59,6 +67,7 @@ public class SmallPolygons {
 		Point[] outside;
 		Remain[] remain;
 		Edge[] checkEdge;
+		Edge[] edges;
 		int remainIndex;
 
 		Polygon(Point[] outside, Remain[] remain, Edge[] checkEdge, int outsideArea) {
@@ -66,6 +75,13 @@ public class SmallPolygons {
 			this.remain = remain;
 			this.checkEdge = checkEdge;
 			this.value = outsideArea;
+			edges = new Edge[outside.length];
+			for (int i = 0, size = outside.length; i < size; ++i) {
+				edges[i] = new Edge(outside[i], outside[(i + 1) % size]);
+			}
+			if (remain != null)
+				for (Remain r : remain)
+					r.set(edges);
 		}
 
 		Polygon(Polygon p) {
@@ -73,6 +89,7 @@ public class SmallPolygons {
 			remain = p.remain;
 			checkEdge = p.checkEdge;
 			value = p.value;
+			edges = p.edges;
 		}
 
 		void nextRemain() {
@@ -80,6 +97,18 @@ public class SmallPolygons {
 			remain = remove(remain, remainIndex);
 			Edge e0 = new Edge(r.t, r.p);
 			Edge e1 = new Edge(r.p, r.u);
+			Edge delete = null;
+			int deleteIndex = -1;
+			for (int i = 0, size = edges.length; i < size; ++i) {
+				Edge e = edges[i];
+				if (e.p1 == r.t && e.p2 == r.u) {
+					deleteIndex = i;
+					delete = e;
+					edges = add(edges, e0);
+					edges[i] = e1;
+					break;
+				}
+			}
 			{
 				int edgeSize = checkEdge.length;
 				for (int j = 0; j < edgeSize; ++j) {
@@ -95,38 +124,34 @@ public class SmallPolygons {
 				checkEdge[edgeSize] = e0;
 				checkEdge[edgeSize + 1] = e1;
 			}
-			Arrays.sort(checkEdge);
 			for (int i = 0, size = remain.length; i < size; ++i) {
-				Remain x = remain[i];
-				Edge te0 = x.t == null ? null : new Edge(x.t, x.p);
-				Edge te1 = x.u == null ? null : new Edge(x.p, x.u);
-				if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0) || e0.intersect(te1)
-						|| e1.intersect(te0) || e1.intersect(te1)) {
-					x = remain[i] = new Remain(x);
-					x.value = INT_MAX;
-					x.t = null;
-					x.u = null;
-					x.set(outside, checkEdge);
-				} else if (new Edge(r.p, x.p).isOK(checkEdge)) {
-					x = remain[i] = new Remain(x);
-					{
-						Point a = r.t;
-						Point b = r.p;
-						int v = areaDiff(a, b, x.p);
-						if (x.value > v && new Edge(x.p, a).isOK(checkEdge) && new Edge(x.p, b).isOK(checkEdge)) {
-							x.value = v;
-							x.t = a;
-							x.u = b;
-						}
+				Remain x = remain[i] = new Remain(remain[i]);
+				x.value = INT_MAX;
+				x.t = null;
+				x.u = null;
+				for (int j = 0, j_size = edges.length; j < j_size; ++j) {
+					Edge e = edges[j];
+					Edge t0 = new Edge(x.p, e.p1);
+					Edge t1 = new Edge(x.p, e.p2);
+					if (deleteIndex == j || j_size - 1 == j) {
+						x.badEdges[j] = 0;
+						for (Edge check : checkEdge)
+							if (t0.intersect(check) || t1.intersect(check))
+								++x.badEdges[j];
+					} else {
+						if (t0.intersect(delete) || t1.intersect(delete))
+							--x.badEdges[j];
+						if (t0.intersect(e0) || t1.intersect(e0))
+							++x.badEdges[j];
+						if (t0.intersect(e1) || t1.intersect(e1))
+							++x.badEdges[j];
 					}
-					{
-						Point a = r.p;
-						Point b = r.u;
-						int v = areaDiff(a, b, x.p);
-						if (x.value > v && new Edge(x.p, a).isOK(checkEdge) && new Edge(x.p, b).isOK(checkEdge)) {
+					if (x.badEdges[j] == 0) {
+						int v = areaDiff(e.p1, e.p2, x.p);
+						if (x.value > v) {
 							x.value = v;
-							x.t = a;
-							x.u = b;
+							x.t = e.p1;
+							x.u = e.p2;
 						}
 					}
 				}
@@ -242,9 +267,8 @@ public class SmallPolygons {
 			for (Point p : t) {
 				if (outsideSet.contains(p))
 					continue;
-				Remain r = new Remain(p);
+				Remain r = new Remain(p, outside.length);
 				remain.add(r);
-				r.set(outside, checkEdge);
 			}
 		}
 		int outsideArea = area(outside);
@@ -328,6 +352,8 @@ public class SmallPolygons {
 	}
 
 	private final List<Point>[] split(Point[] ps, int N) {
+		if (N <= 0)
+			throw new RuntimeException();
 		Point[] x = new Point[N];
 		@SuppressWarnings("unchecked")
 		List<Point> res[] = new List[N];
@@ -353,7 +379,7 @@ public class SmallPolygons {
 		return res;
 	}
 
-	String[] choosePolygons(int[] points, int N_) {
+	public String[] choosePolygons(int[] points, int N_) {
 		this.N = N_;
 		NP = points.length / 2;
 		N = Math.min(N, NP / 3);
@@ -394,8 +420,9 @@ public class SmallPolygons {
 				int value = 0;
 				for (int i = 0; i < N; ++i) {
 					Polygon p = polygons(tmp[i].toArray(new Point[0]));
-					if (p == null || p.value == 0)
+					if (p == null || p.value == 0) {
 						continue NG;
+					}
 					value += p.value;
 					if (min <= value)
 						continue NG;
@@ -664,13 +691,6 @@ public class SmallPolygons {
 		public int compareTo(Edge o) {
 			return Double.compare(o.norm, norm);
 		}
-
-		boolean isOK(Edge[] checkEdge) {
-			for (Edge ce : checkEdge)
-				if (intersect(ce))
-					return false;
-			return true;
-		}
 	}
 
 	private final double angle(Point a, Point b, Point c) {
@@ -762,6 +782,12 @@ public class SmallPolygons {
 		src = Arrays.copyOf(src, src.length + 1);
 		System.arraycopy(src, index, src, index + 1, src.length - index - 1);
 		src[index] = t;
+		return src;
+	}
+
+	private final <T> T[] add(T[] src, T t) {
+		src = Arrays.copyOf(src, src.length + 1);
+		src[src.length - 1] = t;
 		return src;
 	}
 

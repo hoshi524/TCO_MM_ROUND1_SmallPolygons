@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class SmallPolygons {
+public class CopyOfSmallPolygons {
 
 	private static final int MAX_TIME = 9500;
 	private final long endTime = System.currentTimeMillis() + MAX_TIME;
@@ -107,7 +107,7 @@ public class SmallPolygons {
 					x.t = null;
 					x.u = null;
 					x.set(outside, checkEdge);
-				} else if (new Edge(r.p, x.p).isOK(checkEdge)) {
+				} else {
 					x = remain[i] = new Remain(x);
 					{
 						Point a = r.t;
@@ -225,6 +225,8 @@ public class SmallPolygons {
 	}
 
 	private final Polygon polygons(Point[] t, Edge[] checkEdge) {
+		if (t.length >= 500)
+			return null;
 		long key = 0;
 		for (Point p : t)
 			key ^= hashTable[p.id];
