@@ -16,7 +16,7 @@ public class SmallPolygons {
 	private static final int INT_MAX = Integer.MAX_VALUE / 2;
 	private static final int MAX_XY = 700;
 	private static final int K = 50;
-	private static final int BEAM_WIDTH_LIST[] = new int[] { 70, 62, 25, 12, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 };
+	private static final int BEAM_WIDTH_LIST[] = new int[] { 50, 20, 8, 5 };
 	private static final int TN = 3;
 	private static final double pai2 = Math.atan(1) * 4 * 2;
 	private static final double eps = 1e-9;
@@ -175,7 +175,56 @@ public class SmallPolygons {
 		}
 	}
 
+	boolean contains(Point[] polygon, Point p) {
+		boolean in = false;
+		for (int i = 0, size = polygon.length; i < size; ++i) {
+			Point a = G2D.sub(polygon[i], p), b = G2D.sub(polygon[(i + 1) % size], p);
+			if (a.x > b.x) {
+				Point tmp = a;
+				a = b;
+				b = tmp;
+			}
+			if (a.x <= 0 && 0 < b.x && G2D.cross(a, b) < 0)
+				in = !in;
+			if (G2D.cross(a, b) == 0 && G2D.dot(a, b) <= 0)
+				return true;
+		}
+		return in;
+	}
+
+	boolean convex_contains(Point[] P, Point p) {
+		int n = P.length;
+		int sumx = P[0].x + P[n / 3].x + P[2 * n / 3].x;
+		int sumy = P[0].y + P[n / 3].y + P[2 * n / 3].y;
+		Point g = new Point(-1, Math.round((float) sumx / 3), Math.round((float) sumy / 3)); // inner-point
+		int a = 0, b = n;
+		while (a + 1 < b) { // invariant: c is in fan g-P[a]-P[b]
+			int c = (a + b) / 2;
+			if (G2D.cross(G2D.sub(P[a], g), G2D.sub(P[c], g)) > 0) { // angle < 180 deg
+				if (G2D.cross(G2D.sub(P[a], g), G2D.sub(p, g)) > 0 && G2D.cross(G2D.sub(P[c], g), G2D.sub(p, g)) < 0)
+					b = c;
+				else
+					a = c;
+			} else {
+				if (G2D.cross(G2D.sub(P[a], g), G2D.sub(p, g)) < 0 && G2D.cross(G2D.sub(P[c], g), G2D.sub(p, g)) > 0)
+					a = c;
+				else
+					b = c;
+			}
+		}
+		b %= n;
+		if (G2D.cross(G2D.sub(P[a], p), G2D.sub(P[b], p)) < 0)
+			return false;
+		if (G2D.cross(G2D.sub(P[a], p), G2D.sub(P[b], p)) > 0)
+			return true;
+		return true;
+	}
+
 	private final Polygon polygons(Point[] t) {
+		return polygons(t, new Edge[0]);
+	}
+
+	private final Polygon polygons(Point[] t, Edge[] checkEdge) {
 		long key = 0;
 		for (Point p : t)
 			key ^= hashTable[p.id];
@@ -187,7 +236,6 @@ public class SmallPolygons {
 		if (outside.length == t.length) {
 			return new Polygon(outside, null, null, area(outside));
 		}
-		Edge[] checkEdge = new Edge[0];
 		ArrayList<Remain> remain = new ArrayList<>(t.length);
 		{
 			Set<Point> outsideSet = new HashSet<>(Arrays.asList(outside));
@@ -205,7 +253,7 @@ public class SmallPolygons {
 		if (widthIndex < BEAM_WIDTH_LIST.length) {
 			width = BEAM_WIDTH_LIST[widthIndex];
 		} else {
-			width = 3;
+			width = 2;
 		}
 		List<Polygon> polys = new ArrayList<>(width * width / 2);
 		List<Polygon> next = new ArrayList<>(width * width / 2);
@@ -230,31 +278,28 @@ public class SmallPolygons {
 			}
 		}
 		Collections.sort(polys);
+		if (polys.isEmpty()) {
+			return null;
+		}
 		res = polys.get(0);
 		memo.put(key, res);
 		return res;
 	}
 
-	private final Point[][] calcPolygon(Point[] ps, int N, int min) {
-		long prevtime = System.currentTimeMillis(), onetime = 0;
-		long endTime = Math.min(this.endTime, prevtime + 1000);
+	private final Point[][] calcPolygon(Point[] ps, int N, int min, Edge[] checkEdge) {
+		long endTime = Math.min(this.endTime, System.currentTimeMillis() + 1000);
 		NG: while (true) {
 			List<Point> tmp[] = split(ps, N);
 			if (tmp == null)
 				continue NG;
-			{
-				long now = System.currentTimeMillis();
-				onetime = Math.max(onetime, now - prevtime);
-				if (now + onetime >= endTime) {
-					return null;
-				}
-				prevtime = now;
-			}
 
 			Point res[][] = new Point[N][];
 			int value = 0;
 			for (int i = 0; i < N; ++i) {
-				Polygon p = polygons(tmp[i].toArray(new Point[0]));
+				if (System.currentTimeMillis() >= endTime) {
+					return null;
+				}
+				Polygon p = polygons(tmp[i].toArray(new Point[0]), checkEdge);
 				if (p == null || p.value == 0)
 					continue NG;
 				value += p.value;
@@ -266,7 +311,7 @@ public class SmallPolygons {
 		}
 	}
 
-	private static final int areaFunc(Point p0, Point p1) {
+	private final int areaFunc(Point p0, Point p1) {
 		return (p1.y + p0.y) * (p1.x - p0.x);
 	}
 
@@ -433,15 +478,40 @@ public class SmallPolygons {
 					pointNum += piar.p.length;
 				}
 				Point targetPoint[] = new Point[pointNum];
+				int minx = Integer.MAX_VALUE, maxx = Integer.MIN_VALUE;
+				int miny = Integer.MAX_VALUE, maxy = Integer.MIN_VALUE;
 				{
 					int numTp = 0;
 					for (Piar piar : targetPiar) {
 						for (Point point : piar.p) {
 							targetPoint[numTp++] = point;
+							minx = Math.min(minx, point.x);
+							maxx = Math.max(maxx, point.x);
+							miny = Math.min(miny, point.y);
+							maxy = Math.max(maxy, point.y);
 						}
 					}
 				}
-				Point[][] update = calcPolygon(targetPoint, TN, nowArea);
+				/**
+				 * 上がると思ったら上がらなかった
+				 */
+				List<Edge> checkEdges = new ArrayList<>();
+				{
+					Point[] outside = getOutside(targetPoint);
+					for (Piar piar : pl) {
+						if (!use.contains(piar)) {
+							Point list[] = piar.p;
+							for (int i = 0, size = list.length; i < size; ++i) {
+								Point p = list[i];
+								if (minx <= p.x && p.x <= maxx && miny <= p.y && p.y <= maxy && contains(outside, p)) {
+									checkEdges.add(new Edge(p, list[(i + 1) % size]));
+									checkEdges.add(new Edge(p, list[(i + size - 1) % size]));
+								}
+							}
+						}
+					}
+				}
+				Point[][] update = calcPolygon(targetPoint, TN, nowArea, checkEdges.toArray(new Edge[0]));
 				if (update == null) {
 					timeup++;
 					continue retry;
@@ -527,7 +597,7 @@ public class SmallPolygons {
 		}
 	}
 
-	private static final class Edge implements Comparable<Edge> {
+	private final class Edge implements Comparable<Edge> {
 		Point p1, p2, vect; //vector p1 -> p2
 		double norm;
 
@@ -603,13 +673,13 @@ public class SmallPolygons {
 		}
 	}
 
-	private final static double angle(Point a, Point b, Point c) {
+	private final double angle(Point a, Point b, Point c) {
 		Point v1 = G2D.sub(b, a);
 		Point v2 = G2D.sub(b, c);
 		return Math.atan2(G2D.cross(v1, v2), G2D.dot(v1, v2));
 	}
 
-	private final static double angle2(Point a, Point b, Point c) {
+	private final double angle2(Point a, Point b, Point c) {
 		double x = angle(a, b, c);
 		if (x < 0) {
 			x = pai2 + x;
@@ -649,7 +719,7 @@ public class SmallPolygons {
 		return outside.toArray(new Point[0]);
 	}
 
-	private static final class XorShift {
+	private final class XorShift {
 		int x = 123456789;
 		int y = 362436069;
 		int z = 521288629;
@@ -688,14 +758,14 @@ public class SmallPolygons {
 		}
 	}
 
-	private static final <T> T[] add(T[] src, int index, T t) {
+	private final <T> T[] add(T[] src, int index, T t) {
 		src = Arrays.copyOf(src, src.length + 1);
 		System.arraycopy(src, index, src, index + 1, src.length - index - 1);
 		src[index] = t;
 		return src;
 	}
 
-	private static final <T> T[] remove(T[] src, int i) {
+	private final <T> T[] remove(T[] src, int i) {
 		T[] res = Arrays.copyOf(src, src.length - 1);
 		if (i == src.length - 1)
 			return res;

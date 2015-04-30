@@ -321,7 +321,7 @@ public class SmallPolygonsVis {
 	public double runTest(long seed) {
 		generate(seed);
 		setInput(pointsPar, N);
-		String[] ret = new CopyOfSmallPolygons().choosePolygons(pointsPar, N);
+		String[] ret = new SmallPolygons().choosePolygons(pointsPar, N);
 		return setResult(ret);
 	}
 
@@ -765,7 +765,7 @@ public class SmallPolygonsVis {
 		}
 		SmallPolygonsVis.debug = false;
 		final ParameterClass sum0 = new ParameterClass(), sum1 = new ParameterClass();
-		ExecutorService es = Executors.newFixedThreadPool(5);
+		ExecutorService es = Executors.newFixedThreadPool(2);
 
 		for (int seed = 1, size = seed + 1000; seed < size; seed++) {
 			final int Seed = seed;
@@ -775,13 +775,13 @@ public class SmallPolygonsVis {
 					vis.generate(Seed);
 					vis.setInput(vis.pointsPar, vis.N);
 					long start0 = System.currentTimeMillis();
-					String res0[] = new CopyOfSmallPolygons().choosePolygons(vis.pointsPar, vis.N);
+					String res0[] = new SmallPolygons().choosePolygons(vis.pointsPar, vis.N);
 					long end0 = System.currentTimeMillis();
 					double score0 = vis.setResult(res0);
 					vis.generate(Seed);
 					vis.setInput(vis.pointsPar, vis.N);
 					long start1 = System.currentTimeMillis();
-					String res1[] = new SmallPolygons().choosePolygons(vis.pointsPar, vis.N);
+					String res1[] = new SmallPolygonsPrev().choosePolygons(vis.pointsPar, vis.N);
 					long end1 = System.currentTimeMillis();
 					double score1 = vis.setResult(res1);
 					double max = Math.max(score0, score1);
