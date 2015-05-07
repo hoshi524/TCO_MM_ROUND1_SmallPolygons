@@ -8,8 +8,8 @@ import java.util.Collections;
  */
 public class SmallPolygonsTomerun {
 
-	private static final boolean DEBUG = 1 == 0;
-	private static final boolean MEASURE_TIME = 1 == 0;
+	private static final boolean DEBUG = true;
+	private static final boolean MEASURE_TIME = true;
 	private static final long TL = 8000;
 	long startTime = System.currentTimeMillis(), worstTime;
 	Timer timer = new Timer();
@@ -35,18 +35,22 @@ public class SmallPolygonsTomerun {
 		}
 		Arrays.sort(ps);
 
+		// 問題サイズでアルゴリズムを変える
 		if (P <= 30 && P / 3 == this.N) {
 			initialHeat = 800000.0 / P;
 			heatMul = 0.95;
 			solveSA(TL / 3);
+			// 小さいケースはbrute forceできるってことっぽい
 			solveBrute();
 		} else if (P <= N * 5) {
+			/// 頂点に対して、多角形が多いケース(角数が少ない)
 			initialHeat = 800000.0 / P;
 			heatMul = 0.9;
 			int LOOP = P <= N * 3.5 ? 7 : 4;
 			int optimalScore = Integer.MAX_VALUE;
 			ArrayList<ArrayList<Point>> optimalAns = null;
 			long PREMIUM_FIRST = 300;
+			// 多点スタート？
 			for (int i = 1; i <= LOOP; ++i) {
 				solveSA((TL - PREMIUM_FIRST) * i / (LOOP) + PREMIUM_FIRST);
 				if (bestScore < optimalScore) {
@@ -78,6 +82,7 @@ public class SmallPolygonsTomerun {
 			heatMul = P >= 500 ? 0.96 : 0.95;
 			solveSA(TL);
 		} else {
+			// 大きいケース
 			solveVoronoi(TL);
 		}
 
