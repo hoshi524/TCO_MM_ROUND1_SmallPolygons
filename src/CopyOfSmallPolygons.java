@@ -16,7 +16,7 @@ public class CopyOfSmallPolygons {
 	private static final int INT_MAX = Integer.MAX_VALUE / 2;
 	private static final int MAX_XY = 700;
 	private static final int K = 50;
-	private static final int BEAM_WIDTH_LIST[] = new int[] { 50, 20, 8, 5 };
+	private static final int BEAM_WIDTH_LIST[] = new int[] { 80, 40, 16, 10, 5 };
 	private static final int TN = 3;
 	private static final double pai2 = Math.atan(1) * 4 * 2;
 	private static final double eps = 1e-9;
@@ -98,35 +98,48 @@ public class CopyOfSmallPolygons {
 			Arrays.sort(checkEdge);
 			for (int i = 0, size = remain.length; i < size; ++i) {
 				Remain x = remain[i];
-				Edge te0 = x.t == null ? null : new Edge(x.t, x.p);
-				Edge te1 = x.u == null ? null : new Edge(x.p, x.u);
-				if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0) || e0.intersect(te1)
-						|| e1.intersect(te0) || e1.intersect(te1)) {
+				// 線分上の点はそのまま使うしか無い
+				if (e0.intersect(x.p)) {
 					x = remain[i] = new Remain(x);
 					x.value = INT_MAX;
-					x.t = null;
-					x.u = null;
-					x.set(outside, checkEdge);
-				} else {
+					x.t = r.t;
+					x.u = r.p;
+				} else if (e1.intersect(x.p)) {
 					x = remain[i] = new Remain(x);
-					{
-						Point a = r.t;
-						Point b = r.p;
-						int v = areaDiff(a, b, x.p);
-						if (x.value > v && new Edge(x.p, a).isOK(checkEdge) && new Edge(x.p, b).isOK(checkEdge)) {
-							x.value = v;
-							x.t = a;
-							x.u = b;
+					x.value = INT_MAX;
+					x.t = r.p;
+					x.u = r.u;
+				} else {
+					Edge te0 = x.t == null ? null : new Edge(x.t, x.p);
+					Edge te1 = x.u == null ? null : new Edge(x.p, x.u);
+					if (te0 == null || te1 == null || (r.t == x.t && r.u == x.u) || e0.intersect(te0) || e0.intersect(te1)
+							|| e1.intersect(te0) || e1.intersect(te1)) {
+						x = remain[i] = new Remain(x);
+						x.value = INT_MAX;
+						x.t = null;
+						x.u = null;
+						x.set(outside, checkEdge);
+					} else if (new Edge(r.p, x.p).isOK(checkEdge)) {
+						x = remain[i] = new Remain(x);
+						{
+							Point a = r.t;
+							Point b = r.p;
+							int v = areaDiff(a, b, x.p);
+							if (x.value > v && new Edge(x.p, a).isOK(checkEdge) && new Edge(x.p, b).isOK(checkEdge)) {
+								x.value = v;
+								x.t = a;
+								x.u = b;
+							}
 						}
-					}
-					{
-						Point a = r.p;
-						Point b = r.u;
-						int v = areaDiff(a, b, x.p);
-						if (x.value > v && new Edge(x.p, a).isOK(checkEdge) && new Edge(x.p, b).isOK(checkEdge)) {
-							x.value = v;
-							x.t = a;
-							x.u = b;
+						{
+							Point a = r.p;
+							Point b = r.u;
+							int v = areaDiff(a, b, x.p);
+							if (x.value > v && new Edge(x.p, a).isOK(checkEdge) && new Edge(x.p, b).isOK(checkEdge)) {
+								x.value = v;
+								x.t = a;
+								x.u = b;
+							}
 						}
 					}
 				}
@@ -225,8 +238,6 @@ public class CopyOfSmallPolygons {
 	}
 
 	private final Polygon polygons(Point[] t, Edge[] checkEdge) {
-		if (t.length >= 500)
-			return null;
 		long key = 0;
 		for (Point p : t)
 			key ^= hashTable[p.id];
@@ -257,33 +268,47 @@ public class CopyOfSmallPolygons {
 		} else {
 			width = 2;
 		}
-		List<Polygon> polys = new ArrayList<>(width * width / 2);
-		List<Polygon> next = new ArrayList<>(width * width / 2);
+		int initWidth = width;
+		List<Polygon> list[] = new List[remain.size()];
+		for (int i = 0; i < remain.size(); ++i)
+			list[i] = new ArrayList<>(width * width);
 		Set<Long> used = new HashSet<>();
-		new Polygon(outside, remain.toArray(new Remain[0]), checkEdge, outsideArea).next(width, polys, used);
+		new Polygon(outside, remain.toArray(new Remain[0]), checkEdge, outsideArea).next(width, list[0], used);
 		for (int i = 0, size = remain.size() - 1; i < size; ++i) {
-			Collections.sort(polys);
+			List<Polygon> now = list[i], next = list[i + 1];
+			Collections.sort(now);
 			used.clear();
 			next.clear();
-			for (int j = 0, j_size = Math.min(width, polys.size()); j < j_size; ++j) {
-				Polygon p = polys.get(j);
+			for (int j = 0, j_size = Math.min(width, now.size()); j < j_size; ++j) {
+				Polygon p = now.get(j);
 				p.nextRemain();
 				p.next(width, next, used);
 			}
 			if (next.isEmpty()) {
-				return null;
-			}
-			{
-				List<Polygon> tmp = polys;
-				polys = next;
-				next = tmp;
+				if (width > initWidth * 2) {
+					System.out.println(t.length + " " + width);
+					return null;
+				}
+				width += 10;
+				i = Math.max(0, i - 10);
+				now = list[i];
+				next = list[i + 1];
+				used.clear();
+				next.clear();
+				for (int j = 0, j_size = Math.min(width, now.size()); j < j_size; ++j) {
+					Polygon p = now.get(j);
+					if (j + 10 >= width)
+						p.nextRemain();
+					p.next(width, next, used);
+				}
 			}
 		}
-		Collections.sort(polys);
-		if (polys.isEmpty()) {
+		List<Polygon> reslist = list[list.length - 1];
+		Collections.sort(reslist);
+		if (reslist.isEmpty()) {
 			return null;
 		}
-		res = polys.get(0);
+		res = reslist.get(0);
 		memo.put(key, res);
 		return res;
 	}
@@ -498,21 +523,21 @@ public class CopyOfSmallPolygons {
 				 * 上がると思ったら上がらなかった
 				 */
 				List<Edge> checkEdges = new ArrayList<>();
-				{
-					Point[] outside = getOutside(targetPoint);
-					for (Piar piar : pl) {
-						if (!use.contains(piar)) {
-							Point list[] = piar.p;
-							for (int i = 0, size = list.length; i < size; ++i) {
-								Point p = list[i];
-								if (minx <= p.x && p.x <= maxx && miny <= p.y && p.y <= maxy && contains(outside, p)) {
-									checkEdges.add(new Edge(p, list[(i + 1) % size]));
-									checkEdges.add(new Edge(p, list[(i + size - 1) % size]));
+								{
+									Point[] outside = getOutside(targetPoint);
+									for (Piar piar : pl) {
+										if (!use.contains(piar)) {
+											Point list[] = piar.p;
+											for (int i = 0, size = list.length; i < size; ++i) {
+												Point p = list[i];
+												if (minx <= p.x && p.x <= maxx && miny <= p.y && p.y <= maxy && contains(outside, p)) {
+													checkEdges.add(new Edge(p, list[(i + 1) % size]));
+													checkEdges.add(new Edge(p, list[(i + size - 1) % size]));
+												}
+											}
+										}
+									}
 								}
-							}
-						}
-					}
-				}
 				Point[][] update = calcPolygon(targetPoint, TN, nowArea, checkEdges.toArray(new Edge[0]));
 				if (update == null) {
 					timeup++;
@@ -649,6 +674,11 @@ public class CopyOfSmallPolygons {
 				return false;
 			}
 			return true;
+		}
+
+		public boolean intersect(Point p) {
+			return !(p1 == p || p2 == p || Math.min(p1.x, p2.x) > p.x || Math.max(p1.x, p2.x) < p.x || Math.min(p1.y, p2.y) > p.y
+					|| Math.max(p1.y, p2.y) < p.y || dist(p) > 0);
 		}
 
 		// ---------------------------------------------------
