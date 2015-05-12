@@ -337,9 +337,9 @@ public class SmallPolygons {
 		}
 		for (Point point : ps) {
 			int t = -1;
-			double dist = Double.MAX_VALUE / 2;
+			int dist = INT_MAX;
 			for (int j = 0; j < N; ++j) {
-				double tmpd = G2D.dist(x[j], point);
+				int tmpd = G2D.dist(x[j], point);
 				if (dist > tmpd) {
 					dist = tmpd;
 					t = j;
@@ -457,11 +457,11 @@ public class SmallPolygons {
 					}
 					Point center = new Point(-1, Math.round((float) sumx / sump), Math.round((float) sumy / sump));
 					Piar t = null;
-					double minDist = Double.MAX_VALUE;
+					int minDist = INT_MAX;
 					for (Piar piar : pl)
 						if (!use.contains(piar)) {
 							for (Point point : piar.p) {
-								double dist = G2D.dist(center, point);
+								int dist = G2D.dist(center, point);
 								if (minDist > dist) {
 									minDist = dist;
 									t = piar;
@@ -580,8 +580,8 @@ public class SmallPolygons {
 			return new Point(-1, p1.x - p2.x, p1.y - p2.y);
 		}
 
-		static double norm(int x, int y) {
-			return Math.sqrt(x * x + y * y);
+		static int norm(int x, int y) {
+			return x * x + y * y;
 		}
 
 		static int dot(Point p1, Point p2) {
@@ -592,24 +592,20 @@ public class SmallPolygons {
 			return p1.x * p2.y - p1.y * p2.x;
 		}
 
-		static double dist(Point p1, Point p2) {
+		static int dist(Point p1, Point p2) {
 			return norm(p1.x - p2.x, p1.y - p2.y);
 		}
 	}
 
 	private final class Edge implements Comparable<Edge> {
 		Point p1, p2, vect; //vector p1 -> p2
-		double norm;
+		int norm;
 
 		Edge(Point p1n, Point p2n) {
 			p1 = p1n;
 			p2 = p2n;
 			vect = G2D.sub(p2, p1);
 			norm = G2D.norm(vect.x, vect.y);
-		}
-
-		boolean eq(double a, double b) {
-			return Math.abs(a - b) < eps;
 		}
 
 		boolean intersect(Edge other) {
@@ -626,13 +622,13 @@ public class SmallPolygons {
 			if (den == 0) {
 				//on the same line - "not intersect" only if one of the vertices is common,
 				//and the other doesn't belong to the line
-				if ((p1 == other.p1 && eq(G2D.dist(p2, other.p2), norm + other.norm))
-						|| (p1 == other.p2 && eq(G2D.dist(p2, other.p1), norm + other.norm))
-						|| (p2 == other.p1 && eq(G2D.dist(p1, other.p2), norm + other.norm))
-						|| (p2 == other.p2 && eq(G2D.dist(p1, other.p1), norm + other.norm))) {
+				if ((p1 == other.p1 && G2D.dist(p2, other.p2) == norm + other.norm)
+						|| (p1 == other.p2 && G2D.dist(p2, other.p1) == norm + other.norm)
+						|| (p2 == other.p1 && G2D.dist(p1, other.p2) == norm + other.norm)
+						|| (p2 == other.p2 && G2D.dist(p1, other.p1) == norm + other.norm)) {
 					return false;
 				}
-				return dist(other.p1) < eps || dist(other.p2) < eps;
+				return dist(other.p1) == 0 || dist(other.p2) == 0;
 			}
 			//common vertices
 			if (p1 == other.p1 || p1 == other.p2 || p2 == other.p1 || p2 == other.p2) {
@@ -650,21 +646,21 @@ public class SmallPolygons {
 		}
 
 		// ---------------------------------------------------
-		double dist(Point p) {
+		int dist(Point p) {
 			//distance from p to the edge
 			if (G2D.dot(vect, G2D.sub(p, p1)) <= 0)
 				return G2D.dist(p, p1); //from p to p1
 			if (G2D.dot(vect, G2D.sub(p, p2)) >= 0)
 				return G2D.dist(p, p2); //from p to p2
 			//distance to the line itself
-			return Math.abs(-vect.y * p.x + vect.x * p.y + p1.x * p2.y - p1.y * p2.x) / norm;
+			return Math.abs(-vect.y * p.x + vect.x * p.y + p1.x * p2.y - p1.y * p2.x);
 		}
 
 		@Override
 		public int compareTo(Edge o) {
-			return Double.compare(o.norm, norm);
+			return Integer.compare(o.norm, norm);
 		}
-
+		
 		boolean isOK(Edge[] checkEdge) {
 			for (Edge ce : checkEdge)
 				if (intersect(ce))

@@ -132,7 +132,8 @@ public class SmallPolygonsTomerun {
 	}
 
 	void recBrute(State st, int useCnt, int triPos) {
-		if (st.val >= bestScore) return;
+		if (st.val >= bestScore)
+			return;
 		if (useCnt == P) {
 			bestScore = st.val;
 			bestAns.clear();
@@ -146,7 +147,8 @@ public class SmallPolygonsTomerun {
 		if ((recCnt & 0xFFF) == 0 && System.currentTimeMillis() - startTime > TL) {
 			recTimeout = true;
 		}
-		if (recTimeout) return;
+		if (recTimeout)
+			return;
 		final int maxAdd = Math.min((P - useCnt) / 3, N - st.poly.size());
 		final int minAppend = (P - useCnt) - 3 * maxAdd + maxAdd;
 		final int pruneTh = (bestScore - st.val) / minAppend;
@@ -163,9 +165,12 @@ public class SmallPolygonsTomerun {
 			final int poi3 = polyIdx[p3.id];
 			final int n = st.poly.size();
 			int used = 0;
-			if (poi1 != -1) ++used;
-			if (poi2 != -1) ++used;
-			if (poi3 != -1) ++used;
+			if (poi1 != -1)
+				++used;
+			if (poi2 != -1)
+				++used;
+			if (poi3 != -1)
+				++used;
 
 			// add new triangle
 			if (used == 0 && n < N) {
@@ -186,7 +191,8 @@ public class SmallPolygonsTomerun {
 			}
 
 			// append to existent polygon
-			if (used != 2) continue;
+			if (used != 2)
+				continue;
 			int poi = -1;
 			if (poi1 == -1 && poi2 != -1 && poi2 == poi3) {
 				Point tmp = p1;
@@ -233,7 +239,8 @@ public class SmallPolygonsTomerun {
 
 				if (ok) {
 					for (int j = 0; j < n; ++j) {
-						if (j == poi) continue;
+						if (j == poi)
+							continue;
 						Polygon crossPoly = st.poly.get(j);
 						if (cross(crossPoly, p1, p2) || cross(crossPoly, p2, p3)) {
 							ok = false;
@@ -268,7 +275,8 @@ public class SmallPolygonsTomerun {
 		timer.start(1);
 		for (int turn = 0;; ++turn) {
 			State curState;
-			if (turn != 0) triSet.shuffle(rnd);
+			if (turn != 0)
+				triSet.shuffle(rnd);
 
 			if (N * 4.5 < P) {
 				while (true) {
@@ -282,7 +290,8 @@ public class SmallPolygonsTomerun {
 							}
 						}
 					}
-					if (ok) break;
+					if (ok)
+						break;
 				}
 			} else {
 				curState = selectInitialState2(triSet);
@@ -290,7 +299,8 @@ public class SmallPolygonsTomerun {
 
 			ArrayList<Integer> useQ = new ArrayList<>();
 			for (int i = 0; i < P; ++i) {
-				if (curState.used.get(ps[i].id)) continue;
+				if (curState.used.get(ps[i].id))
+					continue;
 				int minDist = Integer.MAX_VALUE;
 				for (Polygon poly : curState.poly) {
 					for (Point pnt : poly.v) {
@@ -320,10 +330,13 @@ public class SmallPolygonsTomerun {
 						final int ni = pi == n - 1 ? 0 : pi + 1;
 						final Point ep1 = poly.v.get(pi);
 						final Point ep2 = poly.v.get(ni);
-						if (!triSet.exist[ep1.id][curP.id].get(ep2.id)) continue;
+						if (!triSet.exist[ep1.id][curP.id].get(ep2.id))
+							continue;
 						final int val = triarea(ep1, curP, ep2);
-						if (bestMove != null && curState.val + val >= bestMove.st.val + bestMove.diff) continue;
-						if (cross(curState, poly, pi, curP)) continue;
+						if (bestMove != null && curState.val + val >= bestMove.st.val + bestMove.diff)
+							continue;
+						if (cross(curState, poly, pi, curP))
+							continue;
 						bestMove = new Append(curState, val, curP, i, ni);
 					}
 				}
@@ -375,7 +388,8 @@ public class SmallPolygonsTomerun {
 			Collections.sort(angles);
 			for (int j = 0; j < angles.size(); ++j) {
 				Point pnt2 = ps[angles.get(j).pi];
-				if (j > 0 && triarea(pnt1, ps[angles.get(j - 1).pi], pnt2) == 0) continue;
+				if (j > 0 && triarea(pnt1, ps[angles.get(j - 1).pi], pnt2) == 0)
+					continue;
 				Point prev = null;
 				int k = j + 1;
 				for (; k < angles.size(); ++k) {
@@ -391,7 +405,8 @@ public class SmallPolygonsTomerun {
 					// 0以下になるケースって、どういった場合だ
 					// pnt2が軸になってる
 					// 三角形内に他の頂点が内在しないようにだ
-					if (triarea(pnt2, prev, pnt3) <= 0) continue;
+					if (triarea(pnt2, prev, pnt3) <= 0)
+						continue;
 					prev = pnt3;
 					set.add(pnt1, pnt2, pnt3);
 				}
@@ -421,35 +436,43 @@ public class SmallPolygonsTomerun {
 					final int pi1 = tri.v.get(0).id;
 					final int pi2 = tri.v.get(1).id;
 					final int pi3 = tri.v.get(2).id;
-					if (initialState.used.get(pi1) || initialState.used.get(pi2) || initialState.used.get(pi3)) continue;
-					if (cross(initialState, tri)) continue;
+					if (initialState.used.get(pi1) || initialState.used.get(pi2) || initialState.used.get(pi3))
+						continue;
+					if (cross(initialState, tri))
+						continue;
 					bestPoly.add(pi1);
 					bestPoly.add(pi2);
 					bestPoly.add(pi3);
 					++trisPos;
 					break;
 				}
-				if (bestPoly.isEmpty()) break;
+				if (bestPoly.isEmpty())
+					break;
 				fallback = false;
 			} else {
 				final int MAX_V = 11;
 				for (int j = 0; j < LOOP; ++j) {
 					final int pip1 = rnd.nextInt(count);
 					int pip2 = rnd.nextInt(count - 1);
-					if (pip2 >= pip1) ++pip2;
+					if (pip2 >= pip1)
+						++pip2;
 					final Point p1 = i2p[cand[pip1]];
 					final Point p2 = i2p[cand[pip2]];
-					if (cross(initialState, p1, p2)) continue;
+					if (cross(initialState, p1, p2))
+						continue;
 					double baseInv = 1.0 / Math.sqrt(dist2(p1, p2));
 					ArrayList<Integer> curPoly = new ArrayList<>();
 					for (int k = 0; k < count; ++k) {
-						if (k == pip1 || k == pip2) continue;
+						if (k == pip1 || k == pip2)
+							continue;
 						final int pi = cand[k];
 						final Point p3 = i2p[pi];
 						int area = Math.abs(triarea(p1, p2, p3));
 						double dist = area * baseInv;
-						if (dist > DIST_TH) continue;
-						if (cross(initialState, p1, p3)) continue;
+						if (dist > DIST_TH)
+							continue;
+						if (cross(initialState, p1, p3))
+							continue;
 						curPoly.add(pi);
 					}
 					if (curPoly.size() > 0 && curPoly.size() <= MAX_V && curPoly.size() + 2 > bestPoly.size()) {
@@ -477,7 +500,8 @@ public class SmallPolygonsTomerun {
 				poly = poly.add(i2p[bestPoly.get(j)], j, area);
 			}
 			initialState.add(poly);
-			if (initialState.val >= cutoff) return initialState;
+			if (initialState.val >= cutoff)
+				return initialState;
 			count -= bestPoly.size();
 		}
 		return initialState;
@@ -495,14 +519,17 @@ public class SmallPolygonsTomerun {
 		used[0] = true;
 		determineBestOrderRec(ps, 1, 0);
 		ps.clear();
-		if (bestOrderArea > 0) ps.addAll(bestOrder);
+		if (bestOrderArea > 0)
+			ps.addAll(bestOrder);
 	}
 
 	void determineBestOrderRec(ArrayList<Integer> ps, int pos, int area) {
 		if (pos == ps.size()) {
-			if (area < 0 || area >= bestOrderArea) return;
+			if (area < 0 || area >= bestOrderArea)
+				return;
 			for (int j = 1; j < pos - 2; ++j) {
-				if (cross(i2p[order[0]], i2p[order[pos - 1]], i2p[order[j]], i2p[order[j + 1]])) return;
+				if (cross(i2p[order[0]], i2p[order[pos - 1]], i2p[order[j]], i2p[order[j + 1]]))
+					return;
 			}
 			bestOrderArea = area;
 			bestOrder.clear();
@@ -512,9 +539,11 @@ public class SmallPolygonsTomerun {
 			return;
 		}
 		for (int i = 1; i < ps.size(); ++i) {
-			if (used[i]) continue;
+			if (used[i])
+				continue;
 			for (int j = 0; j < pos - 2; ++j) {
-				if (cross(i2p[order[pos - 1]], i2p[ps.get(i)], i2p[order[j]], i2p[order[j + 1]])) return;
+				if (cross(i2p[order[pos - 1]], i2p[ps.get(i)], i2p[order[j]], i2p[order[j + 1]]))
+					return;
 			}
 			final int curArea = triarea(i2p[order[0]], i2p[order[pos - 1]], i2p[ps.get(i)]);
 			order[pos] = ps.get(i);
@@ -528,13 +557,19 @@ public class SmallPolygonsTomerun {
 		State initialState = new State(P);
 		for (int i = 0; i < triSet.tris.size(); ++i) {
 			Polygon poly = triSet.tris.get(i);
-			if (initialState.used.get(poly.v.get(0).id)) continue;
-			if (initialState.used.get(poly.v.get(1).id)) continue;
-			if (initialState.used.get(poly.v.get(2).id)) continue;
-			if (cross(initialState, poly)) continue;
+			if (initialState.used.get(poly.v.get(0).id))
+				continue;
+			if (initialState.used.get(poly.v.get(1).id))
+				continue;
+			if (initialState.used.get(poly.v.get(2).id))
+				continue;
+			if (cross(initialState, poly))
+				continue;
 			initialState.add(poly);
-			if (initialState.poly.size() == N) break;
-			if (initialState.val + poly.area >= bestScore) break;
+			if (initialState.poly.size() == N)
+				break;
+			if (initialState.val + poly.area >= bestScore)
+				break;
 		}
 		return initialState;
 	}
@@ -601,14 +636,14 @@ public class SmallPolygonsTomerun {
 			op1 = op1 == P - 1 ? 0 : op1 + 1;
 			//			counter.add(0);
 			// 頂点を移動させている多角形が三角形の場合はできない
-			if (cnt[pi[op1]] == 3) continue;
-			// なるほど。areaAddがマイナスなのは多角形的に凹んでいるところだ
-			// areaAddがプラスなのは膨らんでいるところ
-			
-			// areaAdd と areaRemove 反対な気がするんだけど、勘違いしてる？
+			if (cnt[pi[op1]] == 3)
+				continue;
+			// なるほど。areaAddがマイナスなのは多角形的に出っ張っているところだ
+			// areaAddがプラスなのは凹んでいるところ
 			int areaAdd = edgeArea[op1];
 			// 移動すると移動後の面積が0になるので移動できない
-			if (-areaAdd >= pa[pi[op1]]) continue;
+			if (-areaAdd >= pa[pi[op1]])
+				continue;
 			//			counter.add(1);
 			// 移動する頂点はop2
 			final int op2 = next[op1];
@@ -624,8 +659,7 @@ public class SmallPolygonsTomerun {
 					mpi1 = rnd.nextInt(P);
 				}
 			} else {
-				// 何で、膨らんでいる頂点は同一多角形から移動先を探すんだ・・・？
-				
+				// 凹んでいる頂点なので、同一の多角形内しか移動できない
 				// 同一多角形から探す
 				int forward = rnd.nextInt(cnt[pi[op1]] - 2);
 				if ((forward & 1) == 0) {
@@ -645,18 +679,20 @@ public class SmallPolygonsTomerun {
 			final int mpi2 = next[mpi1];
 			final Point mp1 = i2p[mpi1];
 			final Point mp2 = i2p[mpi2];
+			// areaAddとはtriareaの引数の順序が違って、符号が逆転しているみたい
 			final int areaRemove = triarea(mp1, p2, mp2);
 			// 符号が異なってないといけない(同じ場合はcontinue)
-			// 凹んでいる点は膨らんでいる点へ
-			// 膨らんでいる点は凹んでいる点へ
-			// 何故
+			// 凹んでいる→凹んでいる
+			// 出っ張っている→出っ張っている
+			// にしか遷移できない。areaRemoveの符号が逆転しているので、符号が不一致である必要がある
 			// areaAdd + areaRemove = 更新された時の差分(マイナスの方が良い)
-		
 			// 符号が知りたい時は、signumして乗算するのが良いのかー
-			if (areaAdd * Integer.signum(areaRemove) >= 0) continue;
+			if (areaAdd * Integer.signum(areaRemove) >= 0)
+				continue;
 			//			counter.add(2);
 			// diffがプラス(悪くなる遷移)の時に遷移するかどうか
-			if (!transit(areaAdd + areaRemove, HEAT)) continue;
+			if (!transit(areaAdd + areaRemove, HEAT))
+				continue;
 
 			// 同じ多角形内の移動の場合
 			if (pi[op2] == pi[mpi1]) {
@@ -665,44 +701,54 @@ public class SmallPolygonsTomerun {
 				if (mpi2 != op1 && mpi1 != op3) {
 					final Point mp0 = i2p[prev[mpi1]];
 					boolean inside = ccw(mp0, mp1, mp2) - ccw(mp0, mp1, p2) - ccw(p2, mp1, mp2) < 0;
-					if (areaAdd > 0 ^ inside) continue;
+					if (areaAdd > 0 ^ inside)
+						continue;
 
 					final Point mp3 = i2p[next[mpi2]];
 					inside = ccw(mp1, mp2, mp3) - ccw(mp1, mp2, p2) - ccw(p2, mp2, mp3) < 0;
-					if (areaAdd > 0 ^ inside) continue;
+					if (areaAdd > 0 ^ inside)
+						continue;
 				}
 
 				if (areaAdd < 0) {
 					// new segment (p1-p3) crosses with polygon? 
-					if (!triSet.exist[mpi1][op2].get(mpi2)) continue OUT;
-					if (!triSet.exist[op1][op2].get(op3)) continue OUT;
+					if (!triSet.exist[mpi1][op2].get(mpi2))
+						continue OUT;
+					if (!triSet.exist[op1][op2].get(op3))
+						continue OUT;
 
-					// 凹んでいる辺を変更するので、全頂点チェック
+					// 出っ張っている辺を変更するので、全頂点チェック
 					// new segments (p2-mp1), (p2-mp2) cross with polygon? 
 					for (int i = 0; i < P; ++i) {
-						if (i == op1 || i == op2) continue;
+						if (i == op1 || i == op2)
+							continue;
 						final int ni = next[i];
 						if (i != mpi2 && ni != mpi2) {
-							if (cross(p2, mp2, i2p[i], i2p[ni])) continue OUT;
+							if (cross(p2, mp2, i2p[i], i2p[ni]))
+								continue OUT;
 						}
 						if (i != mpi1 && ni != mpi1) {
-							if (cross(p2, mp1, i2p[i], i2p[ni])) continue OUT;
+							if (cross(p2, mp1, i2p[i], i2p[ni]))
+								continue OUT;
 						}
 					}
 				} else {
 					// new segment (p1-p3) crosses with polygon? 
-					if (!triSet.exist[op1][op3].get(op2)) continue OUT;
+					if (!triSet.exist[op1][op3].get(op2))
+						continue OUT;
 
-					// 膨らんでいる辺を変更するので、同一多角形のチェックのみで良い
+					// 凹んでいる辺を変更するので、同一多角形のチェックのみで良い
 					// new segments (p2-mp1), (p2-mp2) cross with polygon? 
 					// sufficient to check current polygon
 					for (int i = op3; i != op1; i = next[i]) {
 						final int ni = next[i];
 						if (i != mpi2 && ni != mpi2) {
-							if (cross(p2, mp2, i2p[i], i2p[ni])) continue OUT;
+							if (cross(p2, mp2, i2p[i], i2p[ni]))
+								continue OUT;
 						}
 						if (i != mpi1 && ni != mpi1) {
-							if (cross(p2, mp1, i2p[i], i2p[ni])) continue OUT;
+							if (cross(p2, mp1, i2p[i], i2p[ni]))
+								continue OUT;
 						}
 					}
 				}
@@ -711,31 +757,38 @@ public class SmallPolygonsTomerun {
 				// 違う多角形への移動の場合
 				//				counter.add(6);
 				// new segment (p1-p3) crosses with polygon? 
-				if (!triSet.exist[mpi1][op2].get(mpi2)) continue OUT;
-				if (!triSet.exist[op1][op2].get(op3)) continue OUT;
+				if (!triSet.exist[mpi1][op2].get(mpi2))
+					continue OUT;
+				if (!triSet.exist[op1][op2].get(op3))
+					continue OUT;
 
 				// new segments (p2-mp1), (p2-mp2) cross with polygon? 
 				for (int i = 0; i < P; ++i) {
-					if (i == op1 || i == op2) continue;
+					if (i == op1 || i == op2)
+						continue;
 					final int ni = next[i];
 					if (i != mpi2 && ni != mpi2) {
-						if (cross(p2, mp2, i2p[i], i2p[ni])) continue OUT;
+						if (cross(p2, mp2, i2p[i], i2p[ni]))
+							continue OUT;
 					}
 					if (i != mpi1 && ni != mpi1) {
-						if (cross(p2, mp1, i2p[i], i2p[ni])) continue OUT;
+						if (cross(p2, mp1, i2p[i], i2p[ni]))
+							continue OUT;
 					}
 				}
 				//				counter.add(7);
 
 				// avoid zero area polygon
-				if (pa[pi[op1]] + areaAdd == 0) continue OUT;
+				if (pa[pi[op1]] + areaAdd == 0)
+					continue OUT;
 			}
 
 			//			counter.add(8);
 
 			// new segments cross each other? 
 			Point p3 = i2p[op3];
-			if ((op3 != mpi1 && cross(mp1, p2, p1, p3)) || (op1 != mpi2 && cross(mp2, p2, p1, p3))) continue;
+			if ((op3 != mpi1 && cross(mp1, p2, p1, p3)) || (op1 != mpi2 && cross(mp2, p2, p1, p3)))
+				continue;
 			//			counter.add(9);
 
 			next[op1] = op3;
@@ -774,13 +827,15 @@ public class SmallPolygonsTomerun {
 		st.poly.clear();
 		st.used.clear();
 		for (int j = 0; j < P; ++j) {
-			if (st.used.get(j)) continue;
+			if (st.used.get(j))
+				continue;
 			int cur = j;
 			Polygon poly = new Polygon();
 			while (true) {
 				poly.v.add(i2p[cur]);
 				cur = bestNext[cur];
-				if (cur == j) break;
+				if (cur == j)
+					break;
 			}
 			poly.area = calcArea(poly.v);
 			st.add(poly);
@@ -861,20 +916,24 @@ public class SmallPolygonsTomerun {
 			final Point mp1 = i2p[mpi1];
 			final Point mp2 = i2p[mpi2];
 			final int areaRemove = triarea(mp1, p2, mp2);
-			if (areaAdd * Integer.signum(areaRemove) >= 0) continue;
+			if (areaAdd * Integer.signum(areaRemove) >= 0)
+				continue;
 			//			counter.add(1);
-			if (!transit(areaAdd + areaRemove, HEAT)) continue;
+			if (!transit(areaAdd + areaRemove, HEAT))
+				continue;
 
 			//			counter.add(2);
 			// line to inside of polygon?
 			if (mpi2 != op1 && mpi1 != op3) {
 				final Point mp0 = i2p[prev[mpi1]];
 				boolean inside = ccw(mp0, mp1, mp2) - ccw(mp0, mp1, p2) - ccw(p2, mp1, mp2) < 0;
-				if (areaAdd > 0 ^ inside) continue;
+				if (areaAdd > 0 ^ inside)
+					continue;
 
 				final Point mp3 = i2p[next[mpi2]];
 				inside = ccw(mp1, mp2, mp3) - ccw(mp1, mp2, p2) - ccw(p2, mp2, mp3) < 0;
-				if (areaAdd > 0 ^ inside) continue;
+				if (areaAdd > 0 ^ inside)
+					continue;
 			}
 			//			counter.add(3);
 
@@ -885,7 +944,8 @@ public class SmallPolygonsTomerun {
 					if (cross(p2, mp2, i2p[cp1], i2p[cp2])) {
 						continue OUT;
 					}
-					if (cp2 == mpi1) break;
+					if (cp2 == mpi1)
+						break;
 					cp1 = cp2;
 				}
 			}
@@ -893,7 +953,8 @@ public class SmallPolygonsTomerun {
 			if (mpi2 != op1) {
 				for (int cp2 = op1;;) {
 					final int cp1 = prev[cp2];
-					if (cp1 == mpi2) break;
+					if (cp1 == mpi2)
+						break;
 					if (cross(p2, mp2, i2p[cp1], i2p[cp2])) {
 						continue OUT;
 					}
@@ -906,8 +967,10 @@ public class SmallPolygonsTomerun {
 			Point p3 = i2p[op3];
 			for (int i = next[op3];; i = next[i]) {
 				final int ni = next[i];
-				if (ni == op1) break;
-				if (cross(p1, p3, i2p[i], i2p[ni])) continue OUT;
+				if (ni == op1)
+					break;
+				if (cross(p1, p3, i2p[i], i2p[ni]))
+					continue OUT;
 			}
 			//			counter.add(6);
 
@@ -915,7 +978,8 @@ public class SmallPolygonsTomerun {
 			if (mpi1 != op3) {
 				for (int cp1 = op3;;) {
 					final int cp2 = next[cp1];
-					if (cp2 == mpi1) break;
+					if (cp2 == mpi1)
+						break;
 					if (cross(p2, mp1, i2p[cp1], i2p[cp2])) {
 						continue OUT;
 					}
@@ -929,16 +993,19 @@ public class SmallPolygonsTomerun {
 					if (cross(p2, mp1, i2p[cp1], i2p[cp2])) {
 						continue OUT;
 					}
-					if (cp1 == mpi2) break;
+					if (cp1 == mpi2)
+						break;
 					cp2 = cp1;
 				}
 			}
 			//			counter.add(8);
 
 			// new segments cross each other? 
-			if ((op3 != mpi1 && cross(mp1, p2, p1, p3)) || (op1 != mpi2 && cross(mp2, p2, p1, p3))) continue;
+			if ((op3 != mpi1 && cross(mp1, p2, p1, p3)) || (op1 != mpi2 && cross(mp2, p2, p1, p3)))
+				continue;
 
-			if (-areaAdd >= pa[pi[op1]]) continue;
+			if (-areaAdd >= pa[pi[op1]])
+				continue;
 			//			counter.add(10);
 
 			next[op1] = op3;
@@ -970,13 +1037,15 @@ public class SmallPolygonsTomerun {
 		st.poly.clear();
 		st.used.clear();
 		for (int j = 0; j < P; ++j) {
-			if (st.used.get(j)) continue;
+			if (st.used.get(j))
+				continue;
 			int cur = j;
 			Polygon poly = new Polygon();
 			while (true) {
 				poly.v.add(i2p[cur]);
 				cur = bestNext[cur];
-				if (cur == j) break;
+				if (cur == j)
+					break;
 			}
 			poly.area = calcArea(poly.v);
 			st.add(poly);
@@ -1009,7 +1078,8 @@ public class SmallPolygonsTomerun {
 			// 初期の多角形にtrisの順が依存するから、シャッフルしてるのかな
 			for (int i = 0; i < Math.min(1000, tris.size()); ++i) {
 				int ch1 = rnd.nextInt(100);
-				if (ch1 + i >= tris.size()) continue;
+				if (ch1 + i >= tris.size())
+					continue;
 				Polygon tmp = tris.get(i);
 				tris.set(i, tris.get(ch1 + i));
 				tris.set(ch1 + i, tmp);
@@ -1028,7 +1098,8 @@ public class SmallPolygonsTomerun {
 		}
 
 		public int compareTo(Angle o) {
-			if (Math.abs(this.theta - o.theta) > 1e-8) return Double.compare(this.theta, o.theta);
+			if (Math.abs(this.theta - o.theta) > 1e-8)
+				return Double.compare(this.theta, o.theta);
 			return Integer.compare(this.dist, o.dist);
 		}
 	}
@@ -1139,15 +1210,19 @@ public class SmallPolygonsTomerun {
 				for (int i = 0; i < p.v.size(); ++i) {
 					int ni = i == p.v.size() - 1 ? 0 : i + 1;
 					if (i != appendPos && ni != appendPos) {
-						if (cross(p.v.get(i), p.v.get(ni), ep1, pnt)) return true;
+						if (cross(p.v.get(i), p.v.get(ni), ep1, pnt))
+							return true;
 					}
 					if (i != np && ni != np) {
-						if (cross(p.v.get(i), p.v.get(ni), ep2, pnt)) return true;
+						if (cross(p.v.get(i), p.v.get(ni), ep2, pnt))
+							return true;
 					}
 				}
 			} else {
-				if (cross(p, ep1, pnt)) return true;
-				if (cross(p, ep2, pnt)) return true;
+				if (cross(p, ep1, pnt))
+					return true;
+				if (cross(p, ep2, pnt))
+					return true;
 			}
 		}
 		return false;
@@ -1155,14 +1230,16 @@ public class SmallPolygonsTomerun {
 
 	boolean cross(State st, Polygon poly) {
 		for (Polygon p : st.poly) {
-			if (cross(p, poly)) return true;
+			if (cross(p, poly))
+				return true;
 		}
 		return false;
 	}
 
 	boolean cross(State st, Point p1, Point p2) {
 		for (Polygon p : st.poly) {
-			if (cross(p, p1, p2)) return true;
+			if (cross(p, p1, p2))
+				return true;
 		}
 		return false;
 	}
@@ -1171,7 +1248,8 @@ public class SmallPolygonsTomerun {
 		for (int i = 0; i < poly2.v.size(); ++i) {
 			Point p1 = poly2.v.get(i);
 			Point p2 = poly2.v.get(i == poly2.v.size() - 1 ? 0 : i + 1);
-			if (cross(poly1, p1, p2)) return true;
+			if (cross(poly1, p1, p2))
+				return true;
 		}
 		return false;
 	}
@@ -1180,7 +1258,8 @@ public class SmallPolygonsTomerun {
 		for (int i = 0; i < poly.v.size(); ++i) {
 			Point p3 = poly.v.get(i);
 			Point p4 = poly.v.get(i == poly.v.size() - 1 ? 0 : i + 1);
-			if (cross(p1, p2, p3, p4)) return true;
+			if (cross(p1, p2, p3, p4))
+				return true;
 		}
 		return false;
 	}
@@ -1212,7 +1291,8 @@ public class SmallPolygonsTomerun {
 				bestScore = sumArea;
 				bestAns = curAns;
 				debug("bestScore:" + bestScore + " turn:" + turn);
-				if (turn != 0) break;
+				if (turn != 0)
+					break;
 			}
 			long curTime = System.currentTimeMillis();
 			worstTime = Math.max(worstTime, curTime - loopStartTime);
@@ -1257,7 +1337,8 @@ public class SmallPolygonsTomerun {
 				improveStartTime = improveEndTime;
 				if (turn % bestAns.size() == 0) {
 					heatAmp *= 0.9;
-					if (heatAmp < 1) heatAmp = 5;
+					if (heatAmp < 1)
+						heatAmp = 5;
 					debug("heatAmp:" + heatAmp);
 				}
 			}
@@ -1321,7 +1402,8 @@ public class SmallPolygonsTomerun {
 				int minD = Integer.MAX_VALUE;
 				int minI = 0;
 				for (int j = 0; j < N; ++j) {
-					if (cnt[j] <= 3) continue;
+					if (cnt[j] <= 3)
+						continue;
 					int d = sq(ps[i].x - centerX[j]) + sq(ps[i].y - centerY[j]);
 					if (d < minD) {
 						minD = d;
@@ -1365,7 +1447,8 @@ public class SmallPolygonsTomerun {
 
 		ArrayList<Point> upper = new ArrayList<>();
 		for (int i = n - 1; i >= 0; --i) {
-			if (i != n - 1 && i != 0 && used[i]) continue;
+			if (i != n - 1 && i != 0 && used[i])
+				continue;
 			while (upper.size() >= 2 && ccw(upper.get(upper.size() - 2), upper.get(upper.size() - 1), ps.get(i)) < 0) {
 				upper.remove(upper.size() - 1);
 			}
@@ -1388,7 +1471,8 @@ public class SmallPolygonsTomerun {
 			}
 			ArrayList<Point> inner = new ArrayList<>();
 			for (int i = 0; i < n; ++i) {
-				if (!used[i]) inner.add(ps.get(i));
+				if (!used[i])
+					inner.add(ps.get(i));
 			}
 			for (int i = 0; i < inner.size(); ++i) {
 				int pos = i + rnd.nextInt(inner.size() - i);
@@ -1398,7 +1482,8 @@ public class SmallPolygonsTomerun {
 			}
 			int seqInvalid = 0;
 			for (int pos = 0; pos < inner.size(); ++pos) {
-				if (seqInvalid >= inner.size() - pos) return 0;
+				if (seqInvalid >= inner.size() - pos)
+					return 0;
 				Point in = inner.get(pos);
 				final int m = ret.size();
 				int maxArea = Integer.MIN_VALUE;
@@ -1408,7 +1493,8 @@ public class SmallPolygonsTomerun {
 					Point p1 = ret.get(i);
 					Point p2 = ret.get(ni);
 					int area = triarea(p1, p2, in);
-					if (area <= maxArea) continue;
+					if (area <= maxArea)
+						continue;
 					for (int j = ni; j != i;) {
 						final int nj = j == m - 1 ? 0 : j + 1;
 						if (j != ni) {
@@ -1418,7 +1504,8 @@ public class SmallPolygonsTomerun {
 							}
 						}
 						if (nj != i) {
-							if (cross(p1, in, ret.get(j), ret.get(nj))) continue OUT;
+							if (cross(p1, in, ret.get(j), ret.get(nj)))
+								continue OUT;
 						}
 						j = nj;
 					}
@@ -1437,7 +1524,8 @@ public class SmallPolygonsTomerun {
 			int lowerIdx = 1;
 			ret.add(lower.get(0));
 			for (int i = 0; i < n; ++i) {
-				if (used[i]) continue;
+				if (used[i])
+					continue;
 				while (ps.get(i).x >= lower.get(lowerIdx).x) {
 					ret.add(lower.get(lowerIdx++));
 				}
@@ -1452,7 +1540,8 @@ public class SmallPolygonsTomerun {
 		}
 		int area = calcArea(ret);
 		timer.stop(12);
-		if (area == 0) return 0;
+		if (area == 0)
+			return 0;
 		timer.start(13);
 		if (!convex && !safe) {
 			//			area = improve(ret, area);
@@ -1483,12 +1572,14 @@ public class SmallPolygonsTomerun {
 			Point p2 = ps.get(op2);
 			Point p3 = ps.get(op3);
 			int areaAdd = -triarea(p1, p2, p3);
-			if (-areaAdd >= curArea || areaAdd == 0) continue;
+			if (-areaAdd >= curArea || areaAdd == 0)
+				continue;
 
 			// connected segment (p1-p3) crosses with polygon? 
 			for (int tp1 = (op3 == n - 1 ? 0 : op3 + 1);;) {
 				final int tp2 = tp1 == n - 1 ? 0 : tp1 + 1;
-				if (tp2 == op1) break;
+				if (tp2 == op1)
+					break;
 				if (cross(p1, p3, ps.get(tp1), ps.get(tp2))) {
 					continue OUT;
 				}
@@ -1538,7 +1629,8 @@ public class SmallPolygonsTomerun {
 							startPos = angle.idx;
 							double minDist = 1;
 							for (int ci = exist.nextSetBit(0); ci >= 0; ci = exist.nextSetBit(ci + 1)) {
-								final double d = dist(p2, ps.get(angle.idx), ps.get(ci), ps.get(ci == n - 1 ? 0 : ci + 1));
+								final double d = dist(p2, ps.get(angle.idx), ps.get(ci),
+										ps.get(ci == n - 1 ? 0 : ci + 1));
 								if (d < minDist) {
 									minDist = d;
 									startPos = ci;
@@ -1619,7 +1711,8 @@ public class SmallPolygonsTomerun {
 							startPos = angle.idx;
 							double minDist = 1;
 							for (int ci = exist.nextSetBit(0); ci >= 0; ci = exist.nextSetBit(ci + 1)) {
-								final double d = dist(p2, ps.get(angle.idx), ps.get(ci), ps.get(ci == n - 1 ? 0 : ci + 1));
+								final double d = dist(p2, ps.get(angle.idx), ps.get(ci),
+										ps.get(ci == n - 1 ? 0 : ci + 1));
 								if (d < minDist) {
 									minDist = d;
 									startPos = ci;
@@ -1663,8 +1756,10 @@ public class SmallPolygonsTomerun {
 					}
 				}
 			}
-			if (insertPos == -1) continue;
-			if (areaAdd + areaRemove > HEAT) continue;
+			if (insertPos == -1)
+				continue;
+			if (areaAdd + areaRemove > HEAT)
+				continue;
 			insertPos++;
 
 			ps.remove(op2);
@@ -1711,7 +1806,8 @@ public class SmallPolygonsTomerun {
 			Point p3 = ps.get(op3);
 			int areaAdd = -triarea(p1, p2, p3);
 			//			counter.add(0);
-			if (-areaAdd >= curArea) continue;
+			if (-areaAdd >= curArea)
+				continue;
 			//			counter.add(1);
 			int mpi1 = rnd.nextInt(n);
 			while (mpi1 == op1 || mpi1 == op2) {
@@ -1721,20 +1817,24 @@ public class SmallPolygonsTomerun {
 			final Point mp1 = ps.get(mpi1);
 			final Point mp2 = ps.get(mpi2);
 			int areaRemove = triarea(mp1, p2, mp2);
-			if (areaAdd * Integer.signum(areaRemove) >= 0) continue;
+			if (areaAdd * Integer.signum(areaRemove) >= 0)
+				continue;
 			//			counter.add(2);
-			if (!transit(areaAdd + areaRemove, HEAT)) continue;
+			if (!transit(areaAdd + areaRemove, HEAT))
+				continue;
 			//			counter.add(3);
 
 			// line to inside of polygon?
 			if (mpi2 != op1 && mpi1 != op3) {
 				final Point mp0 = ps.get(mpi1 == 0 ? n - 1 : mpi1 - 1);
 				boolean inside = ccw(mp0, mp1, mp2) - ccw(mp0, mp1, p2) - ccw(p2, mp1, mp2) < 0;
-				if (areaAdd > 0 ^ inside) continue;
+				if (areaAdd > 0 ^ inside)
+					continue;
 
 				final Point mp3 = ps.get(mpi2 == n - 1 ? 0 : mpi2 + 1);
 				inside = ccw(mp1, mp2, mp3) - ccw(mp1, mp2, p2) - ccw(p2, mp2, mp3) < 0;
-				if (areaAdd > 0 ^ inside) continue;
+				if (areaAdd > 0 ^ inside)
+					continue;
 			}
 			//			counter.add(4);
 
@@ -1772,7 +1872,8 @@ public class SmallPolygonsTomerun {
 			// new segment (p1-p3) crosses with polygon? 
 			for (int tp1 = (op3 == n - 1 ? 0 : op3 + 1);;) {
 				final int tp2 = tp1 == n - 1 ? 0 : tp1 + 1;
-				if (tp2 == op1) break;
+				if (tp2 == op1)
+					break;
 				if (cross(p1, p3, ps.get(tp1), ps.get(tp2))) {
 					continue OUT;
 				}
@@ -1811,7 +1912,8 @@ public class SmallPolygonsTomerun {
 			}
 			//			counter.add(9);
 
-			if ((op3 != mpi1 && cross(mp1, p2, p1, p3)) || (op1 != mpi2 && cross(mp2, p2, p1, p3))) continue;
+			if ((op3 != mpi1 && cross(mp1, p2, p1, p3)) || (op1 != mpi2 && cross(mp2, p2, p1, p3)))
+				continue;
 			//			counter.add(10);
 			ps.remove(op2);
 			ps.add(op2 < mpi2 ? mpi2 - 1 : mpi2, p2);
@@ -1830,8 +1932,10 @@ public class SmallPolygonsTomerun {
 	}
 
 	boolean transit(int diff, double heat) {
-		if (diff <= 0) return true;
-		if (diff >= heat * 4) return false;
+		if (diff <= 0)
+			return true;
+		if (diff >= heat * 4)
+			return false;
 		return rnd.nextDouble() <= Math.exp(-2 * diff / heat);
 		//		return rnd.nextDouble() * heat <= heat - diff;
 	}
@@ -1848,12 +1952,9 @@ public class SmallPolygonsTomerun {
 	}
 
 	/**
-	 * res = 0 => 面積0
-	 * res > 0 => 右回り or 左回り ?
-	 * res < 0 =>  res > 0 の反対
+	 * res = 0 => 面積0 res > 0 => 右回り or 左回り ? res < 0 => res > 0 の反対
 	 * 
-	 * 本来の面積は abs(res)/2 らしい
-	 * absしてないのは、向きが分かるように？
+	 * 本来の面積は abs(res)/2 らしい absしてないのは、向きが分かるように？
 	 */
 	static int triarea(Point a, Point b, Point c) {
 		int dx1 = b.x - a.x;
@@ -1919,7 +2020,8 @@ public class SmallPolygonsTomerun {
 		}
 
 		public int compareTo(Point o) {
-			if (this.x != o.x) return Integer.compare(this.x, o.x);
+			if (this.x != o.x)
+				return Integer.compare(this.x, o.x);
 			return Integer.compare(this.y, o.y);
 		}
 
@@ -1929,11 +2031,13 @@ public class SmallPolygonsTomerun {
 	}
 
 	static void debug(String str) {
-		if (DEBUG) System.err.println(str);
+		if (DEBUG)
+			System.err.println(str);
 	}
 
 	static void debug(Object... obj) {
-		if (DEBUG) System.err.println(Arrays.deepToString(obj));
+		if (DEBUG)
+			System.err.println(Arrays.deepToString(obj));
 	}
 
 	static final class XorShift {

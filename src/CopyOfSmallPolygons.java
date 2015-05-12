@@ -1,113 +1,19 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
 public class CopyOfSmallPolygons {
 
-	private static final int MAX_TIME = 9500;
-	private final long endTime = System.currentTimeMillis() + MAX_TIME;
 	private static final int INT_MAX = Integer.MAX_VALUE / 2;
 	private static final int MAX_XY = 700;
-	private static final int K = 50;
-	private static final int BEAM_WIDTH_LIST[] = new int[] { 80, 40, 16, 10, 5 };
-	private static final int TN = 3;
 	private static final double pai2 = Math.atan(1) * 4 * 2;
 	private static final double eps = 1e-9;
 	private final XorShift random = new XorShift();
 	private int N, NP;
 	private Point ps[];
-	private long[] hashTable;
-	private Map<Long, Polygon> memo;
-
-	//	public static void main(String[] args) {
-	//		new CopyOfSmallPolygons().run();
-	//	}
-	//
-	//	void run() {
-	//		String input = "0 13 1 13 2 8 3 7 3 8 4 2 4 3 5 2 5 3 5 14 6 5 6 14 6 15 7 9 7 10 8 9 9 4 9 7 10 4 10 6 10 7 11 1 11 2 11 3 12 1 12 2 12 3 13 0 13 1 13 8 14 1 14 8 14 9 15 1 15 4 15 5 15 7 16 4 16 6 16 7 17 2 17 3 18 2 18 3 19 8 20 8 20 9 20 12 21 4 21 5 21 11 21 12 22 4 22 6 22 7 22 8 23 2 23 3 23 13 24 2 24 3 24 13 24 14 25 0 25 9 25 10 26 8 26 9 27 4 27 5 28 4 -1 -1";
-	//
-	//		memo = new HashMap<>();
-	//		hashTable = new long[1000];
-	//		for (int i = 0; i < 1000; ++i) {
-	//			hashTable[i] = random.nextLong();
-	//		}
-	//		List<Point> list = new ArrayList<>();
-	//		Scanner in = new Scanner(input);
-	//		int id = 0;
-	//		while (true) {
-	//			int x = in.nextInt();
-	//			int y = in.nextInt();
-	//			if (x == -1 || y == -1)
-	//				break;
-	//			list.add(new Point(id++, x, y));
-	//		}
-	//		System.out.println(list.size());
-	//		Polygon polygon = polygons(list.toArray(new Point[0]));
-	//		System.out.println(polygon.value + " " + area(opt2(polygon.outside)));
-	//	}
-
-	Point[] opt2(Point[] points) {
-		int n = points.length;
-		while (true) {
-			boolean update = false;
-			for (int i = 0; i < n; ++i) {
-				Edge delete = new Edge(points[(i + n - 1) % n], points[(i + 1) % n]);
-				boolean ok = true;
-				for (int j = 0; j < n; ++j) {
-					if (delete.intersect(new Edge(points[j], points[(j + 1) % n]))) {
-						ok = false;
-						break;
-					}
-				}
-				if (ok) {
-					int index = -1;
-					int value = areaDiff(delete.p1, delete.p2, points[i]);
-					for (int j = 0; j < n; j++) {
-						if (i == j || (i + n - 1) % n == j)
-							continue;
-						int updateArea = areaDiff(points[j], points[(j + 1) % n], points[i]);
-						if (value <= updateArea)
-							continue;
-						Edge new1 = new Edge(points[i], points[j]);
-						Edge new2 = new Edge(points[i], points[(j + 1) % n]);
-						if (delete.intersect(new1) || delete.intersect(new2))
-							continue;
-						for (int k = 0; k < n; k++) {
-							if (k == i || k == j)
-								continue;
-							Edge edge = new Edge(points[k], points[(k + 1) % n]);
-							if (edge.intersect(new1) || edge.intersect(new2)) {
-								ok = false;
-								break;
-							}
-						}
-						if (ok) {
-							value = updateArea;
-							index = j;
-						}
-					}
-					if (index != -1) {
-						Point tmp = points[i];
-						for (int j = i; j != index; j = (j + 1) % n) {
-							points[j] = points[(j + 1) % n];
-						}
-						points[index] = tmp;
-						update = true;
-					}
-				}
-			}
-			if (!update)
-				break;
-		}
-		return points;
-	}
 
 	private final class Remain extends IntComparable {
 		final Point p;
@@ -138,24 +44,16 @@ public class CopyOfSmallPolygons {
 		}
 	}
 
-	private final class Polygon extends IntComparable {
+	private final class Polygon {
 		Point[] outside;
 		Remain[] remain;
 		Edge[] checkEdge;
 		int remainIndex;
 
-		Polygon(Point[] outside, Remain[] remain, Edge[] checkEdge, int outsideArea) {
+		Polygon(Point[] outside, Remain[] remain, Edge[] checkEdge) {
 			this.outside = outside;
 			this.remain = remain;
 			this.checkEdge = checkEdge;
-			this.value = outsideArea;
-		}
-
-		Polygon(Polygon p) {
-			outside = p.outside;
-			remain = p.remain;
-			checkEdge = p.checkEdge;
-			value = p.value;
 		}
 
 		void nextRemain() {
@@ -229,198 +127,49 @@ public class CopyOfSmallPolygons {
 			}
 		}
 
-		void next(int width, List<Polygon> nextPolygons, Set<Long> used) {
-			Collections.sort(nextPolygons);
-			int pos = width - 1;
-			int limit = nextPolygons.size() >= width ? nextPolygons.get(pos--).value : INT_MAX;
+		void next() {
 			Arrays.sort(remain);
-			for (int j = 0, j_size = Math.min(width, remain.length); j < j_size; ++j) {
-				Remain x = remain[j];
-				if (limit <= value + x.value)
-					return;
+			for (int i = 0; i < remain.length; i++) {
+				Remain x = remain[i];
 				if (x.t != null) {
-					Polygon nextPolygon = new Polygon(this);
-					long key = nextPolygon.step(j);
-					if (!used.contains(key)) {
-						nextPolygons.add(nextPolygon);
-						used.add(key);
-						if (nextPolygons.size() < width || pos == 0) {
-						} else if (nextPolygons.get(pos).value > nextPolygon.value)
-							limit = nextPolygons.get(pos--).value;
-						else
+					remainIndex = i;
+					for (int j = 0, size = outside.length; j <= size; ++j) {
+						if (outside[j] == x.t) {
+							outside = add(outside, j + 1, x.p);
 							return;
+						}
 					}
+					throw new RuntimeException();
 				}
 			}
+			throw new RuntimeException();
 		}
-
-		long step(int index) {
-			remainIndex = index;
-			Remain r = remain[index];
-			value += r.value;
-			long key = 0;
-			for (int i = 0, size = outside.length; i <= size; ++i) {
-				int w = i % 64;
-				long hash = hashTable[outside[i].id];
-				key ^= (hash << w) | (hash >>> (64 - w));
-				if (outside[i] == r.t) {
-					outside = add(outside, i + 1, r.p);
-				}
-			}
-			return key;
-		}
-	}
-
-	boolean contains(Point[] polygon, Point p) {
-		boolean in = false;
-		for (int i = 0, size = polygon.length; i < size; ++i) {
-			Point a = G2D.sub(polygon[i], p), b = G2D.sub(polygon[(i + 1) % size], p);
-			if (a.x > b.x) {
-				Point tmp = a;
-				a = b;
-				b = tmp;
-			}
-			if (a.x <= 0 && 0 < b.x && G2D.cross(a, b) < 0)
-				in = !in;
-			if (G2D.cross(a, b) == 0 && G2D.dot(a, b) <= 0)
-				return true;
-		}
-		return in;
-	}
-
-	boolean convex_contains(Point[] P, Point p) {
-		int n = P.length;
-		int sumx = P[0].x + P[n / 3].x + P[2 * n / 3].x;
-		int sumy = P[0].y + P[n / 3].y + P[2 * n / 3].y;
-		Point g = new Point(-1, Math.round((float) sumx / 3), Math.round((float) sumy / 3)); // inner-point
-		int a = 0, b = n;
-		while (a + 1 < b) { // invariant: c is in fan g-P[a]-P[b]
-			int c = (a + b) / 2;
-			if (G2D.cross(G2D.sub(P[a], g), G2D.sub(P[c], g)) > 0) { // angle < 180 deg
-				if (G2D.cross(G2D.sub(P[a], g), G2D.sub(p, g)) > 0 && G2D.cross(G2D.sub(P[c], g), G2D.sub(p, g)) < 0)
-					b = c;
-				else
-					a = c;
-			} else {
-				if (G2D.cross(G2D.sub(P[a], g), G2D.sub(p, g)) < 0 && G2D.cross(G2D.sub(P[c], g), G2D.sub(p, g)) > 0)
-					a = c;
-				else
-					b = c;
-			}
-		}
-		b %= n;
-		if (G2D.cross(G2D.sub(P[a], p), G2D.sub(P[b], p)) < 0)
-			return false;
-		if (G2D.cross(G2D.sub(P[a], p), G2D.sub(P[b], p)) > 0)
-			return true;
-		return true;
 	}
 
 	private final Polygon polygons(Point[] t) {
-		return polygons(t, new Edge[0]);
-	}
-
-	private final Polygon polygons(Point[] t, Edge[] checkEdge) {
-		long key = 0;
-		for (Point p : t)
-			key ^= hashTable[p.id];
-		Polygon res = memo.get(key);
-		if (res != null) {
-			return res;
-		}
 		Point[] outside = getOutside(t);
 		if (outside.length == t.length) {
-			return new Polygon(outside, null, null, area(outside));
+			return new Polygon(outside, null, null);
 		}
-		ArrayList<Remain> remain = new ArrayList<>(t.length);
+		Edge[] checkEdge = new Edge[0];
+		Remain[] remain = new Remain[t.length - outside.length];
 		{
+			int remainIndex = 0;
 			Set<Point> outsideSet = new HashSet<>(Arrays.asList(outside));
 			for (Point p : t) {
 				if (outsideSet.contains(p))
 					continue;
 				Remain r = new Remain(p);
-				remain.add(r);
+				remain[remainIndex++] = r;
 				r.set(outside, checkEdge);
 			}
 		}
-		int outsideArea = area(outside);
-		int widthIndex = t.length / K;
-		int width;
-		if (widthIndex < BEAM_WIDTH_LIST.length) {
-			width = BEAM_WIDTH_LIST[widthIndex];
-		} else {
-			width = 2;
+		Polygon res = new Polygon(outside, remain, checkEdge);
+		for (int i = 0; i < remain.length; ++i) {
+			res.next();
+			res.nextRemain();
 		}
-		int initWidth = width;
-		List<Polygon> list[] = new List[remain.size()];
-		for (int i = 0; i < remain.size(); ++i)
-			list[i] = new ArrayList<>(width * width);
-		Set<Long> used = new HashSet<>();
-		new Polygon(outside, remain.toArray(new Remain[0]), checkEdge, outsideArea).next(width, list[0], used);
-		for (int i = 0, size = remain.size() - 1; i < size; ++i) {
-			List<Polygon> now = list[i], next = list[i + 1];
-			Collections.sort(now);
-			used.clear();
-			next.clear();
-			for (int j = 0, j_size = Math.min(width, now.size()); j < j_size; ++j) {
-				Polygon p = now.get(j);
-				p.nextRemain();
-				p.next(width, next, used);
-			}
-			if (next.isEmpty()) {
-				if (width > initWidth * 2) {
-					System.out.println(t.length + " " + width);
-					return null;
-				}
-				width += 10;
-				i = Math.max(0, i - 10);
-				now = list[i];
-				next = list[i + 1];
-				used.clear();
-				next.clear();
-				for (int j = 0, j_size = Math.min(width, now.size()); j < j_size; ++j) {
-					Polygon p = now.get(j);
-					if (j + 10 >= width)
-						p.nextRemain();
-					p.next(width, next, used);
-				}
-			}
-		}
-		List<Polygon> reslist = list[list.length - 1];
-		Collections.sort(reslist);
-		if (reslist.isEmpty()) {
-			return null;
-		}
-		res = reslist.get(0);
-		res.outside = opt2(res.outside);
-		res.value = area(res.outside);
-		memo.put(key, res);
 		return res;
-	}
-
-	private final Point[][] calcPolygon(Point[] ps, int N, int min, Edge[] checkEdge) {
-		long endTime = Math.min(this.endTime, System.currentTimeMillis() + 1000);
-		NG: while (true) {
-			List<Point> tmp[] = split(ps, N);
-			if (tmp == null)
-				continue NG;
-
-			Point res[][] = new Point[N][];
-			int value = 0;
-			for (int i = 0; i < N; ++i) {
-				if (System.currentTimeMillis() >= endTime) {
-					return null;
-				}
-				Polygon p = polygons(tmp[i].toArray(new Point[0]), checkEdge);
-				if (p == null || p.value == 0)
-					continue NG;
-				value += p.value;
-				if (min <= value)
-					continue NG;
-				res[i] = p.outside;
-			}
-			return res;
-		}
 	}
 
 	private final int areaFunc(Point p0, Point p1) {
@@ -449,9 +198,9 @@ public class CopyOfSmallPolygons {
 		}
 		for (Point point : ps) {
 			int t = -1;
-			double dist = Double.MAX_VALUE / 2;
+			int dist = INT_MAX;
 			for (int j = 0; j < N; ++j) {
-				double tmpd = G2D.dist(x[j], point);
+				int tmpd = G2D.dist(x[j], point);
 				if (dist > tmpd) {
 					dist = tmpd;
 					t = j;
@@ -470,191 +219,33 @@ public class CopyOfSmallPolygons {
 		NP = points.length / 2;
 		N = Math.min(N, NP / 3);
 		ps = new Point[NP];
-		memo = new HashMap<>();
-		hashTable = new long[NP];
 		for (int i = 0; i < NP; ++i) {
 			ps[i] = new Point(i, points[i * 2], points[i * 2 + 1]);
-			hashTable[i] = random.nextLong();
 		}
 
 		Point res[][] = null;
-		{
-			int min = INT_MAX;
-			int badCount = 0;
-			long prevtime = System.currentTimeMillis(), onetime = 0;
-			NG: while (true) {
-				if (res == null) {
-					++badCount;
-					if (badCount > 40) {
-						badCount = 0;
-						--N;
-					}
+		int badCount = 0;
+		NG: while (true) {
+			if (res == null) {
+				++badCount;
+				if (badCount > 40) {
+					badCount = 0;
+					--N;
 				}
-				List<Point> tmp[] = split(ps, N);
-				if (tmp == null)
+			}
+			List<Point> tmp[] = split(ps, N);
+			if (tmp == null)
+				continue NG;
+			Point restmp[][] = new Point[N][];
+			for (int i = 0; i < N; ++i) {
+				Polygon p = polygons(tmp[i].toArray(new Point[0]));
+				if (p == null || area(p.outside) == 0)
 					continue NG;
-				{
-					long now = System.currentTimeMillis();
-					onetime = Math.max(onetime, now - prevtime);
-					if (now + onetime >= endTime) {
-						break;
-					}
-					prevtime = now;
-				}
-
-				Point restmp[][] = new Point[N][];
-				int value = 0;
-				for (int i = 0; i < N; ++i) {
-					Polygon p = polygons(tmp[i].toArray(new Point[0]));
-					if (p == null || p.value == 0)
-						continue NG;
-					value += p.value;
-					if (min <= value)
-						continue NG;
-					restmp[i] = p.outside;
-				}
-				min = value;
-				res = restmp;
-				if (N > TN)
-					break;
+				restmp[i] = p.outside;
 			}
+			res = restmp;
+			break;
 		}
-		if (N <= TN)
-			return result(res);
-		class Piar {
-			double value;
-			Point p[];
-
-			Piar(Point p[]) {
-				update(p);
-			}
-
-			void update(Point p[]) {
-				this.p = p;
-				value = (double) area(p) / p.length;
-			}
-		}
-		Piar pl[] = new Piar[res.length];
-		for (int i = 0, size = res.length; i < size; ++i) {
-			pl[i] = new Piar(res[i]);
-		}
-		int worst = 0, numWorst = 0, timeup = 0;
-		long prevtime = System.currentTimeMillis(), onetime = 0;
-		end: while (true) {
-			Arrays.sort(pl, new Comparator<Piar>() {
-				@Override
-				public int compare(Piar o1, Piar o2) {
-					return Double.compare(o2.value, o1.value);
-				}
-			});
-			retry: for (int pi = 0; pi < pl.length; ++pi) {
-				{
-					long now = System.currentTimeMillis();
-					onetime = Math.min(Math.max(onetime, now - prevtime), 1000);
-					if (now + onetime >= endTime) {
-						break end;
-					}
-					prevtime = now;
-				}
-				Set<Piar> use = new HashSet<>();
-				use.add(pl[pi]);
-				for (int i = 0; i < TN - 1; i++) {
-					int sumx = 0, sumy = 0, sump = 0;
-					for (Piar piar : use) {
-						sump += piar.p.length;
-						for (Point point : piar.p) {
-							sumx += point.x;
-							sumy += point.y;
-						}
-					}
-					Point center = new Point(-1, Math.round((float) sumx / sump), Math.round((float) sumy / sump));
-					Piar t = null;
-					double minDist = Double.MAX_VALUE;
-					for (Piar piar : pl)
-						if (!use.contains(piar)) {
-							for (Point point : piar.p) {
-								double dist = G2D.dist(center, point);
-								if (minDist > dist) {
-									minDist = dist;
-									t = piar;
-								}
-							}
-						}
-					use.add(t);
-				}
-				Piar[] targetPiar = use.toArray(new Piar[0]);
-				int nowArea = 0;
-				int pointNum = 0;
-				for (Piar piar : targetPiar) {
-					nowArea += area(piar.p);
-					pointNum += piar.p.length;
-				}
-				Point targetPoint[] = new Point[pointNum];
-				int minx = Integer.MAX_VALUE, maxx = Integer.MIN_VALUE;
-				int miny = Integer.MAX_VALUE, maxy = Integer.MIN_VALUE;
-				{
-					int numTp = 0;
-					for (Piar piar : targetPiar) {
-						for (Point point : piar.p) {
-							targetPoint[numTp++] = point;
-							minx = Math.min(minx, point.x);
-							maxx = Math.max(maxx, point.x);
-							miny = Math.min(miny, point.y);
-							maxy = Math.max(maxy, point.y);
-						}
-					}
-				}
-				/**
-				 * 上がると思ったら上がらなかった
-				 */
-				List<Edge> checkEdges = new ArrayList<>();
-				{
-					Point[] outside = getOutside(targetPoint);
-					for (Piar piar : pl) {
-						if (!use.contains(piar)) {
-							Point list[] = piar.p;
-							for (int i = 0, size = list.length; i < size; ++i) {
-								Point p = list[i];
-								if (minx <= p.x && p.x <= maxx && miny <= p.y && p.y <= maxy && contains(outside, p)) {
-									checkEdges.add(new Edge(p, list[(i + 1) % size]));
-									checkEdges.add(new Edge(p, list[(i + size - 1) % size]));
-								}
-							}
-						}
-					}
-				}
-				Point[][] update = calcPolygon(targetPoint, TN, nowArea, checkEdges.toArray(new Edge[0]));
-				if (update == null) {
-					timeup++;
-					continue retry;
-				}
-				++numWorst;
-				for (Piar p : pl) {
-					if (use.contains(p))
-						continue;
-					Point[] poly1 = p.p;
-					for (int i = 0; i < poly1.length; ++i) {
-						Edge edge = new Edge(poly1[i], poly1[(i + 1) % poly1.length]);
-						for (Point[] poly2 : update) {
-							for (int j = 0; j < poly2.length; ++j) {
-								if (edge.intersect(new Edge(poly2[j], poly2[(j + 1) % poly2.length]))) {
-									++worst;
-									continue retry;
-								}
-							}
-						}
-					}
-				}
-				for (int i = 0; i < targetPiar.length; ++i) {
-					targetPiar[i].update(update[i]);
-				}
-				break;
-			}
-		}
-		for (int i = 0; i < pl.length; ++i) {
-			res[i] = pl[i].p;
-		}
-		// System.out.println(getClass().getName() + " worst : " + worst + " / " + numWorst + "   timeup? : " + timeup);
 		return result(res);
 	}
 
@@ -692,8 +283,8 @@ public class CopyOfSmallPolygons {
 			return new Point(-1, p1.x - p2.x, p1.y - p2.y);
 		}
 
-		static double norm(int x, int y) {
-			return Math.sqrt(x * x + y * y);
+		static int norm(int x, int y) {
+			return x * x + y * y;
 		}
 
 		static int dot(Point p1, Point p2) {
@@ -704,14 +295,14 @@ public class CopyOfSmallPolygons {
 			return p1.x * p2.y - p1.y * p2.x;
 		}
 
-		static double dist(Point p1, Point p2) {
+		static int dist(Point p1, Point p2) {
 			return norm(p1.x - p2.x, p1.y - p2.y);
 		}
 	}
 
 	private final class Edge implements Comparable<Edge> {
 		Point p1, p2, vect; //vector p1 -> p2
-		double norm;
+		int norm;
 
 		Edge(Point p1n, Point p2n) {
 			p1 = p1n;
@@ -744,7 +335,7 @@ public class CopyOfSmallPolygons {
 						|| (p2 == other.p2 && eq(G2D.dist(p1, other.p1), norm + other.norm))) {
 					return false;
 				}
-				return dist(other.p1) < eps || dist(other.p2) < eps;
+				return dist(other.p1) == 0 || dist(other.p2) == 0;
 			}
 			//common vertices
 			if (p1 == other.p1 || p1 == other.p2 || p2 == other.p1 || p2 == other.p2) {
@@ -767,19 +358,19 @@ public class CopyOfSmallPolygons {
 		}
 
 		// ---------------------------------------------------
-		double dist(Point p) {
+		int dist(Point p) {
 			//distance from p to the edge
 			if (G2D.dot(vect, G2D.sub(p, p1)) <= 0)
 				return G2D.dist(p, p1); //from p to p1
 			if (G2D.dot(vect, G2D.sub(p, p2)) >= 0)
 				return G2D.dist(p, p2); //from p to p2
 			//distance to the line itself
-			return Math.abs(-vect.y * p.x + vect.x * p.y + p1.x * p2.y - p1.y * p2.x) / norm;
+			return Math.abs(-vect.y * p.x + vect.x * p.y + p1.x * p2.y - p1.y * p2.x);
 		}
 
 		@Override
 		public int compareTo(Edge o) {
-			return Double.compare(o.norm, norm);
+			return Integer.compare(o.norm, norm);
 		}
 
 		boolean isOK(Edge[] checkEdge) {
@@ -843,12 +434,7 @@ public class CopyOfSmallPolygons {
 		int w = 88675123;
 
 		int nextInt(int n) {
-			final int t = x ^ (x << 11);
-			x = y;
-			y = z;
-			z = w;
-			w = (w ^ (w >>> 19)) ^ (t ^ (t >>> 8));
-			final int r = w % n;
+			final int r = nextInt() % n;
 			return r < 0 ? r + n : r;
 		}
 
@@ -859,10 +445,6 @@ public class CopyOfSmallPolygons {
 			z = w;
 			w = (w ^ (w >>> 19)) ^ (t ^ (t >>> 8));
 			return w;
-		}
-
-		long nextLong() {
-			return ((long) nextInt() << 32) | nextInt();
 		}
 	}
 
