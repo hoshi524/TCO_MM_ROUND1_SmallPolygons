@@ -51,6 +51,8 @@ public class SmallPolygonsTomerun {
 			ArrayList<ArrayList<Point>> optimalAns = null;
 			long PREMIUM_FIRST = 300;
 			// 多点スタート？
+			// 焼きなましでも多点スタートの方が良いのか
+			// 問題的に初期多角形の依存が高いからなだけかも
 			for (int i = 1; i <= LOOP; ++i) {
 				solveSA((TL - PREMIUM_FIRST) * i / (LOOP) + PREMIUM_FIRST);
 				if (bestScore < optimalScore) {
@@ -357,6 +359,8 @@ public class SmallPolygonsTomerun {
 
 	TriangleSet enumeratePolys() {
 		TriangleSet set = new TriangleSet(P);
+		// 遠すぎる頂点は候補に入れない模様
+		// (辺が長すぎると局所解にハマりやすいみたいなツイートあった(交差しやすくなるってことかな))
 		int maxDist = P < 400 ? 2000 : P <= 600 ? 1700 : 1700;
 		maxDist *= maxDist;
 		for (int i = 0; i < P; ++i) {
@@ -375,6 +379,7 @@ public class SmallPolygonsTomerun {
 				Point prev = null;
 				int k = j + 1;
 				for (; k < angles.size(); ++k) {
+					// 3点が直線で重なるのは追加しない
 					if (triarea(pnt1, pnt2, ps[angles.get(k).pi]) != 0) {
 						prev = ps[angles.get(k).pi];
 						set.add(pnt1, pnt2, prev);
@@ -383,6 +388,9 @@ public class SmallPolygonsTomerun {
 				}
 				for (++k; k < angles.size(); ++k) {
 					Point pnt3 = ps[angles.get(k).pi];
+					// 0以下になるケースって、どういった場合だ
+					// pnt2が軸になってる
+					// 三角形内に他の頂点が内在しないようにだ
 					if (triarea(pnt2, prev, pnt3) <= 0) continue;
 					prev = pnt3;
 					set.add(pnt1, pnt2, pnt3);
@@ -531,6 +539,9 @@ public class SmallPolygonsTomerun {
 		return initialState;
 	}
 
+	/*
+	 * 焼きなまし本体
+	 */
 	void globalImprove(State st, final long timelimit) {
 		final int n = st.poly.size();
 		int[] pi = new int[P];
@@ -580,6 +591,8 @@ public class SmallPolygonsTomerun {
 				coolTurn = turn + UPDATE_HEAT;
 				debug("HEAT:" + HEAT + " bestArea:" + bestArea + " turn:" + turn);
 			}
+			// 温度を上げることがあるらしい
+			// 局所解にハマってそうだから変えようってことか
 			if (turn > lastBestTurn + 3 * UPDATE_HEAT && HEAT * 8 < initialHeat) {
 				HEAT *= 4;
 				lastBestTurn = turn;
@@ -587,21 +600,33 @@ public class SmallPolygonsTomerun {
 			}
 			op1 = op1 == P - 1 ? 0 : op1 + 1;
 			//			counter.add(0);
+			// 頂点を移動させている多角形が三角形の場合はできない
 			if (cnt[pi[op1]] == 3) continue;
+			// なるほど。areaAddがマイナスなのは多角形的に凹んでいるところだ
+			// areaAddがプラスなのは膨らんでいるところ
+			
+			// areaAdd と areaRemove 反対な気がするんだけど、勘違いしてる？
 			int areaAdd = edgeArea[op1];
+			// 移動すると移動後の面積が0になるので移動できない
 			if (-areaAdd >= pa[pi[op1]]) continue;
 			//			counter.add(1);
+			// 移動する頂点はop2
 			final int op2 = next[op1];
 			final int op3 = next[op2];
 			final Point p1 = i2p[op1];
 			final Point p2 = i2p[op2];
+			// 移動先を探す
 			int mpi1;
 			if (areaAdd < 0) {
+				// 全部の頂点から探す
 				mpi1 = rnd.nextInt(P);
 				while (mpi1 == op1 || mpi1 == op2) {
 					mpi1 = rnd.nextInt(P);
 				}
 			} else {
+				// 何で、膨らんでいる頂点は同一多角形から移動先を探すんだ・・・？
+				
+				// 同一多角形から探す
 				int forward = rnd.nextInt(cnt[pi[op1]] - 2);
 				if ((forward & 1) == 0) {
 					forward /= 2;
@@ -621,10 +646,19 @@ public class SmallPolygonsTomerun {
 			final Point mp1 = i2p[mpi1];
 			final Point mp2 = i2p[mpi2];
 			final int areaRemove = triarea(mp1, p2, mp2);
+			// 符号が異なってないといけない(同じ場合はcontinue)
+			// 凹んでいる点は膨らんでいる点へ
+			// 膨らんでいる点は凹んでいる点へ
+			// 何故
+			// areaAdd + areaRemove = 更新された時の差分(マイナスの方が良い)
+		
+			// 符号が知りたい時は、signumして乗算するのが良いのかー
 			if (areaAdd * Integer.signum(areaRemove) >= 0) continue;
 			//			counter.add(2);
+			// diffがプラス(悪くなる遷移)の時に遷移するかどうか
 			if (!transit(areaAdd + areaRemove, HEAT)) continue;
 
+			// 同じ多角形内の移動の場合
 			if (pi[op2] == pi[mpi1]) {
 				//				counter.add(3);
 				// line to inside of polygon?
@@ -643,6 +677,7 @@ public class SmallPolygonsTomerun {
 					if (!triSet.exist[mpi1][op2].get(mpi2)) continue OUT;
 					if (!triSet.exist[op1][op2].get(op3)) continue OUT;
 
+					// 凹んでいる辺を変更するので、全頂点チェック
 					// new segments (p2-mp1), (p2-mp2) cross with polygon? 
 					for (int i = 0; i < P; ++i) {
 						if (i == op1 || i == op2) continue;
@@ -658,6 +693,7 @@ public class SmallPolygonsTomerun {
 					// new segment (p1-p3) crosses with polygon? 
 					if (!triSet.exist[op1][op3].get(op2)) continue OUT;
 
+					// 膨らんでいる辺を変更するので、同一多角形のチェックのみで良い
 					// new segments (p2-mp1), (p2-mp2) cross with polygon? 
 					// sufficient to check current polygon
 					for (int i = op3; i != op1; i = next[i]) {
@@ -672,6 +708,7 @@ public class SmallPolygonsTomerun {
 				}
 				//				counter.add(5);
 			} else {
+				// 違う多角形への移動の場合
 				//				counter.add(6);
 				// new segment (p1-p3) crosses with polygon? 
 				if (!triSet.exist[mpi1][op2].get(mpi2)) continue OUT;
@@ -719,11 +756,14 @@ public class SmallPolygonsTomerun {
 			edgeArea[op1] = triarea(p1, i2p[next[op3]], p3);
 			edgeArea[op2] = triarea(p2, i2p[next[mpi2]], mp2);
 			edgeArea[mpi0] = triarea(i2p[mpi0], p2, mp1);
+			// ここだけ符号反転してる。なんで
 			edgeArea[mpi1] = -areaRemove;
 
 			if (curArea < bestArea) {
 				bestArea = curArea;
 				//				debug("bestArea:" + bestArea + " turn:" + turn);
+				// スコアが更新された時は、温度を下げないようにしてる
+				// 逆じゃないの・・・？
 				coolTurn = turn + P * P;
 				lastBestTurn = turn;
 				System.arraycopy(next, 0, bestNext, 0, P);
@@ -966,6 +1006,7 @@ public class SmallPolygonsTomerun {
 		}
 
 		void shuffle(XorShift rnd) {
+			// 初期の多角形にtrisの順が依存するから、シャッフルしてるのかな
 			for (int i = 0; i < Math.min(1000, tris.size()); ++i) {
 				int ch1 = rnd.nextInt(100);
 				if (ch1 + i >= tris.size()) continue;
@@ -1806,6 +1847,14 @@ public class SmallPolygonsTomerun {
 		return Math.abs(area);
 	}
 
+	/**
+	 * res = 0 => 面積0
+	 * res > 0 => 右回り or 左回り ?
+	 * res < 0 =>  res > 0 の反対
+	 * 
+	 * 本来の面積は abs(res)/2 らしい
+	 * absしてないのは、向きが分かるように？
+	 */
 	static int triarea(Point a, Point b, Point c) {
 		int dx1 = b.x - a.x;
 		int dy1 = b.y - a.y;
