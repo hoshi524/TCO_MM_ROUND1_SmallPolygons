@@ -321,7 +321,7 @@ public class SmallPolygonsVis {
 	public double runTest(long seed) {
 		generate(seed);
 		setInput(pointsPar, N);
-		String[] ret = new SmallPolygons().choosePolygons(pointsPar, N);
+		String[] ret = new CopyOfSmallPolygons().choosePolygons(pointsPar, N);
 		return setResult(ret);
 	}
 
