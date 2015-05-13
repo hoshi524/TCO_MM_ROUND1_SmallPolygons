@@ -8,7 +8,8 @@ import java.util.StringJoiner;
 public class CopyOfSmallPolygons {
 
 	private static final int MAX_TIME = 9500;
-	private final long endTime = System.currentTimeMillis() + MAX_TIME;
+	private final long startTime = System.currentTimeMillis();
+	private final long endTime = startTime + MAX_TIME;
 	private static final int INT_MAX = Integer.MAX_VALUE / 2;
 	private static final int MAX_XY = 700;
 	private static final double pai2 = Math.atan(1) * 4 * 2;
@@ -155,10 +156,15 @@ public class CopyOfSmallPolygons {
 		return Math.abs(s);
 	}
 
-	private final int area2(Point[] poly) {
-		int s = areaFunc(poly[poly.length - 1], poly[0]);
-		for (int i = 0, n = poly.length - 1; i < n; ++i) {
-			s += areaFunc(poly[i], poly[i + 1]);
+	private final int area2(Point[] next, int start) {
+		int s = 0;
+		Point p = ps[start];
+		while (true) {
+			Point n = next[p.id];
+			s += areaFunc(p, n);
+			if (n.id == start)
+				break;
+			p = n;
 		}
 		return s;
 	}
@@ -225,51 +231,42 @@ public class CopyOfSmallPolygons {
 	}
 
 	Point[][] SimulatedAnnealing(Point[][] polygon) {
-		Point[][] best = new Point[polygon.length][];
 		int area[] = new int[polygon.length];
+		int in[] = new int[NP];
+		int psize[] = new int[polygon.length];
+		Point[] next = new Point[NP];
 		int score = 0;
 		for (int i = 0; i < polygon.length; ++i) {
 			area[i] = area(polygon[i]);
 			score += area[i];
+			psize[i] = polygon[i].length;
+			for (int j = 0; j < polygon[i].length; ++j) {
+				in[polygon[i][j].id] = i;
+				next[polygon[i][j].id] = polygon[i][j + 1 == polygon[i].length ? 0 : j + 1];
+			}
 		}
 		int bestScore = score;
-		for (int i = 0; i < polygon.length; ++i) {
-			best[i] = Arrays.copyOf(polygon[i], polygon[i].length);
-		}
+		Point[] best = Arrays.copyOf(next, next.length);
+		long t = System.currentTimeMillis() - startTime;
 		NG: for (int turn = 0;; ++turn) {
-			if ((turn & 0xffff) == 0 && System.currentTimeMillis() > endTime) {
-				break;
+			if ((turn & 0xffff) == 0) {
+				t = System.currentTimeMillis() - startTime;
+				if (t > MAX_TIME)
+					break;
 			}
+
 			int id = random.nextInt(NP);
-			int addI = -1, removeI = -1;
-			Point p1 = null, p2 = null, p3 = null;
-			find: for (int i = 0; i < polygon.length; ++i)
-				for (int j = 0; j < polygon[i].length; ++j) {
-					Point point = polygon[i][j];
-					if (point.id == id) {
-						if (polygon[i].length == 3)
-							continue NG;
-						removeI = i;
-						p1 = point;
-						p2 = polygon[i][j + 1 == polygon[i].length ? 0 : j + 1];
-						p3 = polygon[i][j + 2 >= polygon[i].length ? j + 2 - polygon[i].length : j + 2];
-						break find;
-					}
-				}
+			int removeI = in[id];
+			if (psize[removeI] == 3)
+				continue NG;
+			Point p1 = ps[id], p2 = next[p1.id], p3 = next[p2.id];
+
 			int idt = random.nextInt(NP);
 			while (p1.id == idt || p2.id == idt)
 				idt = random.nextInt(NP);
-			Point mp1 = null, mp2 = null;
-			find: for (int i = 0; i < polygon.length; ++i)
-				for (int j = 0; j < polygon[i].length; ++j) {
-					Point point = polygon[i][j];
-					if (point.id == idt) {
-						addI = i;
-						mp1 = point;
-						mp2 = polygon[i][j + 1 == polygon[i].length ? 0 : j + 1];
-						break find;
-					}
-				}
+			int addI = in[idt];
+			Point mp1 = ps[idt], mp2 = next[mp1.id];
+
 			int removeArea = areaDiff(p1, p3, p2);
 			int addArea = areaDiff(mp1, mp2, p2);
 			if (area[removeI] - removeArea == 0 || area[addI] + addArea == 0)
@@ -284,79 +281,81 @@ public class CopyOfSmallPolygons {
 				if (addI == removeI)
 					removeArea *= -1;
 			}
+
 			int diff = addArea - removeArea;
-			if (diff > 0 && random.nextInt(10) >= 2)
+			if (diff > 0 && (MAX_TIME - t) < random.nextInt(MAX_TIME))
 				continue NG;
+
 			Edge e1 = new Edge(mp1, p2);
 			Edge e2 = new Edge(p2, mp2);
 			Edge e3 = new Edge(p1, p3);
 			if (e1.intersect(e3) || e2.intersect(e3))
 				continue NG;
-			for (Point[] list : polygon)
-				for (int i = 0; i < list.length; ++i) {
-					Point a = list[i];
-					Point b = list[i + 1 == list.length ? 0 : i + 1];
-					if (p2 == a || p2 == b)
-						continue;
-					Edge edge = new Edge(a, b);
-					if (edge.intersect(e1) || edge.intersect(e2) || edge.intersect(e3))
-						continue NG;
-				}
-			for (int j = 0; j < polygon[removeI].length; ++j) {
-				if (polygon[removeI][j] == p2) {
-					polygon[removeI] = remove(polygon[removeI], j);
-					break;
-				}
+			for (int i = 0; i < NP; ++i) {
+				Point a = ps[i];
+				Point b = next[a.id];
+				if (p2 == a || p2 == b)
+					continue;
+				Edge edge = new Edge(a, b);
+				if (edge.intersect(e1) || edge.intersect(e2) || edge.intersect(e3))
+					continue NG;
 			}
-			for (int j = 0; j < polygon[addI].length; ++j) {
-				if (polygon[addI][j] == mp2) {
-					polygon[addI] = add(polygon[addI], j, p2);
-					break;
-				}
-			}
+
+			in[p2.id] = addI;
 			score += diff;
 			area[removeI] -= removeArea;
 			area[addI] += addArea;
-			if (area2(polygon[removeI]) < 0)
-				polygon[removeI] = reverse(polygon[removeI]);
-			if (area2(polygon[addI]) < 0)
-				polygon[addI] = reverse(polygon[addI]);
-			//			{
-			//				if (area[addI] != area(polygon[addI])) {
-			//					System.out.println(area[addI] + " " + area(polygon[addI]) + " " + addArea + " "
-			//							+ areaDiff(mp1, mp2, p2) + " " + (addI == removeI));
-			//					System.out.println(area[removeI] + " " + area(polygon[removeI]) + " " + removeArea + " "
-			//							+ areaDiff(p1, p3, p2));
-			//					throw new RuntimeException();
-			//				}
-			//				if (area[removeI] != area(polygon[removeI])) {
-			//					System.out.println(area[removeI] + " " + area(polygon[removeI]) + " " + removeArea + " "
-			//							+ areaDiff(p1, p3, p2));
-			//					throw new RuntimeException();
-			//				}
-			//				int test = 0;
-			//				for (Point[] p : polygon)
-			//					test += area(p);
-			//				if (score != test) {
-			//					System.out.println(score + " " + test + " " + diff + " " + areaDiff(mp1, mp2, p2) + " "
-			//							+ areaDiff(p1, p3, p2) + " " + p2);
-			//					System.out.println(-areaFunc(mp1, mp2) + " " + areaFunc(mp1, p2) + " " + areaFunc(p2, mp2));
-			//					// throw new RuntimeException();
-			//					for (int i = 0; i < polygon.length; ++i) {
-			//						best[i] = Arrays.copyOf(polygon[i], polygon[i].length);
-			//					}
-			//					break;
-			//				}
-			//			}
-			if (bestScore > score) {
-				// System.out.println(bestScore + " -> " + score);
-				bestScore = score;
-				for (int i = 0; i < polygon.length; ++i) {
-					best[i] = Arrays.copyOf(polygon[i], polygon[i].length);
+			next[mp1.id] = p2;
+			next[p2.id] = mp2;
+			next[p1.id] = p3;
+			--psize[removeI];
+			++psize[addI];
+			if (area2(next, p1.id) < 0) {
+				Point x = p1, prev = null;
+				while (true) {
+					Point n = next[x.id];
+					next[x.id] = prev;
+					prev = x;
+					x = n;
+					if (x == null)
+						break;
 				}
 			}
+			if (removeI != addI && area2(next, p2.id) < 0) {
+				Point x = p2, prev = null;
+				while (true) {
+					Point n = next[x.id];
+					next[x.id] = prev;
+					prev = x;
+					x = n;
+					if (x == null)
+						break;
+				}
+			}
+
+			if (bestScore > score) {
+				bestScore = score;
+				best = Arrays.copyOf(next, next.length);
+			}
 		}
-		return best;
+
+		ArrayList<Point[]> res = new ArrayList<>();
+		boolean used[] = new boolean[NP];
+		for (int i = 0; i < NP; ++i) {
+			if (!used[i]) {
+				ArrayList<Point> p = new ArrayList<>();
+				Point x = ps[i];
+				while (true) {
+					p.add(x);
+					used[x.id] = true;
+					x = best[x.id];
+					if (used[x.id])
+						break;
+				}
+				res.add(p.toArray(new Point[0]));
+			}
+		}
+		return res.toArray(new Point[0][]);
 	}
 
 	private final String[] result(Point polys[][]) {
@@ -557,13 +556,6 @@ public class CopyOfSmallPolygons {
 		public int compareTo(IntComparable o) {
 			return value - o.value;
 		}
-	}
-
-	private final <T> T[] reverse(T[] src) {
-		T[] res = Arrays.copyOf(src, src.length);
-		for (int i = 0; i < src.length; ++i)
-			res[i] = src[src.length - i - 1];
-		return res;
 	}
 
 	private final <T> T[] add(T[] src, int index, T t) {
