@@ -7,9 +7,8 @@ import java.util.StringJoiner;
 
 public class CopyOfSmallPolygons {
 
-	private static final int MAX_TIME = 9500;
+	private static final int MAX_TIME = 9800;
 	private final long startTime = System.currentTimeMillis();
-	private final long endTime = startTime + MAX_TIME;
 	private static final int INT_MAX = Integer.MAX_VALUE / 2;
 	private static final int MAX_XY = 700;
 	private static final double pai2 = Math.atan(1) * 4 * 2;
@@ -38,7 +37,7 @@ public class CopyOfSmallPolygons {
 			for (int i = 0, size = outside.length; i < size; ++i) {
 				Point a = outside[i];
 				Point b = outside[(i + 1) == size ? 0 : i + 1];
-				int tmp = new Edge(a, b).dist(p);
+				int tmp = areaDiff(a, b, p);
 				if (value > tmp && new Edge(p, a).isOK(checkEdge) && new Edge(p, b).isOK(checkEdge)) {
 					value = tmp;
 					t = a;
@@ -156,19 +155,6 @@ public class CopyOfSmallPolygons {
 		return Math.abs(s);
 	}
 
-	private final int area2(Point[] next, int start) {
-		int s = 0;
-		Point p = ps[start];
-		while (true) {
-			Point n = next[p.id];
-			s += areaFunc(p, n);
-			if (n.id == start)
-				break;
-			p = n;
-		}
-		return s;
-	}
-
 	private final List<Point>[] split(Point[] ps, int N) {
 		Point[] x = new Point[N];
 		@SuppressWarnings("unchecked")
@@ -247,7 +233,7 @@ public class CopyOfSmallPolygons {
 		}
 		int bestScore = score;
 		Point[] best = Arrays.copyOf(next, next.length);
-		long t = System.currentTimeMillis() - startTime;
+		long t = 0;
 		NG: for (int turn = 0;; ++turn) {
 			if ((turn & 0xffff) == 0) {
 				t = System.currentTimeMillis() - startTime;
@@ -260,6 +246,10 @@ public class CopyOfSmallPolygons {
 			if (psize[removeI] == 3)
 				continue NG;
 			Point p1 = ps[id], p2 = next[p1.id], p3 = next[p2.id];
+			int removeArea = areaDiff(p1, p3, p2);
+			if (area[removeI] - removeArea == 0) {
+				continue NG;
+			}
 
 			int idt = random.nextInt(NP);
 			while (p1.id == idt || p2.id == idt)
@@ -267,23 +257,25 @@ public class CopyOfSmallPolygons {
 			int addI = in[idt];
 			Point mp1 = ps[idt], mp2 = next[mp1.id];
 
-			int removeArea = areaDiff(p1, p3, p2);
 			int addArea = areaDiff(mp1, mp2, p2);
-			if (area[removeI] - removeArea == 0 || area[addI] + addArea == 0)
+			if (area[addI] + addArea == 0) {
 				continue NG;
-			if (area[removeI] - removeArea < 0) {
+			}
+
+			boolean rev0 = area[removeI] - removeArea < 0, rev1 = area[addI] + addArea < 0;
+			if (rev0) {
 				removeArea = -removeArea + area[removeI] + area[removeI];
 				if (addI == removeI)
 					addArea *= -1;
 			}
-			if (area[addI] + addArea < 0) {
+			if (rev1) {
 				addArea = -addArea - area[addI] - area[addI];
 				if (addI == removeI)
 					removeArea *= -1;
 			}
 
 			int diff = addArea - removeArea;
-			if (diff > 0 && (MAX_TIME - t) < random.nextInt(MAX_TIME))
+			if (diff * MAX_TIME > bestScore * (MAX_TIME - t) || (diff > 0 && (MAX_TIME - t) < random.nextInt(MAX_TIME)))
 				continue NG;
 
 			Edge e1 = new Edge(mp1, p2);
@@ -310,7 +302,7 @@ public class CopyOfSmallPolygons {
 			next[p1.id] = p3;
 			--psize[removeI];
 			++psize[addI];
-			if (area2(next, p1.id) < 0) {
+			if (rev0) {
 				Point x = p1, prev = null;
 				while (true) {
 					Point n = next[x.id];
@@ -321,7 +313,7 @@ public class CopyOfSmallPolygons {
 						break;
 				}
 			}
-			if (removeI != addI && area2(next, p2.id) < 0) {
+			if (rev1 && (!rev0 || removeI != addI)) {
 				Point x = p2, prev = null;
 				while (true) {
 					Point n = next[x.id];
