@@ -37,9 +37,9 @@ public class CopyOfSmallPolygons {
 			for (int i = 0, size = outside.length; i < size; ++i) {
 				Point a = outside[i];
 				Point b = outside[(i + 1) == size ? 0 : i + 1];
-				double tmp = new Edge(a, b).dist(p);
+				int tmp = new Edge(a, b).dist(p);
 				if (value > tmp && new Edge(p, a).isOK(checkEdge) && new Edge(p, b).isOK(checkEdge)) {
-					value = (int) tmp;
+					value = tmp;
 					t = a;
 					u = b;
 				}
@@ -148,11 +148,19 @@ public class CopyOfSmallPolygons {
 	}
 
 	private final int area(Point[] poly) {
-		int s = 0;
-		for (int i = 0, n = poly.length; i < n; ++i) {
-			s += areaFunc(poly[i], poly[(i + 1) == n ? 0 : i + 1]);
+		int s = areaFunc(poly[poly.length - 1], poly[0]);
+		for (int i = 0, n = poly.length - 1; i < n; ++i) {
+			s += areaFunc(poly[i], poly[i + 1]);
 		}
 		return Math.abs(s);
+	}
+
+	private final int area2(Point[] poly) {
+		int s = areaFunc(poly[poly.length - 1], poly[0]);
+		for (int i = 0, n = poly.length - 1; i < n; ++i) {
+			s += areaFunc(poly[i], poly[i + 1]);
+		}
+		return s;
 	}
 
 	private final List<Point>[] split(Point[] ps, int N) {
@@ -165,9 +173,9 @@ public class CopyOfSmallPolygons {
 		}
 		for (Point point : ps) {
 			int t = -1;
-			double dist = INT_MAX;
+			int dist = INT_MAX;
 			for (int j = 0; j < N; ++j) {
-				double tmpd = G2D.dist(x[j], point);
+				int tmpd = G2D.dist(x[j], point);
 				if (dist > tmpd) {
 					dist = tmpd;
 					t = j;
@@ -191,7 +199,7 @@ public class CopyOfSmallPolygons {
 		}
 
 		Point res[][] = null;
-		int badCount = 0, score = 0;
+		int badCount = 0;
 		NG: while (true) {
 			if (res == null) {
 				++badCount;
@@ -211,16 +219,19 @@ public class CopyOfSmallPolygons {
 				restmp[i] = p.outside;
 			}
 			res = restmp;
-			for (Point[] p : res) {
-				score += area(p);
-			}
 			break;
 		}
-		return result(SimulatedAnnealing(score, res));
+		return result(SimulatedAnnealing(res));
 	}
 
-	Point[][] SimulatedAnnealing(int score, Point[][] polygon) {
+	Point[][] SimulatedAnnealing(Point[][] polygon) {
 		Point[][] best = new Point[polygon.length][];
+		int area[] = new int[polygon.length];
+		int score = 0;
+		for (int i = 0; i < polygon.length; ++i) {
+			area[i] = area(polygon[i]);
+			score += area[i];
+		}
 		int bestScore = score;
 		for (int i = 0; i < polygon.length; ++i) {
 			best[i] = Arrays.copyOf(polygon[i], polygon[i].length);
@@ -230,38 +241,57 @@ public class CopyOfSmallPolygons {
 				break;
 			}
 			int id = random.nextInt(NP);
+			int addI = -1, removeI = -1;
 			Point p1 = null, p2 = null, p3 = null;
-			find: for (Point[] list : polygon)
-				for (int i = 0; i < list.length; ++i) {
-					Point point = list[i];
+			find: for (int i = 0; i < polygon.length; ++i)
+				for (int j = 0; j < polygon[i].length; ++j) {
+					Point point = polygon[i][j];
 					if (point.id == id) {
-						if (list.length == 3)
+						if (polygon[i].length == 3)
 							continue NG;
+						removeI = i;
 						p1 = point;
-						p2 = list[i + 1 == list.length ? 0 : i + 1];
-						p3 = list[(i + 2) % list.length];
+						p2 = polygon[i][j + 1 == polygon[i].length ? 0 : j + 1];
+						p3 = polygon[i][j + 2 >= polygon[i].length ? j + 2 - polygon[i].length : j + 2];
 						break find;
 					}
 				}
 			int idt = random.nextInt(NP);
-			while (p1.id == idt || p2.id == idt || p3.id == idt)
+			while (p1.id == idt || p2.id == idt)
 				idt = random.nextInt(NP);
 			Point mp1 = null, mp2 = null;
-			find: for (Point[] list : polygon)
-				for (int i = 0; i < list.length; ++i) {
-					Point point = list[i];
+			find: for (int i = 0; i < polygon.length; ++i)
+				for (int j = 0; j < polygon[i].length; ++j) {
+					Point point = polygon[i][j];
 					if (point.id == idt) {
+						addI = i;
 						mp1 = point;
-						mp2 = list[i + 1 == list.length ? 0 : i + 1];
+						mp2 = polygon[i][j + 1 == polygon[i].length ? 0 : j + 1];
 						break find;
 					}
 				}
-			int diff = areaDiff(mp1, mp2, p2) - areaDiff(p1, p3, p2);
+			int removeArea = areaDiff(p1, p3, p2);
+			int addArea = areaDiff(mp1, mp2, p2);
+			if (area[removeI] - removeArea == 0 || area[addI] + addArea == 0)
+				continue NG;
+			if (area[removeI] - removeArea < 0) {
+				removeArea = -removeArea + area[removeI] + area[removeI];
+				if (addI == removeI)
+					addArea *= -1;
+			}
+			if (area[addI] + addArea < 0) {
+				addArea = -addArea - area[addI] - area[addI];
+				if (addI == removeI)
+					removeArea *= -1;
+			}
+			int diff = addArea - removeArea;
 			if (diff > 0 && random.nextInt(10) >= 2)
 				continue NG;
 			Edge e1 = new Edge(mp1, p2);
 			Edge e2 = new Edge(p2, mp2);
 			Edge e3 = new Edge(p1, p3);
+			if (e1.intersect(e3) || e2.intersect(e3))
+				continue NG;
 			for (Point[] list : polygon)
 				for (int i = 0; i < list.length; ++i) {
 					Point a = list[i];
@@ -269,44 +299,61 @@ public class CopyOfSmallPolygons {
 					if (p2 == a || p2 == b)
 						continue;
 					Edge edge = new Edge(a, b);
-					// 交差判定がおかしそう
-					// 複数の多角形の交差判定に対応できてないかも
 					if (edge.intersect(e1) || edge.intersect(e2) || edge.intersect(e3))
 						continue NG;
 				}
+			for (int j = 0; j < polygon[removeI].length; ++j) {
+				if (polygon[removeI][j] == p2) {
+					polygon[removeI] = remove(polygon[removeI], j);
+					break;
+				}
+			}
+			for (int j = 0; j < polygon[addI].length; ++j) {
+				if (polygon[addI][j] == mp2) {
+					polygon[addI] = add(polygon[addI], j, p2);
+					break;
+				}
+			}
 			score += diff;
-			find: for (int i = 0; i < polygon.length; ++i)
-				for (int j = 0; j < polygon[i].length; ++j) {
-					Point point = polygon[i][j];
-					if (point.id == id) {
-						Point tmp[] = Arrays.copyOf(polygon[i], polygon[i].length - 1);
-						for (int k = j + 1 == polygon[i].length ? 0 : j + 1; k < tmp.length; ++k)
-							tmp[k] = polygon[i][k + 1];
-						polygon[i] = tmp;
-						break find;
-					}
-				}
-			find: for (int i = 0; i < polygon.length; ++i)
-				for (int j = 0; j < polygon[i].length; ++j) {
-					Point point = polygon[i][j];
-					if (point.id == idt) {
-						polygon[i] = add(polygon[i], j + 1, p2);
-						break find;
-					}
-				}
+			area[removeI] -= removeArea;
+			area[addI] += addArea;
+			if (area2(polygon[removeI]) < 0)
+				polygon[removeI] = reverse(polygon[removeI]);
+			if (area2(polygon[addI]) < 0)
+				polygon[addI] = reverse(polygon[addI]);
+			//			{
+			//				if (area[addI] != area(polygon[addI])) {
+			//					System.out.println(area[addI] + " " + area(polygon[addI]) + " " + addArea + " "
+			//							+ areaDiff(mp1, mp2, p2) + " " + (addI == removeI));
+			//					System.out.println(area[removeI] + " " + area(polygon[removeI]) + " " + removeArea + " "
+			//							+ areaDiff(p1, p3, p2));
+			//					throw new RuntimeException();
+			//				}
+			//				if (area[removeI] != area(polygon[removeI])) {
+			//					System.out.println(area[removeI] + " " + area(polygon[removeI]) + " " + removeArea + " "
+			//							+ areaDiff(p1, p3, p2));
+			//					throw new RuntimeException();
+			//				}
+			//				int test = 0;
+			//				for (Point[] p : polygon)
+			//					test += area(p);
+			//				if (score != test) {
+			//					System.out.println(score + " " + test + " " + diff + " " + areaDiff(mp1, mp2, p2) + " "
+			//							+ areaDiff(p1, p3, p2) + " " + p2);
+			//					System.out.println(-areaFunc(mp1, mp2) + " " + areaFunc(mp1, p2) + " " + areaFunc(p2, mp2));
+			//					// throw new RuntimeException();
+			//					for (int i = 0; i < polygon.length; ++i) {
+			//						best[i] = Arrays.copyOf(polygon[i], polygon[i].length);
+			//					}
+			//					break;
+			//				}
+			//			}
 			if (bestScore > score) {
-				System.out.println(bestScore + " -> " + score);
+				// System.out.println(bestScore + " -> " + score);
 				bestScore = score;
-				boolean same = true;
 				for (int i = 0; i < polygon.length; ++i) {
-					same &= best[i].length == polygon[i].length;
-					if (same)
-						for (int j = 0; j < polygon[i].length; ++j)
-							same &= best[i][j] == polygon[i][j];
 					best[i] = Arrays.copyOf(polygon[i], polygon[i].length);
 				}
-				if (same)
-					throw new RuntimeException();
 			}
 		}
 		return best;
@@ -346,8 +393,8 @@ public class CopyOfSmallPolygons {
 			return new Point(-1, p1.x - p2.x, p1.y - p2.y);
 		}
 
-		static double norm(int x, int y) {
-			return Math.sqrt(x * x + y * y);
+		static int norm(int x, int y) {
+			return x * x + y * y;
 		}
 
 		static int dot(Point p1, Point p2) {
@@ -358,14 +405,14 @@ public class CopyOfSmallPolygons {
 			return p1.x * p2.y - p1.y * p2.x;
 		}
 
-		static double dist(Point p1, Point p2) {
+		static int dist(Point p1, Point p2) {
 			return norm(p1.x - p2.x, p1.y - p2.y);
 		}
 	}
 
 	private final class Edge implements Comparable<Edge> {
 		Point p1, p2, vect; //vector p1 -> p2
-		double norm;
+		int norm;
 
 		Edge(Point p1n, Point p2n) {
 			p1 = p1n;
@@ -374,64 +421,58 @@ public class CopyOfSmallPolygons {
 			norm = G2D.norm(vect.x, vect.y);
 		}
 
-		boolean eq(double a, double b) {
-			return Math.abs(a - b) < eps;
-		}
-
 		boolean intersect(Edge other) {
 			//do edges "this" and "other" intersect?
-			if (Math.min(p1.x, p2.x) > Math.max(other.p1.x, other.p2.x))
+			if (Math.min(p1.x, p2.x) > Math.max(other.p1.x, other.p2.x)
+					|| Math.max(p1.x, p2.x) < Math.min(other.p1.x, other.p2.x)
+					|| Math.min(p1.y, p2.y) > Math.max(other.p1.y, other.p2.y)
+					|| Math.max(p1.y, p2.y) < Math.min(other.p1.y, other.p2.y)) {
 				return false;
-			if (Math.max(p1.x, p2.x) < Math.min(other.p1.x, other.p2.x))
-				return false;
-			if (Math.min(p1.y, p2.y) > Math.max(other.p1.y, other.p2.y))
-				return false;
-			if (Math.max(p1.y, p2.y) < Math.min(other.p1.y, other.p2.y))
-				return false;
-
-			int den = other.vect.y * vect.x - other.vect.x * vect.y;
-			int num1 = other.vect.x * (p1.y - other.p1.y) - other.vect.y * (p1.x - other.p1.x);
-			int num2 = vect.x * (p1.y - other.p1.y) - vect.y * (p1.x - other.p1.x);
-
-			//parallel edges
-			if (den == 0) {
-				if (Math.min(other.dist2(this), dist2(other)) > 0)
-					return false;
-				//on the same line - "not intersect" only if one of the vertices is common,
-				//and the other doesn't belong to the line
-				if ((this.p1 == other.p1 && eq(G2D.dist(this.p2, other.p2), this.norm + other.norm))
-						|| (this.p1 == other.p2 && eq(G2D.dist(this.p2, other.p1), this.norm + other.norm))
-						|| (this.p2 == other.p1 && eq(G2D.dist(this.p1, other.p2), this.norm + other.norm))
-						|| (this.p2 == other.p2 && eq(G2D.dist(this.p1, other.p1), this.norm + other.norm)))
-					return false;
-				return true;
 			}
 
+			int den = other.vect.y * vect.x - other.vect.x * vect.y;
+			// parallel edges
+			if (den == 0) {
+				//on the same line - "not intersect" only if one of the vertices is common,
+				//and the other doesn't belong to the line
+				int sum = norm + other.norm;
+				if ((p1 == other.p1 && G2D.dist(p2, other.p2) == sum)
+						|| (p1 == other.p2 && G2D.dist(p2, other.p1) == sum)
+						|| (p2 == other.p1 && G2D.dist(p1, other.p2) == sum)
+						|| (p2 == other.p2 && G2D.dist(p1, other.p1) == sum)) {
+					return false;
+				}
+				return dist(other.p1) == 0 || dist(other.p2) == 0;
+			}
 			//common vertices
-			if (this.p1 == other.p1 || this.p1 == other.p2 || this.p2 == other.p1 || this.p2 == other.p2)
+			if (p1 == other.p1 || p1 == other.p2 || p2 == other.p1 || p2 == other.p2) {
 				return false;
+			}
 
-			double u1 = num1 * 1. / den;
-			double u2 = num2 * 1. / den;
-			if (u1 < 0 || u1 > 1 || u2 < 0 || u2 > 1)
+			int mx = p1.x - other.p1.x;
+			int my = p1.y - other.p1.y;
+			int u1 = other.vect.x * my - other.vect.y * mx;
+			int u2 = vect.x * my - vect.y * mx;
+			if ((den < 0 && (u1 > 0 || u1 < den || u2 > 0 || u2 < den) || (den > 0 && (u1 < 0 || u1 > den || u2 < 0 || u2 > den)))) {
 				return false;
+			}
 			return true;
 		}
 
 		// ---------------------------------------------------
-		double dist(Point p) {
+		int dist(Point p) {
 			//distance from p to the edge
 			if (G2D.dot(vect, G2D.sub(p, p1)) <= 0)
 				return G2D.dist(p, p1); //from p to p1
 			if (G2D.dot(vect, G2D.sub(p, p2)) >= 0)
 				return G2D.dist(p, p2); //from p to p2
 			// distance to the line itself
-			return Math.abs(-vect.y * p.x + vect.x * p.y + p1.x * p2.y - p1.y * p2.x) / norm;
+			return Math.abs(-vect.y * p.x + vect.x * p.y + p1.x * p2.y - p1.y * p2.x);
 		}
 
 		@Override
 		public int compareTo(Edge o) {
-			return Double.compare(o.norm, norm);
+			return Integer.compare(o.norm, norm);
 		}
 
 		boolean isOK(Edge[] checkEdge) {
@@ -439,11 +480,6 @@ public class CopyOfSmallPolygons {
 				if (intersect(ce))
 					return false;
 			return true;
-		}
-
-		public double dist2(Edge other) {
-			//distance from the closest of the endpoints of "other" to "this"
-			return Math.min(dist(other.p1), dist(other.p2));
 		}
 	}
 
@@ -523,6 +559,13 @@ public class CopyOfSmallPolygons {
 		}
 	}
 
+	private final <T> T[] reverse(T[] src) {
+		T[] res = Arrays.copyOf(src, src.length);
+		for (int i = 0; i < src.length; ++i)
+			res[i] = src[src.length - i - 1];
+		return res;
+	}
+
 	private final <T> T[] add(T[] src, int index, T t) {
 		src = Arrays.copyOf(src, src.length + 1);
 		System.arraycopy(src, index, src, index + 1, src.length - index - 1);
@@ -530,11 +573,9 @@ public class CopyOfSmallPolygons {
 		return src;
 	}
 
-	private final <T> T[] remove(T[] src, int i) {
+	private final <T> T[] remove(T[] src, int index) {
 		T[] res = Arrays.copyOf(src, src.length - 1);
-		if (i == src.length - 1)
-			return res;
-		res[i] = src[src.length - 1];
+		System.arraycopy(src, index + 1, res, index, src.length - index - 1);
 		return res;
 	}
 }

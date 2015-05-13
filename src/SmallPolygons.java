@@ -324,7 +324,7 @@ public class SmallPolygons {
 		for (int i = 0, n = poly.length; i < n; ++i) {
 			s += areaFunc(poly[i], poly[(i + 1) % n]);
 		}
-		return Math.abs(s);
+		return s;
 	}
 
 	private final List<Point>[] split(Point[] ps, int N) {

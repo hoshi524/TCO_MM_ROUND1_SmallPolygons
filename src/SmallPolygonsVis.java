@@ -747,10 +747,10 @@ public class SmallPolygonsVis {
 		}
 		if (manual)
 			vis = true;
-		if (true) {
+		if (false) {
 			vis = true;
-			int N = 2;
-			for (seed = N; seed <= N; seed++) {
+			int N = 10;
+			for (seed = 1; seed <= N; seed++) {
 				new SmallPolygonsVis(seed);
 			}
 		} else {
