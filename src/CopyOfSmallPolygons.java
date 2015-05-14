@@ -9,6 +9,7 @@ public class CopyOfSmallPolygons {
 
 	private static final int MAX_TIME = 9800;
 	private final long startTime = System.currentTimeMillis();
+	private final long endTime = startTime + MAX_TIME;
 	private static final int INT_MAX = Integer.MAX_VALUE / 2;
 	private static final int MAX_XY = 700;
 	private static final double pai2 = Math.atan(1) * 4 * 2;
@@ -155,6 +156,19 @@ public class CopyOfSmallPolygons {
 		return Math.abs(s);
 	}
 
+	private final int area2(Point[] next, int start) {
+		int s = 0;
+		Point p = ps[start];
+		while (true) {
+			Point n = next[p.id];
+			s += areaFunc(p, n);
+			if (n.id == start)
+				break;
+			p = n;
+		}
+		return s;
+	}
+
 	private final List<Point>[] split(Point[] ps, int N) {
 		Point[] x = new Point[N];
 		@SuppressWarnings("unchecked")
@@ -233,11 +247,11 @@ public class CopyOfSmallPolygons {
 		}
 		int bestScore = score;
 		Point[] best = Arrays.copyOf(next, next.length);
-		long t = 0;
+		long remainTime = 0;
 		NG: for (int turn = 0;; ++turn) {
 			if ((turn & 0xffff) == 0) {
-				t = System.currentTimeMillis() - startTime;
-				if (t > MAX_TIME)
+				remainTime = endTime - System.currentTimeMillis();
+				if (remainTime < 0)
 					break;
 			}
 
@@ -245,24 +259,25 @@ public class CopyOfSmallPolygons {
 			int removeI = in[id];
 			if (psize[removeI] == 3)
 				continue NG;
-			Point p1 = ps[id], p2 = next[p1.id], p3 = next[p2.id];
+			Point p1 = ps[id], p2 = next[id], p3 = next[p2.id];
 			int removeArea = areaDiff(p1, p3, p2);
 			if (area[removeI] - removeArea == 0) {
 				continue NG;
 			}
+			boolean rev0 = area[removeI] - removeArea < 0;
 
 			int idt = random.nextInt(NP);
 			while (p1.id == idt || p2.id == idt)
 				idt = random.nextInt(NP);
 			int addI = in[idt];
-			Point mp1 = ps[idt], mp2 = next[mp1.id];
+			Point mp1 = ps[idt], mp2 = next[idt];
 
 			int addArea = areaDiff(mp1, mp2, p2);
 			if (area[addI] + addArea == 0) {
 				continue NG;
 			}
 
-			boolean rev0 = area[removeI] - removeArea < 0, rev1 = area[addI] + addArea < 0;
+			boolean rev1 = area[addI] + addArea < 0;
 			if (rev0) {
 				removeArea = -removeArea + area[removeI] + area[removeI];
 				if (addI == removeI)
@@ -275,21 +290,19 @@ public class CopyOfSmallPolygons {
 			}
 
 			int diff = addArea - removeArea;
-			if (diff * MAX_TIME > bestScore * (MAX_TIME - t) || (diff > 0 && (MAX_TIME - t) < random.nextInt(MAX_TIME)))
+			if (diff * MAX_TIME > bestScore * remainTime || (diff > 0 && remainTime < random.nextInt(MAX_TIME)))
 				continue NG;
 
-			Edge e1 = new Edge(mp1, p2);
-			Edge e2 = new Edge(p2, mp2);
-			Edge e3 = new Edge(p1, p3);
-			if (e1.intersect(e3) || e2.intersect(e3))
+			if ((p1 != mp1 && p3 != mp1 && cross(mp1, p2, p1, p3))
+					|| (p1 != mp2 && p3 != mp2 && cross(p2, mp2, p1, p3)))
 				continue NG;
 			for (int i = 0; i < NP; ++i) {
 				Point a = ps[i];
-				Point b = next[a.id];
+				Point b = next[i];
 				if (p2 == a || p2 == b)
 					continue;
-				Edge edge = new Edge(a, b);
-				if (edge.intersect(e1) || edge.intersect(e2) || edge.intersect(e3))
+				if ((a != mp1 && b != mp1 && cross(a, b, mp1, p2)) || (a != mp2 && b != mp2 && cross(a, b, p2, mp2))
+						|| (a != p1 && b != p1 && a != p3 && b != p3 && cross(a, b, p1, p3)))
 					continue NG;
 			}
 
@@ -324,7 +337,14 @@ public class CopyOfSmallPolygons {
 						break;
 				}
 			}
-
+			//			{
+			//				// test
+			//				for (int i = 0; i < NP; ++i) {
+			//					if (area[in[i]] != area2(next, i)) {
+			//						throw new RuntimeException();
+			//					}
+			//				}
+			//			}
 			if (bestScore > score) {
 				bestScore = score;
 				best = Arrays.copyOf(next, next.length);
@@ -348,6 +368,22 @@ public class CopyOfSmallPolygons {
 			}
 		}
 		return res.toArray(new Point[0][]);
+	}
+
+	private static int triarea(Point a, Point b, Point c) {
+		int dx1 = b.x - a.x;
+		int dy1 = b.y - a.y;
+		int dx2 = c.x - a.x;
+		int dy2 = c.y - a.y;
+		return dx1 * dy2 - dx2 * dy1;
+	}
+
+	private static int ccw(Point a, Point b, Point c) {
+		return Integer.signum(triarea(a, b, c));
+	}
+
+	private static boolean cross(Point p1, Point p2, Point p3, Point p4) {
+		return ccw(p1, p2, p3) * ccw(p1, p2, p4) <= 0 && ccw(p3, p4, p1) * ccw(p3, p4, p2) <= 0;
 	}
 
 	private final String[] result(Point polys[][]) {
