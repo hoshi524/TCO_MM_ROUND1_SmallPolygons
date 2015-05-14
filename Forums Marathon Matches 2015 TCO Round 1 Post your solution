@@ -1,0 +1,212 @@
+https://apps.topcoder.com/forums/?module=Thread&threadID=854698&start=0
+
+Marathon Matches 2015 TCO Round 1
+の解法メモ
+
+
+rank1 eldidou
+
+My approach is a plain simulated annealing.
+
+私のアプローチは焼きなまし法です
+
+I start by a random solution by creating some polygons (triangles) and
+randomly adding all the other points one after the other in those polygons.
+
+最初はいくつかの三角形を作り、そこに他の頂点(=点)を追加していきます(?)
+
+The modifications I used for the SA were the following:
+
+焼きなまし法は以下のように修正しました
+
+1) moving a point :
+A   C            A---C
+ \ / 
+  B       <=>      B
+                  / \
+D---E            D   E
+
+(D and E don't necessary belong to another polygon than A,B and C)
+This is the main modification, the one that I try the most (+85% of the time).
+
+１つの点を移動させる
+(D,EはA,B,Cと同じ多角形である必要ない(?))
+主な修正箇所で、85%程度はこの箇所の修正(?)
+
+2) swapping two points :
+A  B        A  B
+| /          \ |
+|/            \|
+C  D   <=>  C  D
+  /|        |\
+ / |        | \
+E  F        E  F
+
+This one helps, but it's not a big deal.
+
+2点を交換する
+これは役に立ちますが、大したことはないです
+
+3) splitting or merging polygons :
+A--B        A  B
+       <=>  |  |
+C--D        C  D
+
+If all 4 points belong to the same polygon it will be a split,
+otherwise it will be a merge.
+
+多角形の分割と統合
+4点が同じ多角形の場合は分割
+違う場合は、統合になります
+
+The temperature cooling schedule is just a linear one, for constant/P to 0.
+
+焼きなましの温度の冷却は線形(1次関数)です
+
+When I tried to find some random modification to apply I use some　caches for all the edge to consider (I precompute the shortest ones),　which edge intersect with another, etc.
+
+辺が交差するか事前に計算しておく的な事を言ってる気がする
+
+I submitted this solution during the middle of the contest and I think
+it might still be in the top4 or not too far from it, but during that
+time I found a big drawback in this solution : splitting and merging
+doesn't happen very often because most of the time it's too expensive
+to merge two polygons (too much area added, and SA rejects it), and
+splitting is often not possible because most of the time the number
+max of polygons is already reached. That's bad because ideally we
+want to easily cut and reconnect branches of a polygon (they have a
+tree-like structure). This is even worst when the number of polygon
+versus the number of point is low, (the chance to find two edges that
+belong to two different polygons is very low) and merging is really
+unlikely. With only the modification 1) and 2) it takes a big number
+of modifications to reach a good state (the diameter of the search
+space is too high).
+
+split,mergeはコストが高すぎてあまり起こらないって書いてある気がする
+splitはすぐに最大多角形数になるって書いてある気がする
+3番のsplitとmergeは難しいから主に1,2番を使うって書いてある気がする
+
+In order to fix this problem I allow the number of polygon to be
+higher than NP. I used a bonus/malus for merging/splitting to prevent
+ending with a lot a very small polygon. The farther we are from NP,
+and the closer we are from the end of the 10s, the higher the
+bonus/malus is. This way the number of polygon slowly converges toward　NP.
+
+bonus/malus ってなんだろ
+
+This one give me locally more than 4% less raw score on average locally without additional tuning.
+
+
+One other thing that works unexpectedly well for me is the selection of edge to consider. In previous versions I used all the edges with length < constant/P, then I switch to "all the edge AB such as A is one the ~50 closest points of B (or the opposite)". This one give 2% less raw score.
+
+Since the variance is huge on small cases, a faster cooling and 2 or 3 reheating seems slightly better than a slower cooling.
+
+ゆっくり冷却するより、再加熱するようにした方が僅かに良いみたいに書いてある
+
+Other than that it is mainly performance increases that improve my solution, time doubling now still gives something link 2%.
+
+時間が2倍あるとスコアが2%程度改善する
+(結構、十分な時間があるってことかな。C++にしても2%程度しか改善しないともとれる)
+
+
+
+
+
+
+
+rank3 Komaki
+
+Simulated annealing was my choice. To achieve this, first I implemented a function to calculate a visible polygon in O(n + something) and decided not to use functions to check intersections so much. http://en.wikipedia.org/wiki/Visibility_polygon 
+
+Visibility_polygonを用いたことが書かれてる
+
+After a while, it turned out that this approach was bad although it was very good.
+Since I used a little bit different strategy, my solution was bad at some cases which other competitors' solvers were good at. As a result, my solution was beaten even by not-so-strong solvers and my score was reduced by these competitors.
+With the scoring system used in this contest, a great innovative strategy can be beaten just because it is a minority. (Of course, this does NOT mean my solution is great and innovative.)
+
+得点の形式によって、あまり強くない解法にスコアを削られたみたいに書いてある気がする
+この形式によって、少数の面白い戦略が取れるかも、みたいに書いてある気がする
+(基本的に上位は同じ手法しか取れないことに対する裏返し？)
+
+Neighbors in SA:
+
+焼きなましの近傍
+
+1: Remove one point from a polygon, calculate its all visible edges and add it to one of them.
+2: Split one polygon into two by calculating all visible points.
+3: Merge two polygons into one.
+4: Split one polygon into two and merge randomly chosen two polygons into one.
+5: Merge two polygons into one and split randomly chosen one polygon into two.
+
+Neighbors obtained by 4 and 5 were good and ones gained by 2 and 3 were bad. This would be because it is very difficult to estimate the effect of the number of polygons.
+
+4,5は良くて、2,3は悪かった？
+2,3だと多角形の数が変化してしまうから？
+
+rank1の人と鑑みて、splitとmergeは必要な要素だったけど扱いが難しかったってことかなー
+
+Example scores:
+0) 8296.0
+1) 16476.0
+2) 25743.5
+3) 14471.0
+4) 60112.0
+5) 13123.0
+6) 9752.5
+7) 28212.5
+8) 38602.0
+9) 33166.0
+
+
+
+
+
+
+
+rank2 wleite
+
+I finished 2nd in provisional ranking, with 98.34. 
+Really enjoyed the problem!
+I think it was a great choice for a TCO qualification round, since it allowed many different approaches, and it was very hard to achieve near perfect scores (especially for larger cases). 
+
+問題のことを褒めている気がする
+(個人的には特別良いという感想はないけど、他の参加者の図形が多彩で、それをみるのは楽しい)
+
+My Approach:
+Build and initial valid solution using a greedy approach:
+Start with P random points, where P is the number of polygons = min(numPoints/3, maxPolygons). In cases where (numPoints == numPolygons * 3), i.e. only triangles, it reduces the number of polygons by 1.
+Add 2 more points to each starting point to make valid triangles.
+Greedly add all other points, connecting points that are closer to an already connected point.
+In few small cases, this method fail to build a valid configuration (not all points are connected), then other random starting points are picked, and the whole process is repeated.
+Usually in this kind of problems the starting position is not that important, but in this case other starting strategies (reducing the used area, for example) gave me worst final scores.
+
+Try to move points until time is over, using SA to accept worse positions.
+Only the simplest type of move: -- a -- b -- c -- and -- d -- e -- turns to -- a -- c -- and -- d -- b -- e --, i.e. remove b and connect it between d and e.
+Only consider moves where the distance between b and d is less than a parameter. For larger cases used smaller distances. The actual value for the squared distance was (25,000,000 - 10,000 * numPoints) / numPoints, so for 1,500 points, maxDistance was 82 and for 100 points, 490.
+Cooling schedule was linear, and initial temperature was "high", allowing many "bad" moves, because it was very easy to get stuck in a local minimum.
+The initial temperature was inversely proportional to the number of points (135,791 / numPoints).
+Instead of picking 2 random points, I sequentially picked each point to be removed (b point in the move description above) and the tried to connect it to one of its neighbors (randomly picked). It tests at most one third of a point's neighbors each time, or until it found a valid and acceptable.
+
+Other observations:
+Speed was very important. If I gave 10x more time, my raw scores would increase by 8~10%, and 20% in few cases. I tried to optimize it a lot, but didn't come out with anything very good.
+For larger cases it helped to have a grid (5 x 5) that controls which segments passed by them, so when I try to make a new connection it only needed to check few (usually 1 or 2) sectors of the grid.
+Other simple thing that helped was to check for intersections when trying to make a new connecting testing against points ordered by increasing distance from one of the connecting points (that ordered array was precomputed). It needs to test much fewer segments in average, since most of new connections are invalid (especially in larger cases).
+Splitting/joining polygons was a very important thing that I missed. I will try to implement it later and check how close to eldidou's score I can get :-)
+Scoring System:
+Although I agree with the observations made by Psyho and Komaki, I really liked the fact that was hard to predict where you are going to be after a local improvement. That made people submit more often, which is something that is important. With traditional relative scoring, it would be much easier to just submit a simple solution at the beginning and then work locally during the whole match, and submit again only in the last hours. Although this is obviously a valid strategy, I think a huge part of the fun is to watch the standings during the match.
+In my data structure, each point keep track of its "next" and "previous" point, like a double linked list I guess. There was no polygon objects that contained points of something like that (I used that in my first submissions). That way removing and connecting new points was very simple and fast.
+It seems to favor more balanced solutions.
+After results are available, I will post a hypothetical ranking with relative scoring and other simulations.
+
+Example Scores:
+    0)  8296.0
+    1) 17983.0
+    2) 28832.0
+    3) 15918.5
+    4) 49969.5
+    5) 13738.0
+    6)  9275.5
+    7) 31949.5
+    8) 45338.5
+    9) 36082.0
+Edit: Just removed ugly characters that appeared in the place of quotes.
