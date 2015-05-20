@@ -7,7 +7,7 @@ import java.util.StringJoiner;
 
 public class CopyOfSmallPolygons {
 
-	private static final int MAX_TIME = 9800;
+	private static final int MAX_TIME = 9700;
 	private final long startTime = System.currentTimeMillis();
 	private final long endTime = startTime + MAX_TIME;
 	private static final int INT_MAX = Integer.MAX_VALUE / 2;
@@ -156,6 +156,14 @@ public class CopyOfSmallPolygons {
 		return Math.abs(s);
 	}
 
+	private final int area(Point[] p, int[] next) {
+		int s = 0;
+		for (int i = 0, n = next.length; i < n; ++i) {
+			s += areaFunc(p[i], p[next[i]]);
+		}
+		return Math.abs(s);
+	}
+
 	private final int area2(Point[] next, int start) {
 		int s = 0;
 		Point p = ps[start];
@@ -227,7 +235,82 @@ public class CopyOfSmallPolygons {
 			res = restmp;
 			break;
 		}
-		return result(SimulatedAnnealing(res));
+		return result(MinPolygonBrute(SimulatedAnnealing(res)));
+	}
+
+	Point[][] MinPolygonBrute(Point[][] polygon) {
+		class BruteSearch {
+			Point polygon[];
+			int area;
+			int best[];
+
+			public BruteSearch(Point[] polygon) {
+				this.polygon = polygon;
+				this.area = area(polygon);
+			}
+
+			Point[] get() {
+				int n = polygon.length;
+				dfs(new int[n], 0, 0);
+				Point res[] = new Point[n];
+				for (int i = 0, j = 0; i < n; ++i, j = best[j]) {
+					res[i] = polygon[j];
+				}
+				return res;
+			}
+
+			private void dfs(int s[], int used, int i) {
+				if (i == s.length) {
+					int current = area(polygon, s);
+					if (area >= current) {
+						area = current;
+						best = Arrays.copyOf(s, s.length);
+					}
+					return;
+				}
+				NG:for (int x = 0; x < s.length; ++x) {
+					int bit = 1 << x;
+					if (i != x && (used & bit) == 0) {
+						if (i < s.length - 1 && i > x) {
+							boolean ok=false;
+							for (int a = x; a != i; a = s[a]) {
+								if (a > i) {
+									ok = true;
+									break;
+								}
+							}
+							if (!ok)
+								continue NG;
+						}
+						for (int j = 0; j < i; ++j)
+							if (i != s[j] && x != j && cross(polygon[i], polygon[x], polygon[j], polygon[s[j]]))
+								continue NG;
+						s[i] = x;
+						dfs(s, used | bit, i + 1);
+					}
+				}
+			}
+		}
+		bad: for (int i = 0; i < polygon.length; ++i) {
+			if (polygon[i].length < 12) {
+				// 頂点数11まで全探索する(最大100ms程度、12以上は計算量を改善しないと無理そう)
+				Point[] tmp = new BruteSearch(polygon[i]).get();
+				for (int a = 0; a < tmp.length; ++a) {
+					Point p1 = tmp[a], p2 = tmp[a + 1 == tmp.length ? 0 : a + 1];
+					for (int j = 0; j < polygon.length; j++)
+						if (i != j) {
+							Point[] p = polygon[j];
+							for (int b = 0; b < p.length; ++b)
+								if (cross(p1, p2, p[b], p[b + 1 == p.length ? 0 : b + 1])) {
+									// 他の多角形と交差するので更新できない
+									break bad;
+								}
+						}
+				}
+				polygon[i] = tmp;
+			}
+		}
+		return polygon;
 	}
 
 	Point[][] SimulatedAnnealing(Point[][] polygon) {
